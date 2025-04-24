@@ -1,29 +1,35 @@
 package com.game.janggi.domain.board;
 
 import com.game.janggi.domain.formation.FormationType;
-import com.game.janggi.domain.team.Cho;
-import com.game.janggi.domain.team.Han;
-import com.game.janggi.domain.team.Team;
+import com.game.janggi.domain.piece.Piece;
+import com.game.janggi.domain.piece.Pieces;
+import com.game.janggi.domain.piece.layout.ChoDefaultPieceLayout;
+import com.game.janggi.domain.piece.layout.HanDefaultPieceLayout;
+import com.game.janggi.domain.team.TeamType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class GameBoard {
-    private final List<Team> teams;
+    private final Pieces pieces;
+    @Getter
+    private final TeamType currentTurn;
 
-    public static GameBoard create() {
-        return new GameBoard(initalizeTeams());
+    public static GameBoard initalizePieces(FormationType hanFormationType, FormationType choFormationType) {
+        HanDefaultPieceLayout hanDefaultPieceLayout = new HanDefaultPieceLayout(hanFormationType);
+        ChoDefaultPieceLayout choDefaultPieceLayout = new ChoDefaultPieceLayout(choFormationType);
+
+        List<Piece> pieces = new ArrayList<>();
+        pieces.addAll(hanDefaultPieceLayout.createPieces());
+        pieces.addAll(choDefaultPieceLayout.createPieces());
+
+        return new GameBoard(Pieces.create(pieces), TeamType.CHO);
     }
 
-    private static List<Team> initalizeTeams() {
-        //TODO 받아온 Formation Type
-        FormationType hanFormation = FormationType.SANG_MA_MA_SANG;
-        FormationType choFormation = FormationType.SANG_MA_MA_SANG;
-
-        Cho cho = Cho.create(choFormation);
-        Han han = Han.create(hanFormation);
-
-        return List.of(cho, han);
+    public int getPiecesSize() {
+        return pieces.getSize();
     }
 }
