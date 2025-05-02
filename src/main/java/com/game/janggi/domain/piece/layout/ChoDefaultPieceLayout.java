@@ -20,13 +20,13 @@ public class ChoDefaultPieceLayout extends DefaultPieceLayout {
         King king = King.create(1, 4, TeamType.CHO);
         Po leftPo = Po.create(2, 1, TeamType.CHO);
         Po rightPo = Po.create(2, 7, TeamType.CHO);
-        Bung bung1 = Bung.create(3, 0, TeamType.CHO);
-        Bung bung2 = Bung.create(3, 2, TeamType.CHO);
-        Bung bung3 = Bung.create(3, 4, TeamType.CHO);
-        Bung bung4 = Bung.create(3, 6, TeamType.CHO);
-        Bung bung5 = Bung.create(3, 8, TeamType.CHO);
+        Jol jol1 = Jol.create(3, 0, TeamType.CHO);
+        Jol jol2 = Jol.create(3, 2, TeamType.CHO);
+        Jol jol3 = Jol.create(3, 4, TeamType.CHO);
+        Jol jol4 = Jol.create(3, 6, TeamType.CHO);
+        Jol jol5 = Jol.create(3, 8, TeamType.CHO);
 
-        return List.of(leftCha, rightCha, leftSa, rightSa, king, leftPo, rightPo, bung1, bung2, bung3, bung4, bung5);
+        return List.of(leftCha, rightCha, leftSa, rightSa, king, leftPo, rightPo, jol1, jol2, jol3, jol4, jol5);
     }
 
     @Override
