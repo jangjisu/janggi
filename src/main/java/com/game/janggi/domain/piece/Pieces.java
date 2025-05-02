@@ -3,7 +3,7 @@ package com.game.janggi.domain.piece;
 import java.util.List;
 
 public class Pieces {
-    private List<Piece> pieces;
+    private final List<Piece> pieces;
 
     private Pieces(List<Piece> pieces) {
         this.pieces = pieces;
