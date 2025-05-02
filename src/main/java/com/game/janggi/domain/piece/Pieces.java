@@ -16,4 +16,14 @@ public class Pieces {
     public int getSize() {
         return pieces.size();
     }
+
+    public Piece getPiece(int row, int col) {
+        for (Piece piece : pieces) {
+            if (piece.isAtPosition(row, col)) {
+                return piece;
+            }
+        }
+
+        return null;
+    }
 }
