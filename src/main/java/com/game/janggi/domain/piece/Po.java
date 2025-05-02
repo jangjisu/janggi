@@ -11,4 +11,9 @@ public class Po extends Piece {
     public static Po create(int rowIndex, int colIndex, TeamType teamType) {
         return new Po(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "포";
+    }
 }

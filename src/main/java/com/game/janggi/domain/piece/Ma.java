@@ -11,4 +11,9 @@ public class Ma extends Piece {
     public static Ma create(int rowIndex, int colIndex, TeamType teamType) {
         return new Ma(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "마";
+    }
 }

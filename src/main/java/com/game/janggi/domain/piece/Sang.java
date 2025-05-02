@@ -11,4 +11,9 @@ public class Sang extends Piece {
     public static Sang create(int rowIndex, int colIndex, TeamType teamType) {
         return new Sang(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "상";
+    }
 }

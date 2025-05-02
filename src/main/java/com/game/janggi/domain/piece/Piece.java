@@ -13,4 +13,6 @@ public abstract class Piece {
     public boolean isAtPosition(int rowIndex, int colIndex) {
         return piecePosition.isAtPosition(rowIndex, colIndex);
     }
+
+    abstract public String printPieceName();
 }

@@ -11,4 +11,9 @@ public class Jol extends Piece {
     public static Jol create(int rowIndex, int colIndex, TeamType teamType) {
         return new Jol(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "졸";
+    }
 }

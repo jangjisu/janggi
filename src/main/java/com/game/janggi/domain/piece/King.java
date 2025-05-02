@@ -11,4 +11,9 @@ public class King extends Piece {
     public static King create(int rowIndex, int colIndex, TeamType teamType) {
         return new King(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "왕";
+    }
 }

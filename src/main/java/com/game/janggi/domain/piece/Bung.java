@@ -11,4 +11,9 @@ public class Bung extends Piece {
     public static Bung create(int rowIndex, int colIndex, TeamType teamType) {
         return new Bung(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "병";
+    }
 }

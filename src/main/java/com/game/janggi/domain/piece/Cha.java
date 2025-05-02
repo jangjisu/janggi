@@ -11,4 +11,9 @@ public class Cha extends Piece {
     public static Cha create(int rowIndex, int colIndex, TeamType teamType) {
         return new Cha(PiecePosition.create(rowIndex, colIndex), teamType);
     }
+
+    @Override
+    public String printPieceName() {
+        return "차";
+    }
 }
