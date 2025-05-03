@@ -1,17 +1,19 @@
 package com.game.janggi.util;
 
-import java.util.function.Supplier;
+import com.game.janggi.exception.NeedStopException;
+
+import java.util.function.IntSupplier;
 
 public class ConvertUtil {
     private ConvertUtil() {
-        throw new IllegalStateException("Utility class");
+        throw new NeedStopException("Utility class");
     }
 
-    public static int convertToInt(String input, Supplier<Integer> supplier) {
+    public static int convertToInt(String input, IntSupplier defaultSupplier) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid input: " + input, e);
+            return defaultSupplier.getAsInt();
         }
     }
 }
