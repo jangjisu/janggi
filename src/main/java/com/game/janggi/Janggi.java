@@ -4,6 +4,8 @@ package com.game.janggi;
 import com.game.janggi.domain.board.GameBoard;
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.team.TeamType;
+import com.game.janggi.exception.RecoverableException;
+import com.game.janggi.exception.NeedStopException;
 import com.game.janggi.io.InputHandler;
 import com.game.janggi.io.OutputHandler;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +26,32 @@ public class Janggi {
         outputHandler.showGameStartComments();
 
         outputHandler.showChooseFormationTypeComments(TeamType.CHO);
-        FormationType choFormationType = inputHandler.selectFormationType();
+        FormationType choFormationType = selectFormationType();
 
         outputHandler.showChooseFormationTypeComments(TeamType.HAN);
-        FormationType hanFormationType = inputHandler.selectFormationType();
+        FormationType hanFormationType = selectFormationType();
 
-        gameBoard = GameBoard.initalizePieces(hanFormationType, choFormationType);
+        gameBoard = GameBoard.initializePieces(hanFormationType, choFormationType);
 
         outputHandler.showBoard(gameBoard);
     }
 
-    public static void main(String[] args) {
-        Janggi janggi = new Janggi();
+    private FormationType selectFormationType() {
+        while (true) {
+            try {
+                return inputHandler.selectFormationType();
+            } catch (RecoverableException e) {
+                outputHandler.showErrorComments(e.getMessage());
+            } catch (NeedStopException e) {
+                outputHandler.showErrorEndComments();
+                System.exit(0);
+            }
+        }
     }
 
-
+    public static void main(String[] args) {
+        new Janggi();
+    }
 
 
 }
