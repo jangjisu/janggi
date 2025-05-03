@@ -1,6 +1,7 @@
 package com.game.janggi.io;
 
 import com.game.janggi.domain.board.GameBoard;
+import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.team.TeamType;
 
@@ -14,10 +15,9 @@ public class OutputHandler {
     public void showChooseFormationTypeComments(TeamType teamType) {
         System.out.println(teamType.getTeamName() + " 진영의 진형을 선택하세요.");
 
-        System.out.println("1. 상마마상");
-        System.out.println("2. 상마상마");
-        System.out.println("3. 마상마상");
-        System.out.println("4. 마상상마");
+        for (FormationType formationType : FormationType.values()) {
+            System.out.println(formationType.getInputNumber() + ". " + formationType.getDescription());
+        }
     }
 
     public void showBoard(GameBoard board) {
@@ -32,5 +32,13 @@ public class OutputHandler {
             }
             System.out.println();
         }
+    }
+
+    public void showErrorComments(String message) {
+        System.out.println(message);
+    }
+
+    public void showErrorEndComments() {
+        System.out.println("예기치 못한 문제로 게임을 종료합니다.");
     }
 }
