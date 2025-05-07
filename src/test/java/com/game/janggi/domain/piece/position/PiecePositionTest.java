@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece.position;
 
+import com.game.janggi.exception.NeedStopException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class PiecePositionTest {
     void positionCannotOnMinusIndex () {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(-2, 3))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NeedStopException.class)
                 .hasMessageContaining("Invalid position");
     }
 
@@ -31,7 +32,7 @@ class PiecePositionTest {
     void positionCannotOnOutIndex () {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(11, 3))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NeedStopException.class)
                 .hasMessageContaining("Invalid position");
     }
 

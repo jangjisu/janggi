@@ -1,17 +1,20 @@
 package com.game.janggi.domain.piece.position;
 
+import com.game.janggi.exception.NeedStopException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@Getter
 public class PiecePosition {
     private final int rowIndex;
     private final int colIndex;
 
     public static PiecePosition create(int rowIndex, int colIndex) {
         if (rowIndex < 0 || rowIndex > 9 || colIndex < 0 || colIndex > 8) {
-            throw new IllegalArgumentException("Invalid position: ("+rowIndex+","+colIndex+")");
+            throw new NeedStopException("Invalid position: ("+rowIndex+","+colIndex+")");
         }
 
         return new PiecePosition(rowIndex, colIndex);
