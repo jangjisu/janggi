@@ -2,9 +2,10 @@ package com.game.janggi.domain.piece.layout;
 
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.piece.*;
+import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
-import java.util.List;
+import java.util.Map;
 
 public class ChoDefaultPieceLayout extends DefaultPieceLayout {
     public ChoDefaultPieceLayout(FormationType formationType) {
@@ -12,25 +13,61 @@ public class ChoDefaultPieceLayout extends DefaultPieceLayout {
     }
 
     @Override
-    public List<Piece> createFixedPieces() {
-        Cha leftCha = Cha.create(0, 0, TeamType.CHO);
-        Cha rightCha = Cha.create(0, 8, TeamType.CHO);
-        Sa leftSa = Sa.create(0, 3, TeamType.CHO);
-        Sa rightSa = Sa.create(0, 5, TeamType.CHO);
-        King king = King.create(1, 4, TeamType.CHO);
-        Po leftPo = Po.create(2, 1, TeamType.CHO);
-        Po rightPo = Po.create(2, 7, TeamType.CHO);
-        Jol jol1 = Jol.create(3, 0, TeamType.CHO);
-        Jol jol2 = Jol.create(3, 2, TeamType.CHO);
-        Jol jol3 = Jol.create(3, 4, TeamType.CHO);
-        Jol jol4 = Jol.create(3, 6, TeamType.CHO);
-        Jol jol5 = Jol.create(3, 8, TeamType.CHO);
+    protected Map<PiecePosition, Piece> createFixedPieces() {
+        PiecePosition leftChaPosition = PiecePosition.create(0, 0);
+        Cha leftCha = Cha.create(TeamType.CHO);
 
-        return List.of(leftCha, rightCha, leftSa, rightSa, king, leftPo, rightPo, jol1, jol2, jol3, jol4, jol5);
+        PiecePosition rightChaPosition = PiecePosition.create(0, 8);
+        Cha rightCha = Cha.create(TeamType.CHO);
+
+        PiecePosition leftSaPosition = PiecePosition.create(0, 3);
+        Sa leftSa = Sa.create(TeamType.CHO);
+
+        PiecePosition rightSaPosition = PiecePosition.create(0, 5);
+        Sa rightSa = Sa.create(TeamType.CHO);
+
+        PiecePosition kingPosition = PiecePosition.create(1, 4);
+        King king = King.create(TeamType.CHO);
+
+        PiecePosition leftPoPosition = PiecePosition.create(2, 1);
+        Po leftPo = Po.create(TeamType.CHO);
+
+        PiecePosition rightPoPosition = PiecePosition.create(2, 7);
+        Po rightPo = Po.create(TeamType.CHO);
+
+        PiecePosition jol1Position = PiecePosition.create(3, 0);
+        Jol jol1 = Jol.create(TeamType.CHO);
+
+        PiecePosition jol2Position = PiecePosition.create(3, 2);
+        Jol jol2 = Jol.create(TeamType.CHO);
+
+        PiecePosition jol3Position = PiecePosition.create(3, 4);
+        Jol jol3 = Jol.create(TeamType.CHO);
+
+        PiecePosition jol4Position = PiecePosition.create(3, 6);
+        Jol jol4 = Jol.create(TeamType.CHO);
+
+        PiecePosition jol5Position = PiecePosition.create(3, 8);
+        Jol jol5 = Jol.create(TeamType.CHO);
+
+        return Map.ofEntries(
+                Map.entry(leftChaPosition, leftCha),
+                Map.entry(rightChaPosition, rightCha),
+                Map.entry(leftSaPosition, leftSa),
+                Map.entry(rightSaPosition, rightSa),
+                Map.entry(kingPosition, king),
+                Map.entry(leftPoPosition, leftPo),
+                Map.entry(rightPoPosition, rightPo),
+                Map.entry(jol1Position, jol1),
+                Map.entry(jol2Position, jol2),
+                Map.entry(jol3Position, jol3),
+                Map.entry(jol4Position, jol4),
+                Map.entry(jol5Position, jol5)
+        );
     }
 
     @Override
-    protected List<Piece> createFluidPieces() {
+    protected Map<PiecePosition, Piece> createFluidPieces() {
         return createFluidPiecesOnRow(this.formationType, 0, TeamType.CHO);
     }
 }

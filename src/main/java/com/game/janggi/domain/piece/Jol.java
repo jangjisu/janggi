@@ -1,15 +1,14 @@
 package com.game.janggi.domain.piece;
 
-import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 public class Jol extends Piece {
-    private Jol(PiecePosition piecePosition, TeamType teamType) {
-        super(piecePosition, teamType);
+    protected Jol(TeamType teamType) {
+        super(teamType);
     }
 
-    public static Jol create(int rowIndex, int colIndex, TeamType teamType) {
-        return new Jol(PiecePosition.create(rowIndex, colIndex), teamType);
+    public static Jol create(TeamType teamType) {
+        return new Jol(teamType);
     }
 
     @Override

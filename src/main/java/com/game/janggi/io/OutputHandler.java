@@ -24,8 +24,8 @@ public class OutputHandler {
         int row = board.getRowSize();
         int col = board.getColSize();
 
-        for (int i = 0; i <= row; i++) {
-            for (int j = 0; j <= col; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 Piece piece = board.getPiece(i, j);
                 String name = (piece == null) ? "□ㅤ" : piece.printPieceName();
                 System.out.printf(String.format("%-2s ", name));
