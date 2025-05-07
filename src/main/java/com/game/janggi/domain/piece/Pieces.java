@@ -3,17 +3,17 @@ package com.game.janggi.domain.piece;
 import java.util.List;
 
 public class Pieces {
-    private List<Piece> pieces;
+    private final List<Piece> pieceList;
 
-    private Pieces(List<Piece> pieces) {
-        this.pieces = pieces;
+    private Pieces(List<Piece> pieceList) {
+        this.pieceList = pieceList;
     }
 
-    public static Pieces create(List<Piece> pieces) {
-        return new Pieces(pieces);
+    public static Pieces create(List<Piece> pieceList) {
+        return new Pieces(pieceList);
     }
 
-    public int getSize() {
-        return pieces.size();
+    public int size() {
+        return pieceList.size();
     }
 }

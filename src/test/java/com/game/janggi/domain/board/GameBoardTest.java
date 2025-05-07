@@ -13,7 +13,7 @@ class GameBoardTest {
     @DisplayName("게임 보드를 생성하면 32개의 말이 생성되고, 초의 턴 상태가 된다.")
     void test () {
         //given
-        GameBoard gameBoard = GameBoard.initalizePieces(FormationType.SANG_MA_MA_SANG, FormationType.SANG_MA_MA_SANG);
+        GameBoard gameBoard = GameBoard.initializePieces(FormationType.SANG_MA_MA_SANG, FormationType.SANG_MA_MA_SANG);
 
         //when //then
         assertThat(gameBoard.getPiecesSize()).isEqualTo(32);
