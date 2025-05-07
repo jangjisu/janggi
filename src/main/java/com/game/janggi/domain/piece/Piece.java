@@ -8,5 +8,13 @@ import lombok.RequiredArgsConstructor;
 public abstract class Piece {
     protected final TeamType teamType;
 
-    abstract String printPieceName();
+    public abstract String printPieceName();
+
+    public boolean isSameTeam(TeamType teamType) {
+        return this.teamType == teamType;
+    }
+
+    public boolean isDifferentTeam(TeamType teamType) {
+        return !isSameTeam(teamType);
+    }
 }

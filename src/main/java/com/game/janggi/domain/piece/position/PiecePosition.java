@@ -1,6 +1,6 @@
 package com.game.janggi.domain.piece.position;
 
-import com.game.janggi.exception.NeedStopException;
+import com.game.janggi.exception.RecoverableException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ public class PiecePosition {
 
     public static PiecePosition create(int rowIndex, int colIndex) {
         if (rowIndex < 0 || rowIndex > 9 || colIndex < 0 || colIndex > 8) {
-            throw new NeedStopException("Invalid position: ("+rowIndex+","+colIndex+")");
+            throw new RecoverableException("Invalid position: (" + rowIndex + "," + colIndex + ")");
         }
 
         return new PiecePosition(rowIndex, colIndex);
