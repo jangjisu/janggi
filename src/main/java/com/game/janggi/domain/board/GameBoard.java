@@ -7,6 +7,7 @@ import com.game.janggi.domain.piece.layout.ChoDefaultPieceLayout;
 import com.game.janggi.domain.piece.layout.HanDefaultPieceLayout;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
+import com.game.janggi.exception.RecoverableException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,9 +18,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GameBoard {
     private final Map<PiecePosition, Piece> pieces;
+    private GameStatus gameStatus;
 
     @Getter
     private TeamType currentTurn;
+
+    private Piece selectedPiece;
 
     public static GameBoard initializePieces(FormationType hanFormationType, FormationType choFormationType) {
         HanDefaultPieceLayout hanDefaultPieceLayout = new HanDefaultPieceLayout(hanFormationType);
@@ -30,6 +34,7 @@ public class GameBoard {
         pieces.putAll(choDefaultPieceLayout.createPieces());
 
         GameBoard gameBoard = new GameBoard(pieces);
+        gameBoard.gameStatus = GameStatus.IN_PROGRESS;
         gameBoard.currentTurn = TeamType.CHO;
         return gameBoard;
     }
@@ -56,6 +61,7 @@ public class GameBoard {
 
     public void changeTurn() {
         this.currentTurn = this.currentTurn.getOppositeTeam();
+        this.selectedPiece = null;
     }
 
     public int getRowSize() {
@@ -66,9 +72,43 @@ public class GameBoard {
         return 9;
     }
 
-    public Piece getPiece(int row, int col) {
-        PiecePosition piecePosition = PiecePosition.create(row, col);
+    public Piece getPiece(PiecePosition piecePosition) {
         return pieces.get(piecePosition);
+    }
+
+    public boolean isGameOver() {
+        return gameStatus != GameStatus.IN_PROGRESS;
+    }
+
+    public boolean isGameIsInProgress() {
+        return !isGameOver();
+    }
+
+    public boolean isChoTurn() {
+        return currentTurn == TeamType.CHO;
+    }
+
+    public boolean isHanTurn() {
+        return !isChoTurn();
+    }
+
+    public void validatePieceSelection(PiecePosition piecePosition) {
+        Piece piece = getPiece(piecePosition);
+
+        if (piece == null) {
+            throw new RecoverableException("선택한 위치에 말이 없습니다.");
+        }
+
+        if (piece.isDifferentTeam(currentTurn)) {
+            throw new RecoverableException("상대 진영의 말을 선택할 수 없습니다.");
+        }
+
+        this.selectedPiece = piece;
+        System.out.println(piece.printPieceName() + "을(를) 선택했습니다.");
+    }
+
+    public boolean haveSelectedPiece() {
+        return selectedPiece != null;
     }
 
 }

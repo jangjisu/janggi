@@ -4,8 +4,8 @@ package com.game.janggi;
 import com.game.janggi.domain.board.GameBoard;
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.team.TeamType;
-import com.game.janggi.exception.RecoverableException;
 import com.game.janggi.exception.NeedStopException;
+import com.game.janggi.exception.RecoverableException;
 import com.game.janggi.io.InputHandler;
 import com.game.janggi.io.OutputHandler;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,27 @@ public class Janggi {
     private final InputHandler inputHandler;
     private GameBoard gameBoard;
 
-    public Janggi() {
-        this.outputHandler = new OutputHandler();
-        this.inputHandler = new InputHandler();
-        initalizeGameBoard();
+    public void run() {
+        initializeGameBoard();
+
+        doGame();
     }
 
-    private void initalizeGameBoard() {
+    private void doGame() {
+        //TODO : Implement game loop
+        //while (gameBoard.isGameIsInProgress()) {
+        outputHandler.showBoard(gameBoard);
+
+        outputHandler.showTurnComments(gameBoard.getCurrentTurn());
+
+        selectPiece();
+
+        //outputHandler.showSelectedPieceCanMovePositions();
+        //}
+
+    }
+
+    private void initializeGameBoard() {
         outputHandler.showGameStartComments();
 
         outputHandler.showChooseFormationTypeComments(TeamType.CHO);
@@ -32,9 +46,8 @@ public class Janggi {
         FormationType hanFormationType = selectFormationType();
 
         gameBoard = GameBoard.initializePieces(hanFormationType, choFormationType);
-
-        outputHandler.showBoard(gameBoard);
     }
+
 
     private FormationType selectFormationType() {
         while (true) {
@@ -49,8 +62,23 @@ public class Janggi {
         }
     }
 
+    private void selectPiece() {
+        while (true) {
+            try {
+                gameBoard.validatePieceSelection(inputHandler.selectPiecePosition());
+                break;
+            } catch (RecoverableException e) {
+                outputHandler.showErrorComments(e.getMessage());
+            } catch (NeedStopException e) {
+                outputHandler.showErrorEndComments();
+                System.exit(0);
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        new Janggi();
+        Janggi janggi = new Janggi(new OutputHandler(), new InputHandler());
+        janggi.run();
     }
 
 
