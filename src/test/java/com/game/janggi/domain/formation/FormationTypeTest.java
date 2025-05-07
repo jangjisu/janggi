@@ -1,5 +1,6 @@
 package com.game.janggi.domain.formation;
 
+import com.game.janggi.exception.RecoverableException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ class FormationTypeTest {
 
     @Test
     @DisplayName("숫자를 입력하면 그에 해당하는 포메이션을 리턴한다.")
-    void getFormationFromNumber () {
+    void getFormationFromNumber() {
         //given
         int formationNumber = 1;
 
@@ -23,13 +24,13 @@ class FormationTypeTest {
 
     @Test
     @DisplayName("잘못된 숫자를 입력하면 예외를 던진다.")
-    void getFormationFromNumberWithInvalidInput () {
+    void getFormationFromNumberWithInvalidInput() {
         //given
         int formationNumber = 5;
 
         //when //then
         assertThatThrownBy(() -> FormationType.getFromInputNumber(formationNumber))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(RecoverableException.class)
                 .hasMessageContaining("Invalid input number");
     }
 }

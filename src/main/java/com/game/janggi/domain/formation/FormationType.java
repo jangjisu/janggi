@@ -1,8 +1,11 @@
 package com.game.janggi.domain.formation;
 
+import com.game.janggi.exception.RecoverableException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Getter
 public enum FormationType {
     SANG_MA_MA_SANG("상마마상", 1),
     SANG_MA_SANG_MA("상마상마", 2),
@@ -19,6 +22,6 @@ public enum FormationType {
             }
         }
 
-        throw new IllegalArgumentException("Invalid input number: " + inputNumber);
+        throw new RecoverableException("Invalid input number: " + inputNumber);
     }
 }
