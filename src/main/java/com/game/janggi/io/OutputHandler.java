@@ -26,7 +26,7 @@ public class OutputHandler {
         int col = board.getColSize();
 
         System.out.printf("   ");
-        for (int i = 0; i < row; i++) {
+        for (int i = 0; i < col; i++) {
             char c = (char) ('A' + i);
             System.out.printf("%-2s ", c);
         }
@@ -50,6 +50,14 @@ public class OutputHandler {
     public void showTurnComments(TeamType teamType) {
         System.out.println(teamType.getTeamName() + " 진영의 턴입니다.");
         System.out.println("움직일 말을 선택하세요. EX) A0");
+    }
+
+    public void showSelectedPieceComments(Piece piece) {
+        System.out.println(piece.printPieceName() + "을(를) 선택했습니다.");
+    }
+
+    public void showMoveComments() {
+        System.out.println("선택한 말이 움직일 위치을 선택하세요. EX) A0");
     }
 
     public void showErrorComments(String message) {

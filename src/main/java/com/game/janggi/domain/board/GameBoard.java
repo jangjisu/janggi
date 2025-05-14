@@ -23,6 +23,7 @@ public class GameBoard {
     @Getter
     private TeamType currentTurn;
 
+    @Getter
     private Piece selectedPiece;
 
     public static GameBoard initializePieces(FormationType hanFormationType, FormationType choFormationType) {
@@ -104,11 +105,14 @@ public class GameBoard {
         }
 
         this.selectedPiece = piece;
-        System.out.println(piece.printPieceName() + "을(를) 선택했습니다.");
+    }
+
+    public void validatePieceMove(PiecePosition willMovePosition) {
+        //TODO 구현 후 주석 해제
+        //this.selectedPiece.canMoveTo(willMovePosition);
     }
 
     public boolean haveSelectedPiece() {
         return selectedPiece != null;
     }
-
 }

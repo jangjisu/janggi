@@ -3,6 +3,7 @@ package com.game.janggi;
 
 import com.game.janggi.domain.board.GameBoard;
 import com.game.janggi.domain.formation.FormationType;
+import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 import com.game.janggi.exception.NeedStopException;
 import com.game.janggi.exception.RecoverableException;
@@ -31,7 +32,13 @@ public class Janggi {
 
         selectPiece();
 
-        //outputHandler.showSelectedPieceCanMovePositions();
+        outputHandler.showSelectedPieceComments(gameBoard.getSelectedPiece());
+
+        outputHandler.showMoveComments();
+
+        movePiece();
+
+        gameBoard.changeTurn();
         //}
 
     }
@@ -65,7 +72,23 @@ public class Janggi {
     private void selectPiece() {
         while (true) {
             try {
-                gameBoard.validatePieceSelection(inputHandler.selectPiecePosition());
+                PiecePosition selectedPiecePosition = inputHandler.selectPiecePosition();
+                gameBoard.validatePieceSelection(selectedPiecePosition);
+                break;
+            } catch (RecoverableException e) {
+                outputHandler.showErrorComments(e.getMessage());
+            } catch (NeedStopException e) {
+                outputHandler.showErrorEndComments();
+                System.exit(0);
+            }
+        }
+    }
+
+    private void movePiece() {
+        while (true) {
+            try {
+                PiecePosition selectedPiecePosition = inputHandler.selectPiecePosition();
+                gameBoard.validatePieceMove(selectedPiecePosition);
                 break;
             } catch (RecoverableException e) {
                 outputHandler.showErrorComments(e.getMessage());
