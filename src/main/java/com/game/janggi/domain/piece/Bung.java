@@ -1,6 +1,9 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
+
+import java.util.List;
 
 public class Bung extends Piece {
     protected Bung(TeamType teamType) {
@@ -14,5 +17,15 @@ public class Bung extends Piece {
     @Override
     public String printPieceName() {
         return "병";
+    }
+
+    @Override
+    protected List<PiecePosition> getMovablePositions(PiecePosition currentPosition) {
+        return List.of();
+    }
+
+    @Override
+    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition) {
+        return false;
     }
 }
