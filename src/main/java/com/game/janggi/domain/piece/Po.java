@@ -1,6 +1,9 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
+
+import java.util.List;
 
 public class Po extends Piece {
     protected Po(TeamType teamType) {
@@ -9,6 +12,16 @@ public class Po extends Piece {
 
     public static Po create(TeamType teamType) {
         return new Po(teamType);
+    }
+
+    @Override
+    protected List<PiecePosition> getMovablePositions(PiecePosition currentPosition) {
+        return List.of();
+    }
+
+    @Override
+    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition) {
+        return false;
     }
 
     @Override
