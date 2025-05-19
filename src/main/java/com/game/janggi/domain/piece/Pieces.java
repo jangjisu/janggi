@@ -1,16 +1,16 @@
 package com.game.janggi.domain.piece;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Pieces {
     private final List<Piece> pieceList;
 
-    private Pieces(List<Piece> pieceList) {
-        this.pieceList = pieceList;
-    }
-
-    public static Pieces create(List<Piece> pieceList) {
-        return new Pieces(pieceList);
+    public static Pieces create(Piece... pieceList) {
+        return new Pieces(List.of(pieceList));
     }
 
     public int size() {

@@ -1,8 +1,10 @@
 package com.game.janggi.domain.piece.move;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Getter
 public enum Direction {
     UP(0, 1),
     DOWN(0, -1),

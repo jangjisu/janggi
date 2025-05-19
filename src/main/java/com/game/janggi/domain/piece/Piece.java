@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Piece {
     protected final TeamType teamType;
 
-    abstract String printPieceName();
+    public abstract String printPieceName();
 
     protected abstract List<PiecePosition> getMovablePositions(PiecePosition currentPosition);
 

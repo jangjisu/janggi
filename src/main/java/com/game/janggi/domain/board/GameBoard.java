@@ -11,9 +11,9 @@ import com.game.janggi.exception.RecoverableException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class GameBoard {
@@ -45,19 +45,11 @@ public class GameBoard {
     }
 
     public Pieces getPieces() {
-        ArrayList<Piece> pieceList = new ArrayList<>();
-
-        for (int row = 0; row < getRowSize(); row++) {
-            for (int col = 0; col < getColSize(); col++) {
-                PiecePosition piecePosition = PiecePosition.create(row, col);
-                Piece piece = pieces.get(piecePosition);
-                if (piece != null) {
-                    pieceList.add(piece);
-                }
-            }
-        }
-
-        return Pieces.create(pieceList);
+        return Pieces.create(
+                pieces.values().stream()
+                        .filter(Objects::nonNull)
+                        .toArray(Piece[]::new)
+        );
     }
 
     public void changeTurn() {
