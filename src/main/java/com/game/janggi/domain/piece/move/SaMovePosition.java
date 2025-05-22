@@ -8,7 +8,7 @@ import com.game.janggi.domain.team.TeamType;
 import java.util.List;
 import java.util.Map;
 
-public class KingMovePosition extends MovePosition {
+public class SaMovePosition extends MovePosition {
     private final List<Directions> diagonalMoveAbleDirections = List.of(
             Directions.create(Direction.UP),
             Directions.create(Direction.DOWN),
@@ -30,10 +30,15 @@ public class KingMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType teamType) {
-        return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
-                .filter(currentPosition::canMove)
+        List<PiecePosition> list = (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
+                .filter(currentPosition::canMove) //실제 존재할 수 있는 포지션인지 체크
                 .map(direction -> PiecePosition.create(currentPosition, direction))
-                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType))
+                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType)) //이게 궁안 포지션인지 체크
                 .toList();
+        //list.removeIf(piecePosition -> isTherePiece(pieces, piecePosition));
+        //list.removeIf(piecePosition -> isPieceOfSameTeam(pieces, piecePosition, teamType));
+
+
+        return list;
     }
 }

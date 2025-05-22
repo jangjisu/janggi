@@ -14,40 +14,40 @@ public class HanDefaultPieceLayout extends DefaultPieceLayout {
 
     @Override
     protected Map<PiecePosition, Piece> createFixedPieces() {
-        PiecePosition leftChaPosition = new PiecePosition(9, 0);
+        PiecePosition leftChaPosition = new PiecePosition(0, 0);
         Cha leftCha = Cha.create(TeamType.HAN);
 
-        PiecePosition rightChaPosition = new PiecePosition(9, 8);
+        PiecePosition rightChaPosition = new PiecePosition(8, 0);
         Cha rightCha = Cha.create(TeamType.HAN);
 
-        PiecePosition leftSaPosition = new PiecePosition(9, 3);
+        PiecePosition leftSaPosition = new PiecePosition(3, 0);
         Sa leftSa = Sa.create(TeamType.HAN);
 
-        PiecePosition rightSaPosition = new PiecePosition(9, 5);
+        PiecePosition rightSaPosition = new PiecePosition(5, 0);
         Sa rightSa = Sa.create(TeamType.HAN);
 
-        PiecePosition kingPosition = new PiecePosition(8, 4);
+        PiecePosition kingPosition = new PiecePosition(4, 1);
         King king = King.create(TeamType.HAN);
 
-        PiecePosition leftPoPosition = new PiecePosition(7, 1);
+        PiecePosition leftPoPosition = new PiecePosition(1, 2);
         Po leftPo = Po.create(TeamType.HAN);
 
-        PiecePosition rightPoPosition = new PiecePosition(7, 7);
+        PiecePosition rightPoPosition = new PiecePosition(7, 2);
         Po rightPo = Po.create(TeamType.HAN);
 
-        PiecePosition bung1Position = new PiecePosition(6, 0);
+        PiecePosition bung1Position = new PiecePosition(0, 3);
         Bung bung1 = Bung.create(TeamType.HAN);
 
-        PiecePosition bung2Position = new PiecePosition(6, 2);
+        PiecePosition bung2Position = new PiecePosition(2, 3);
         Bung bung2 = Bung.create(TeamType.HAN);
 
-        PiecePosition bung3Position = new PiecePosition(6, 4);
+        PiecePosition bung3Position = new PiecePosition(4, 3);
         Bung bung3 = Bung.create(TeamType.HAN);
 
-        PiecePosition bung4Position = new PiecePosition(6, 6);
+        PiecePosition bung4Position = new PiecePosition(6, 3);
         Bung bung4 = Bung.create(TeamType.HAN);
 
-        PiecePosition bung5Position = new PiecePosition(6, 8);
+        PiecePosition bung5Position = new PiecePosition(8, 3);
         Bung bung5 = Bung.create(TeamType.HAN);
 
         return Map.ofEntries(

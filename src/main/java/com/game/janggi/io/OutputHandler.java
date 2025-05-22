@@ -38,8 +38,7 @@ public class OutputHandler {
                     System.out.printf("%-2s ", i);
                 }
 
-                PiecePosition piecePosition = PiecePosition.create(i, j);
-                Piece piece = board.getPiece(piecePosition);
+                Piece piece = board.getPiece(PiecePosition.create(j, i));
                 String name = (piece == null) ? "□ㅤ" : piece.printPieceName();
                 System.out.printf(String.format("%-2s ", name));
             }

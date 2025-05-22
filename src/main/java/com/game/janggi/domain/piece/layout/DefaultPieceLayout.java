@@ -28,19 +28,19 @@ public abstract class DefaultPieceLayout {
 
     protected abstract Map<PiecePosition, Piece> createFluidPieces();
 
-    protected Map<PiecePosition, Piece> createFluidPiecesOnRow(FormationType formationType, int rowIndex, TeamType teamType) {
+    protected Map<PiecePosition, Piece> createFluidPiecesOnRow(FormationType formationType, int colIndex, TeamType teamType) {
         switch (formationType) {
             case MA_SANG_MA_SANG -> {
-                PiecePosition leftMaPosition = PiecePosition.create(rowIndex, 1);
+                PiecePosition leftMaPosition = PiecePosition.create(1, colIndex);
                 Ma leftMa = Ma.create(teamType);
 
-                PiecePosition leftSangPosition = PiecePosition.create(rowIndex, 2);
+                PiecePosition leftSangPosition = PiecePosition.create(2, colIndex);
                 Sang leftSang = Sang.create(teamType);
 
-                PiecePosition rightMaPosition = PiecePosition.create(rowIndex, 6);
+                PiecePosition rightMaPosition = PiecePosition.create(6, colIndex);
                 Ma rightMa = Ma.create(teamType);
 
-                PiecePosition rightSangPosition = PiecePosition.create(rowIndex, 7);
+                PiecePosition rightSangPosition = PiecePosition.create(7, colIndex);
                 Sang rightSang = Sang.create(teamType);
 
                 return Map.of(
@@ -52,16 +52,16 @@ public abstract class DefaultPieceLayout {
             }
 
             case SANG_MA_SANG_MA -> {
-                PiecePosition leftSangPosition = PiecePosition.create(rowIndex, 1);
+                PiecePosition leftSangPosition = PiecePosition.create(1, colIndex);
                 Sang leftSang = Sang.create(teamType);
 
-                PiecePosition leftMaPosition = PiecePosition.create(rowIndex, 2);
+                PiecePosition leftMaPosition = PiecePosition.create(2, colIndex);
                 Ma leftMa = Ma.create(teamType);
 
-                PiecePosition rightSangPosition = PiecePosition.create(rowIndex, 6);
+                PiecePosition rightSangPosition = PiecePosition.create(6, colIndex);
                 Sang rightSang = Sang.create(teamType);
 
-                PiecePosition rightMaPosition = PiecePosition.create(rowIndex, 7);
+                PiecePosition rightMaPosition = PiecePosition.create(7, colIndex);
                 Ma rightMa = Ma.create(teamType);
                 return Map.of(
                         leftSangPosition, leftSang,
@@ -72,16 +72,16 @@ public abstract class DefaultPieceLayout {
             }
 
             case SANG_MA_MA_SANG -> {
-                PiecePosition leftSangPosition = PiecePosition.create(rowIndex, 1);
+                PiecePosition leftSangPosition = PiecePosition.create(1, colIndex);
                 Sang leftSang = Sang.create(teamType);
 
-                PiecePosition leftMaPosition = PiecePosition.create(rowIndex, 2);
+                PiecePosition leftMaPosition = PiecePosition.create(2, colIndex);
                 Ma leftMa = Ma.create(teamType);
 
-                PiecePosition rightMaPosition = PiecePosition.create(rowIndex, 6);
+                PiecePosition rightMaPosition = PiecePosition.create(6, colIndex);
                 Ma rightMa = Ma.create(teamType);
 
-                PiecePosition rightSangPosition = PiecePosition.create(rowIndex, 7);
+                PiecePosition rightSangPosition = PiecePosition.create(7, colIndex);
                 Sang rightSang = Sang.create(teamType);
 
                 return Map.of(
@@ -93,16 +93,16 @@ public abstract class DefaultPieceLayout {
             }
 
             case MA_SANG_SANG_MA -> {
-                PiecePosition leftMaPosition = PiecePosition.create(rowIndex, 1);
+                PiecePosition leftMaPosition = PiecePosition.create(1, colIndex);
                 Ma leftMa = Ma.create(teamType);
 
-                PiecePosition leftSangPosition = PiecePosition.create(rowIndex, 2);
+                PiecePosition leftSangPosition = PiecePosition.create(2, colIndex);
                 Sang leftSang = Sang.create(teamType);
 
-                PiecePosition rightSangPosition = PiecePosition.create(rowIndex, 6);
+                PiecePosition rightSangPosition = PiecePosition.create(6, colIndex);
                 Sang rightSang = Sang.create(teamType);
 
-                PiecePosition rightMaPosition = PiecePosition.create(rowIndex, 7);
+                PiecePosition rightMaPosition = PiecePosition.create(7, colIndex);
                 Ma rightMa = Ma.create(teamType);
 
                 return Map.of(

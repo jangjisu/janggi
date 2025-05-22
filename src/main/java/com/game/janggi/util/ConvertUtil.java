@@ -29,22 +29,22 @@ public class ConvertUtil {
             throw new RecoverableException("2자리 입력해 주세요 예)A0");
         }
 
-        char colChar = userInput.charAt(0);
-        char rowChar = userInput.charAt(1);
+        char rowChar = userInput.charAt(0);
+        char colChar = userInput.charAt(1);
 
-        if (!Character.isLetter(colChar)) {
+        if (!Character.isLetter(rowChar)) {
             throw new RecoverableException("첫번째 값은 알파벳 대문자여야 합니다 (예: 'A')");
         }
 
-        colChar = Character.toUpperCase(colChar);
+        rowChar = Character.toUpperCase(rowChar);
 
-        if (!Character.isDigit(rowChar)) {
+        if (!Character.isDigit(colChar)) {
             throw new RecoverableException("두번째 값은 숫자여야 합니다 (예: '0')");
         }
 
-        int columnInput = colChar - 'A';
-        int rowInput = Character.getNumericValue(rowChar); // Safely convert char digit to int
+        int rowInput = rowChar - 'A';
+        int colInput = Character.getNumericValue(colChar); // Safely convert char digit to int
 
-        return PiecePosition.create(rowInput, columnInput);
+        return PiecePosition.create(rowInput, colInput);
     }
 }
