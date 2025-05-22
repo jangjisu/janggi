@@ -1,16 +1,16 @@
 package com.game.janggi.domain.piece.position;
 
+import com.game.janggi.domain.piece.move.Directions;
 import com.game.janggi.exception.RecoverableException;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
+public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
+    @Override
+    public boolean canMove(Directions direction) {
+        int newRowIndex = this.rowIndex + direction.getTotalRow();
+        int newColIndex = this.colIndex + direction.getTotalCol();
 
-@RequiredArgsConstructor
-@Getter
-public class PiecePosition {
-    private final int rowIndex;
-    private final int colIndex;
+        return newRowIndex >= 0 && newRowIndex <= 9 && newColIndex >= 0 && newColIndex <= 8;
+    }
 
     public static PiecePosition create(int rowIndex, int colIndex) {
         if (rowIndex < 0 || rowIndex > 9 || colIndex < 0 || colIndex > 8) {
@@ -20,19 +20,15 @@ public class PiecePosition {
         return new PiecePosition(rowIndex, colIndex);
     }
 
+    public static PiecePosition create(PiecePosition currentPosition, Directions directions) {
+        int newRowIndex = currentPosition.rowIndex + directions.getTotalRow();
+        int newColIndex = currentPosition.colIndex + directions.getTotalCol();
+
+        return create(newRowIndex, newColIndex);
+    }
+
     public boolean isAtPosition(int rowIndex, int colIndex) {
         return this.rowIndex == rowIndex && this.colIndex == colIndex;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PiecePosition that = (PiecePosition) o;
-        return rowIndex == that.rowIndex && colIndex == that.colIndex;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(rowIndex, colIndex);
-    }
 }

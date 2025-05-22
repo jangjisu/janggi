@@ -32,7 +32,7 @@ public enum GongPiecePosition {
     private final TeamType teamType;
     private final String description;
 
-    public List<PiecePosition> getGongPositions() {
+    public static List<PiecePosition> getGongPositions() {
         return List.of(HAN_01.position, HAN_02.position, HAN_03.position,
                 HAN_04.position, HAN_05.position, HAN_06.position,
                 HAN_07.position, HAN_08.position, HAN_09.position,
@@ -41,7 +41,7 @@ public enum GongPiecePosition {
                 CHO_07.position, CHO_08.position, CHO_09.position);
     }
 
-    public boolean isInGongPosition(PiecePosition piecePosition) {
+    public static boolean isInGongPosition(PiecePosition piecePosition) {
         return getGongPositions()
                 .stream()
                 .anyMatch(pp -> pp.equals(piecePosition));
