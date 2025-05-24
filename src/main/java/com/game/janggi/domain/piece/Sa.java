@@ -1,17 +1,27 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.move.MovePosition;
+import com.game.janggi.domain.piece.move.SaMovePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 import java.util.List;
+import java.util.Map;
 
 public class Sa extends Piece {
     protected Sa(TeamType teamType) {
         super(teamType);
     }
 
+    private final MovePosition movePosition = new SaMovePosition();
+
     public static Sa create(TeamType teamType) {
         return new Sa(teamType);
+    }
+
+    @Override
+    public String printPieceName() {
+        return "사";
     }
 
     @Override
@@ -20,12 +30,7 @@ public class Sa extends Piece {
     }
 
     @Override
-    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition) {
-        return false;
-    }
-
-    @Override
-    public String printPieceName() {
-        return "사";
+    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap) {
+        return movePosition.getMovablePosition(pieceMap, currentPosition).contains(targetPosition);
     }
 }

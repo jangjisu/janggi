@@ -8,14 +8,34 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MovePosition {
-    abstract List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType teamType);
+    public abstract List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
 
-    protected boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
+    private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
         return pieces.containsKey(willMovePosition);
     }
 
-    protected boolean isPieceOfSameTeam(Piece piece, TeamType currentTurnTeamType) {
+    private boolean isThereEmpty(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
+        return !isTherePiece(pieces, willMovePosition);
+    }
+
+    private boolean isPieceOfSameTeam(Piece piece, TeamType currentTurnTeamType) {
         return piece.isSameTeam(currentTurnTeamType);
+    }
+
+    private boolean isPieceOfDifferentTeam(Piece piece, TeamType currentTurnTeamType) {
+        return !isPieceOfSameTeam(piece, currentTurnTeamType);
+    }
+
+    protected TeamType getSelectedPieceTeamType(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        return pieces.get(currentPosition).getTeamType();
+    }
+
+    protected boolean isEmptyOrEnemyPiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition, TeamType currentTurnTeamType) {
+        if (isThereEmpty(pieces, willMovePosition)) {
+            return true;
+        }
+
+        return isPieceOfDifferentTeam(pieces.get(willMovePosition), currentTurnTeamType);
     }
 
 

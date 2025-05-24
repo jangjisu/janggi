@@ -4,6 +4,7 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 import java.util.List;
+import java.util.Map;
 
 public class Po extends Piece {
     protected Po(TeamType teamType) {
@@ -15,17 +16,17 @@ public class Po extends Piece {
     }
 
     @Override
+    public String printPieceName() {
+        return "포";
+    }
+
+    @Override
     protected List<PiecePosition> getMovablePositions(PiecePosition currentPosition) {
         return List.of();
     }
 
     @Override
-    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition) {
+    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap) {
         return false;
-    }
-
-    @Override
-    public String printPieceName() {
-        return "포";
     }
 }

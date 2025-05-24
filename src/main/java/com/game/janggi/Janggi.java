@@ -24,22 +24,24 @@ public class Janggi {
     }
 
     private void doGame() {
-        //TODO : Implement game loop
-        //while (gameBoard.isGameIsInProgress()) {
-        outputHandler.showBoard(gameBoard);
+        int count = 0;
+//        while (gameBoard.isGameIsInProgress()) {
+        while (count < 10) {
+            outputHandler.showBoard(gameBoard);
 
-        outputHandler.showTurnComments(gameBoard.getCurrentTurn());
+            outputHandler.showTurnComments(gameBoard.getCurrentTurn());
 
-        selectPiece();
+            PiecePosition selectedPiecePosition = selectPiece();
 
-        outputHandler.showSelectedPieceComments(gameBoard.getSelectedPiece());
+            outputHandler.showSelectedPieceComments(gameBoard.getSelectedPiece());
 
-        outputHandler.showMoveComments();
+            outputHandler.showMoveComments();
 
-        movePiece();
+            movePiece(selectedPiecePosition);
 
-        gameBoard.changeTurn();
-        //}
+            gameBoard.changeTurn();
+            count++;
+        }
 
     }
 
@@ -69,12 +71,12 @@ public class Janggi {
         }
     }
 
-    private void selectPiece() {
+    private PiecePosition selectPiece() {
         while (true) {
             try {
                 PiecePosition selectedPiecePosition = inputHandler.selectPiecePosition();
                 gameBoard.validatePieceSelection(selectedPiecePosition);
-                break;
+                return selectedPiecePosition;
             } catch (RecoverableException e) {
                 outputHandler.showErrorComments(e.getMessage());
             } catch (NeedStopException e) {
@@ -84,11 +86,11 @@ public class Janggi {
         }
     }
 
-    private void movePiece() {
+    private void movePiece(PiecePosition selectedPiecePosition) {
         while (true) {
             try {
-                PiecePosition selectedPiecePosition = inputHandler.selectPiecePosition();
-                gameBoard.validatePieceMove(selectedPiecePosition);
+                PiecePosition willMovePiecePosition = inputHandler.selectPiecePosition();
+                gameBoard.validateAndMovePiece(selectedPiecePosition, willMovePiecePosition);
                 break;
             } catch (RecoverableException e) {
                 outputHandler.showErrorComments(e.getMessage());

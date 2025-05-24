@@ -99,9 +99,13 @@ public class GameBoard {
         this.selectedPiece = piece;
     }
 
-    public void validatePieceMove(PiecePosition willMovePosition) {
-        //TODO 구현 후 주석 해제
-        //this.selectedPiece.canMoveTo(willMovePosition);
+    public void validateAndMovePiece(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
+        if (!this.selectedPiece.canMove(selectedPiecePosition, willMovePosition, pieces)) {
+            throw new RecoverableException("이동할 수 없습니다.");
+        }
+
+        pieces.remove(selectedPiecePosition);
+        pieces.put(willMovePosition, selectedPiece);
     }
 
     public boolean haveSelectedPiece() {

@@ -4,6 +4,7 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 import java.util.List;
+import java.util.Map;
 
 public class Cha extends Piece {
     protected Cha(TeamType teamType) {
@@ -25,7 +26,7 @@ public class Cha extends Piece {
     }
 
     @Override
-    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition) {
+    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap) {
         return false;
     }
 }
