@@ -7,11 +7,16 @@ import com.game.janggi.domain.team.TeamType;
 import java.util.List;
 import java.util.Map;
 
-public class JolMovePosition extends MovePosition {
+public class MaMovePosition extends MovePosition {
     private final List<Directions> moveAbleDirections = List.of(
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.RIGHT)
+            Directions.create(Direction.UP, Direction.UP_LEFT),
+            Directions.create(Direction.UP, Direction.UP_RIGHT),
+            Directions.create(Direction.DOWN, Direction.DOWN_LEFT),
+            Directions.create(Direction.DOWN, Direction.DOWN_RIGHT),
+            Directions.create(Direction.LEFT, Direction.UP_LEFT),
+            Directions.create(Direction.LEFT, Direction.DOWN_LEFT),
+            Directions.create(Direction.RIGHT, Direction.UP_RIGHT),
+            Directions.create(Direction.RIGHT, Direction.DOWN_RIGHT)
     );
 
 

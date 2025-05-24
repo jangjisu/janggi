@@ -5,15 +5,15 @@ import com.game.janggi.exception.RecoverableException;
 
 public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
     @Override
-    public boolean canMove(Directions direction) {
-        int newRowIndex = this.rowIndex + direction.getTotalRow();
-        int newColIndex = this.colIndex + direction.getTotalCol();
+    public boolean canMove(Directions directions) {
+        int newRowIndex = this.rowIndex + directions.getTotalRow();
+        int newColIndex = this.colIndex + directions.getTotalCol();
 
         return newRowIndex >= 0 && newRowIndex <= 9 && newColIndex >= 0 && newColIndex <= 8;
     }
 
     public static PiecePosition create(int rowIndex, int colIndex) {
-        if (rowIndex < 0 || rowIndex > 9 || colIndex < 0 || colIndex > 8) {
+        if (rowIndex < 0 || rowIndex > 10 || colIndex < 0 || colIndex > 9) {
             throw new RecoverableException("Invalid position: (" + rowIndex + "," + colIndex + ")");
         }
 
