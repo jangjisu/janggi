@@ -16,10 +16,12 @@ public class BungMovePosition extends MovePosition {
 
 
     @Override
-    public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType teamType) {
+    public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
+                .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 }

@@ -2,7 +2,6 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
-import com.game.janggi.domain.team.TeamType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,14 +16,15 @@ class BungMovePositionTest {
 
     @Test
     @DisplayName("병은 앞, 왼쪽, 오른쪽으로 이동할 수 있다.")
-    void move () {
+    void move() {
         //given
         PiecePosition piecePosition = new PiecePosition(1, 3);
+        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(piecePosition, TeamType.HAN);
+        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(3)
@@ -34,14 +34,15 @@ class BungMovePositionTest {
 
     @Test
     @DisplayName("병이 오른쪽에 붙어 있다면 앞과 왼쪽으로만 이동할 수 있다.")
-    void moveWhenRight () {
+    void moveWhenRight() {
         //given
         PiecePosition piecePosition = new PiecePosition(9, 3);
+        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(piecePosition, TeamType.HAN);
+        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(2)
@@ -51,16 +52,16 @@ class BungMovePositionTest {
 
     @Test
     @DisplayName("병이 왼쪽에 붙어 있다면 앞과 왼쪽으로만 이동할 수 있다.")
-    void moveWhenLeft () {
+    void moveWhenLeft() {
         //given
         PiecePosition piecePosition = new PiecePosition(0, 3);
+        Map<PiecePosition, Piece> pieces = new HashMap<>();
+
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
-
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition, TeamType.HAN);
+        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(2)
@@ -70,16 +71,16 @@ class BungMovePositionTest {
 
     @Test
     @DisplayName("병이 위쪽에 붙어 있다면 오른쪽과 왼쪽으로만 이동할 수 있다.")
-    void moveWhenTop () {
+    void moveWhenTop() {
         //given
         PiecePosition piecePosition = new PiecePosition(1, 8);
+        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition, TeamType.HAN);
+        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(2)
