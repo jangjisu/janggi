@@ -100,10 +100,17 @@ public class GameBoard {
     }
 
     public void validateAndMovePiece(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
+        validateMovement(selectedPiecePosition, willMovePosition);
+        executeMovement(selectedPiecePosition, willMovePosition);
+    }
+
+    private void validateMovement(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
         if (!this.selectedPiece.canMove(selectedPiecePosition, willMovePosition, pieces)) {
             throw new RecoverableException("이동할 수 없습니다.");
         }
+    }
 
+    private void executeMovement(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
         pieces.remove(selectedPiecePosition);
         pieces.put(willMovePosition, selectedPiece);
     }
