@@ -18,10 +18,15 @@ public class JolMovePosition extends MovePosition {
     @Override
     public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
+        return calculateBasicMovablePositions(currentPosition).stream()
+                .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
+                .toList();
+    }
+
+    protected List<PiecePosition> calculateBasicMovablePositions(PiecePosition currentPosition) {
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
-                .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 }

@@ -32,11 +32,16 @@ public class KingMovePosition extends MovePosition {
     public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
 
-        return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
-                .filter(currentPosition::canMove) //실제 존재할 수 있는 포지션인지 체크
-                .map(direction -> PiecePosition.create(currentPosition, direction))
-                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType)) //이게 궁안 포지션인지 체크
+        return calculateBasicMoveablePositions(currentPosition, teamType).stream()
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
+                .toList();
+    }
+
+    protected List<PiecePosition> calculateBasicMoveablePositions(PiecePosition currentPosition, TeamType teamType) {
+        return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
+                .filter(currentPosition::canMove)
+                .map(direction -> PiecePosition.create(currentPosition, direction))
+                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType))
                 .toList();
     }
 }
