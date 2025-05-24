@@ -1,13 +1,10 @@
 package com.game.janggi.domain.piece.move;
 
-import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,12 +16,11 @@ class BungMovePositionTest {
     void move() {
         //given
         PiecePosition piecePosition = new PiecePosition(1, 3);
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
+        List<PiecePosition> movablePosition = bungMovePosition.calculateBasicMovablePositions(piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(3)
@@ -37,12 +33,11 @@ class BungMovePositionTest {
     void moveWhenRight() {
         //given
         PiecePosition piecePosition = new PiecePosition(9, 3);
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
+        List<PiecePosition> movablePosition = bungMovePosition.calculateBasicMovablePositions(piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(2)
@@ -55,14 +50,11 @@ class BungMovePositionTest {
     void moveWhenLeft() {
         //given
         PiecePosition piecePosition = new PiecePosition(0, 3);
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
-
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
-
+        List<PiecePosition> movablePosition = bungMovePosition.calculateBasicMovablePositions(piecePosition);
         //then
         assertThat(movablePosition).hasSize(2)
                 .contains(new PiecePosition(0, 4), new PiecePosition(1, 3));
@@ -70,17 +62,16 @@ class BungMovePositionTest {
     }
 
     @Test
-    @DisplayName("병이 위쪽에 붙어 있다면 오른쪽과 왼쪽으로만 이동할 수 있다.")
+    @DisplayName("병이 아래쪽에 붙어 있다면 오른쪽과 왼쪽으로만 이동할 수 있다.")
     void moveWhenTop() {
         //given
         PiecePosition piecePosition = new PiecePosition(1, 8);
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
 
-        List<PiecePosition> movablePosition = bungMovePosition.getMovablePosition(pieces, piecePosition);
+        List<PiecePosition> movablePosition = bungMovePosition.calculateBasicMovablePositions(piecePosition);
 
         //then
         assertThat(movablePosition).hasSize(2)

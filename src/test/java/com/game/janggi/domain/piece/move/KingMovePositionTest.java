@@ -1,13 +1,11 @@
 package com.game.janggi.domain.piece.move;
 
-import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
+import com.game.janggi.domain.team.TeamType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,12 +15,11 @@ class KingMovePositionTest {
     void moveWhenMiddle() {
         //given
         PiecePosition piecePosition = new PiecePosition(4, 1);
-        Map<PiecePosition, Piece> pieces = new HashMap<>();
 
         //when
         KingMovePosition kingMovePosition = new KingMovePosition();
 
-        List<PiecePosition> movablePosition = kingMovePosition.getMovablePosition(pieces, piecePosition);
+        List<PiecePosition> movablePosition = kingMovePosition.calculateBasicMoveablePositions(piecePosition, TeamType.HAN);
 
         //then
         assertThat(movablePosition).hasSize(8)
