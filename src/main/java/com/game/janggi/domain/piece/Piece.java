@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Piece {
-    @Getter
     protected final TeamType teamType;
 
     public abstract String printPieceName();
