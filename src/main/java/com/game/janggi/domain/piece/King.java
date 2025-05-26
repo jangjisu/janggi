@@ -25,12 +25,7 @@ public class King extends Piece {
     }
 
     @Override
-    protected List<PiecePosition> getMovablePositions(PiecePosition currentPosition) {
-        return List.of();
-    }
-
-    @Override
-    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap) {
-        return movePosition.getMovablePosition(pieceMap, currentPosition).contains(targetPosition);
+    protected List<PiecePosition> getMovablePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+        return movePosition.getMovablePosition(pieceMap, currentPosition);
     }
 }

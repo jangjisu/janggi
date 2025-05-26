@@ -96,6 +96,10 @@ public class GameBoard {
             throw new RecoverableException("상대 진영의 말을 선택할 수 없습니다.");
         }
 
+        if (piece.canMove(this.pieces, piecePosition)) {
+            throw new RecoverableException("이동할 수 없는 말입니다.");
+        }
+
         this.selectedPiece = piece;
     }
 
@@ -105,7 +109,7 @@ public class GameBoard {
     }
 
     private void validateMovement(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
-        if (!this.selectedPiece.canMove(selectedPiecePosition, willMovePosition, pieces)) {
+        if (!this.selectedPiece.canMoveTo(pieces, selectedPiecePosition, willMovePosition)) {
             throw new RecoverableException("이동할 수 없습니다.");
         }
     }
