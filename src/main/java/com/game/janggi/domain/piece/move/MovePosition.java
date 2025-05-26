@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MovePosition {
-    public abstract List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
+    public abstract List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
 
     private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
         return pieces.containsKey(willMovePosition);

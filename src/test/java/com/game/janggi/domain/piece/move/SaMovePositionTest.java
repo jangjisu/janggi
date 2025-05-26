@@ -19,10 +19,10 @@ class SaMovePositionTest {
         //when
         SaMovePosition saMovePositionTest = new SaMovePosition();
 
-        List<PiecePosition> movablePosition = saMovePositionTest.calculateBasicMoveablePositions(piecePosition, TeamType.HAN);
+        List<PiecePosition> moveAblePosition = saMovePositionTest.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
 
         //then
-        assertThat(movablePosition).hasSize(8)
+        assertThat(moveAblePosition).hasSize(8)
                 .contains(
                         new PiecePosition(3, 0),
                         new PiecePosition(4, 0),
@@ -45,10 +45,10 @@ class SaMovePositionTest {
         //when
         SaMovePosition saMovePositionTest = new SaMovePosition();
 
-        List<PiecePosition> movablePosition = saMovePositionTest.calculateBasicMoveablePositions(piecePosition, TeamType.HAN);
+        List<PiecePosition> moveAblePosition = saMovePositionTest.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
 
         //then
-        assertThat(movablePosition).hasSize(3)
+        assertThat(moveAblePosition).hasSize(3)
                 .contains(
                         new PiecePosition(5, 2),
                         new PiecePosition(5, 0),

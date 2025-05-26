@@ -19,10 +19,10 @@ class KingMovePositionTest {
         //when
         KingMovePosition kingMovePosition = new KingMovePosition();
 
-        List<PiecePosition> movablePosition = kingMovePosition.calculateBasicMoveablePositions(piecePosition, TeamType.HAN);
+        List<PiecePosition> moveAblePosition = kingMovePosition.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
 
         //then
-        assertThat(movablePosition).hasSize(8)
+        assertThat(moveAblePosition).hasSize(8)
                 .contains(
                         new PiecePosition(3, 0),
                         new PiecePosition(4, 0),

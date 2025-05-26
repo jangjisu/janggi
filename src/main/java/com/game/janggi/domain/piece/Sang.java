@@ -21,7 +21,7 @@ public class Sang extends Piece {
     }
 
     @Override
-    protected List<PiecePosition> getMovablePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
         return List.of();
     }
 }

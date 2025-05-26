@@ -20,10 +20,10 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> movablePosition = jolMovePosition.calculateBasicMovablePositions(piecePosition);
+        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
 
         //then
-        assertThat(movablePosition).hasSize(3)
+        assertThat(moveAblePosition).hasSize(3)
                 .contains(new PiecePosition(1, 2), new PiecePosition(0, 3), new PiecePosition(2, 3));
 
     }
@@ -37,10 +37,10 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> movablePosition = jolMovePosition.calculateBasicMovablePositions(piecePosition);
+        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
 
         //then
-        assertThat(movablePosition).hasSize(2)
+        assertThat(moveAblePosition).hasSize(2)
                 .contains(new PiecePosition(9, 2), new PiecePosition(8, 3));
 
     }
@@ -54,9 +54,9 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> movablePosition = jolMovePosition.calculateBasicMovablePositions(piecePosition);
+        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
         //then
-        assertThat(movablePosition).hasSize(2)
+        assertThat(moveAblePosition).hasSize(2)
                 .contains(new PiecePosition(0, 2), new PiecePosition(1, 3));
 
     }
@@ -71,10 +71,10 @@ class JolMovePositionTest {
         JolMovePosition jolMovePosition = new JolMovePosition();
 
 
-        List<PiecePosition> movablePosition = jolMovePosition.calculateBasicMovablePositions(piecePosition);
+        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
 
         //then
-        assertThat(movablePosition).hasSize(2)
+        assertThat(moveAblePosition).hasSize(2)
                 .contains(new PiecePosition(0, 0), new PiecePosition(2, 0));
 
     }

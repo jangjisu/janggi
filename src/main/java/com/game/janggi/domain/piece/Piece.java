@@ -16,14 +16,14 @@ public abstract class Piece {
 
     public abstract String printPieceName();
 
-    protected abstract List<PiecePosition> getMovablePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition);
+    protected abstract List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition);
 
     public boolean canMoveTo(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition, PiecePosition targetPosition) {
-        return getMovablePositions(pieceMap, currentPosition).contains(targetPosition);
+        return getMoveAblePositions(pieceMap, currentPosition).contains(targetPosition);
     }
 
     public boolean canMove(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return getMovablePositions(pieceMap, currentPosition).isEmpty();
+        return getMoveAblePositions(pieceMap, currentPosition).isEmpty();
     }
 
     public boolean isSameTeam(TeamType teamType) {

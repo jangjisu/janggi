@@ -29,15 +29,15 @@ public class KingMovePosition extends MovePosition {
 
 
     @Override
-    public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+    public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
 
-        return calculateBasicMoveablePositions(currentPosition, teamType).stream()
+        return calculateBasicMoveAblePositions(currentPosition, teamType).stream()
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
-    protected List<PiecePosition> calculateBasicMoveablePositions(PiecePosition currentPosition, TeamType teamType) {
+    protected List<PiecePosition> calculateBasicMoveAblePositions(PiecePosition currentPosition, TeamType teamType) {
         return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
                 .filter(currentPosition::canMove)
                 .map(direction -> PiecePosition.create(currentPosition, direction))

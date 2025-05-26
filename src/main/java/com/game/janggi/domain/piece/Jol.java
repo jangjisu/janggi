@@ -25,7 +25,7 @@ public class Jol extends Piece {
     }
 
     @Override
-    protected List<PiecePosition> getMovablePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return movePosition.getMovablePosition(pieceMap, currentPosition);
+    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }
