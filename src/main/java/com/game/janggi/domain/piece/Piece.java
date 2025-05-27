@@ -9,16 +9,22 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Piece {
-    @Getter
     protected final TeamType teamType;
 
     public abstract String printPieceName();
 
-    protected abstract List<PiecePosition> getMovablePositions(PiecePosition currentPosition);
+    protected abstract List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition);
 
-    public abstract boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap);
+    public boolean canMoveTo(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition, PiecePosition targetPosition) {
+        return getMoveAblePositions(pieceMap, currentPosition).contains(targetPosition);
+    }
+
+    public boolean canMove(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+        return getMoveAblePositions(pieceMap, currentPosition).isEmpty();
+    }
 
     public boolean isSameTeam(TeamType teamType) {
         return this.teamType == teamType;

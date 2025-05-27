@@ -46,7 +46,7 @@ public class ChaMovePosition extends MovePosition {
 
 
     @Override
-    public List<PiecePosition> getMovablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+    public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
                 .map(direction -> PiecePosition.create(currentPosition, direction))

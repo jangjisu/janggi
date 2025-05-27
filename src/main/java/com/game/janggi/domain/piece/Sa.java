@@ -25,12 +25,7 @@ public class Sa extends Piece {
     }
 
     @Override
-    protected List<PiecePosition> getMovablePositions(PiecePosition currentPosition) {
-        return List.of();
-    }
-
-    @Override
-    public boolean canMove(PiecePosition currentPosition, PiecePosition targetPosition, Map<PiecePosition, Piece> pieceMap) {
-        return movePosition.getMovablePosition(pieceMap, currentPosition).contains(targetPosition);
+    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }
