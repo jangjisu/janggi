@@ -68,6 +68,6 @@ public class ChoDefaultPieceLayout extends DefaultPieceLayout {
 
     @Override
     protected Map<PiecePosition, Piece> createFluidPieces() {
-        return createFluidPiecesOnRow(this.formationType, 0, TeamType.CHO);
+        return createFluidPiecesOnRow(this.formationType, 9, TeamType.CHO);
     }
 }

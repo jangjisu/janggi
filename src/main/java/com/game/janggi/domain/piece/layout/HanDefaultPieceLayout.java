@@ -68,6 +68,6 @@ public class HanDefaultPieceLayout extends DefaultPieceLayout {
 
     @Override
     protected Map<PiecePosition, Piece> createFluidPieces() {
-        return createFluidPiecesOnRow(this.formationType, 9, TeamType.HAN);
+        return createFluidPiecesOnRow(this.formationType, 0, TeamType.HAN);
     }
 }
