@@ -5,6 +5,7 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class MaMovePosition extends MovePosition {
     private final List<Directions> moveAbleDirections = List.of(
@@ -21,9 +22,12 @@ public class MaMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
+                .filter(directions -> isHaveObstacle(pieces, directions.getMiddleDirections(), currentPosition))
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
     }
+
 }
