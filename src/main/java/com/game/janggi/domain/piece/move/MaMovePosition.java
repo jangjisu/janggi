@@ -5,7 +5,6 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class MaMovePosition extends MovePosition {
     private final List<Directions> moveAbleDirections = List.of(
