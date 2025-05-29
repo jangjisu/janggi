@@ -21,9 +21,12 @@ public class MaMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
+                .filter(directions -> isHaveObstacle(pieces, directions.getMiddleDirections(), currentPosition))
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
     }
+
 }

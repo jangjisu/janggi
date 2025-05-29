@@ -38,5 +38,10 @@ public abstract class MovePosition {
         return isPieceOfDifferentTeam(pieces.get(willMovePosition), currentTurnTeamType);
     }
 
+    protected boolean isHaveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
+        return directionsList.stream()
+                .anyMatch(directions -> isTherePiece(pieces, PiecePosition.create(currentPosition, directions)));
+    }
+
 
 }

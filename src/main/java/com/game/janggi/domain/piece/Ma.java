@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.move.MaMovePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -10,6 +11,8 @@ public class Ma extends Piece {
     protected Ma(TeamType teamType) {
         super(teamType);
     }
+
+    private final MaMovePosition movePosition = new MaMovePosition();
 
     public static Ma create(TeamType teamType) {
         return new Ma(teamType);
@@ -22,6 +25,6 @@ public class Ma extends Piece {
 
     @Override
     protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return List.of();
+        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }
