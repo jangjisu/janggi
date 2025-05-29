@@ -34,14 +34,19 @@ public class SaMovePosition extends MovePosition {
 
         return calculateBasicMoveAbleDirections(currentPosition).stream()
                 .map(direction -> PiecePosition.create(currentPosition, direction))
-                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType))
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
+    @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
                 .filter(currentPosition::canMove)
+                .filter(directions -> checkGongPosition(currentPosition, directions))
                 .toList();
+    }
+
+    private boolean checkGongPosition(PiecePosition currentPosition, Directions directions) {
+        return GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, directions));
     }
 }
