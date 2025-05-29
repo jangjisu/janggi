@@ -20,12 +20,13 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
+        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(3)
-                .contains(new PiecePosition(1, 2), new PiecePosition(0, 3), new PiecePosition(2, 3));
-
+                .contains(Directions.create(Direction.DOWN),
+                        Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT));
     }
 
     @Test
@@ -37,16 +38,16 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
+        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(9, 2), new PiecePosition(8, 3));
-
+                .contains(Directions.create(Direction.DOWN),
+                        Directions.create(Direction.LEFT));
     }
 
     @Test
-    @DisplayName("졸이 왼쪽에 붙어 있다면 뒤와 왼쪽으로만 이동할 수 있다.")
+    @DisplayName("졸이 왼쪽에 붙어 있다면 뒤와 오른쪽으로만 이동할 수 있다.")
     void moveWhenLeft() {
         //given
         PiecePosition piecePosition = new PiecePosition(0, 3);
@@ -54,10 +55,12 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
+        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(0, 2), new PiecePosition(1, 3));
+                .contains(Directions.create(Direction.DOWN),
+                        Directions.create(Direction.RIGHT));
+
 
     }
 
@@ -71,11 +74,12 @@ class JolMovePositionTest {
         JolMovePosition jolMovePosition = new JolMovePosition();
 
 
-        List<PiecePosition> moveAblePosition = jolMovePosition.calculateBasicMoveAblePositions(piecePosition);
+        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(0, 0), new PiecePosition(2, 0));
+                .contains(Directions.create(Direction.RIGHT),
+                        Directions.create(Direction.LEFT));
 
     }
 }

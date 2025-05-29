@@ -32,16 +32,16 @@ public class SaMovePosition extends MovePosition {
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
 
-        return calculateBasicMoveAblePositions(currentPosition, teamType).stream()
+        return calculateBasicMoveAbleDirections(currentPosition).stream()
+                .map(direction -> PiecePosition.create(currentPosition, direction))
+                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType))
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
-    protected List<PiecePosition> calculateBasicMoveAblePositions(PiecePosition currentPosition, TeamType teamType) {
+    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
                 .filter(currentPosition::canMove)
-                .map(direction -> PiecePosition.create(currentPosition, direction))
-                .filter(piecePosition -> GongPiecePosition.isInGongPosition(piecePosition, teamType))
                 .toList();
     }
 }

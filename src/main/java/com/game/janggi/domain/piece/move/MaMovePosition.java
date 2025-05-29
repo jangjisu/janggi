@@ -2,6 +2,7 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
+import com.game.janggi.domain.team.TeamType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,11 +22,19 @@ public class MaMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
 
+        return calculateBasicMoveAbleDirections(currentPosition).stream()
+                .filter(directions -> notHaveObstacle(pieces, directions.getMiddleDirections(), currentPosition))
+                .map(direction -> PiecePosition.create(currentPosition, direction))
+                .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
+                .toList();
+    }
+
+    @Override
+    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
-                .filter(directions -> isHaveObstacle(pieces, directions.getMiddleDirections(), currentPosition))
-                .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
     }
 

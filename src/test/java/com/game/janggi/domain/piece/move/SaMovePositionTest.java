@@ -1,7 +1,6 @@
 package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.position.PiecePosition;
-import com.game.janggi.domain.team.TeamType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,25 +18,25 @@ class SaMovePositionTest {
         //when
         SaMovePosition saMovePositionTest = new SaMovePosition();
 
-        List<PiecePosition> moveAblePosition = saMovePositionTest.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
+        List<Directions> moveAblePosition = saMovePositionTest.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(8)
                 .contains(
-                        new PiecePosition(3, 0),
-                        new PiecePosition(4, 0),
-                        new PiecePosition(5, 0),
-                        new PiecePosition(3, 1),
-                        new PiecePosition(5, 1),
-                        new PiecePosition(3, 2),
-                        new PiecePosition(4, 2),
-                        new PiecePosition(5, 2)
+                        Directions.create(Direction.UP),
+                        Directions.create(Direction.DOWN),
+                        Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT),
+                        Directions.create(Direction.UP_LEFT),
+                        Directions.create(Direction.UP_RIGHT),
+                        Directions.create(Direction.DOWN_LEFT),
+                        Directions.create(Direction.DOWN_RIGHT)
                 );
 
     }
 
     @Test
-    @DisplayName("사가 궁성 우측에 있다면 위, 아래, 왼쪽으로만 움직일 수 있다.")
+    @DisplayName("사가 궁성 우측에 있다면 위, 아래, 왼쪽, 오른쪽을 움직일 수 있다 단, 궁성 체크를 할 경우, 오른쪽은 나가지 못하게 된다.")
     void moveWhenRightMiddle() {
         //given
         PiecePosition piecePosition = new PiecePosition(5, 1);
@@ -45,14 +44,15 @@ class SaMovePositionTest {
         //when
         SaMovePosition saMovePositionTest = new SaMovePosition();
 
-        List<PiecePosition> moveAblePosition = saMovePositionTest.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
+        List<Directions> moveAblePosition = saMovePositionTest.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(3)
+        assertThat(moveAblePosition).hasSize(4)
                 .contains(
-                        new PiecePosition(5, 2),
-                        new PiecePosition(5, 0),
-                        new PiecePosition(4, 1)
+                        Directions.create(Direction.UP),
+                        Directions.create(Direction.DOWN),
+                        Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT)
                 );
 
     }
