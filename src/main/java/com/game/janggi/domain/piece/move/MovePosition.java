@@ -16,20 +16,20 @@ public abstract class MovePosition {
         return pieces.containsKey(willMovePosition);
     }
 
-    private boolean isThereEmpty(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
-        return !isTherePiece(pieces, willMovePosition);
-    }
-
     private boolean isPieceOfSameTeam(Piece piece, TeamType currentTurnTeamType) {
         return piece.isSameTeam(currentTurnTeamType);
     }
 
-    private boolean isPieceOfDifferentTeam(Piece piece, TeamType currentTurnTeamType) {
+    protected TeamType getSelectedPieceTeamType(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        return pieces.get(currentPosition).getTeamType();
+    }
+
+    protected boolean isPieceOfDifferentTeam(Piece piece, TeamType currentTurnTeamType) {
         return !isPieceOfSameTeam(piece, currentTurnTeamType);
     }
 
-    protected TeamType getSelectedPieceTeamType(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        return pieces.get(currentPosition).getTeamType();
+    protected boolean isThereEmpty(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
+        return !isTherePiece(pieces, willMovePosition);
     }
 
     protected boolean isEmptyOrEnemyPiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition, TeamType currentTurnTeamType) {

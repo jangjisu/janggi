@@ -9,11 +9,11 @@ public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
         int newRowIndex = this.rowIndex + directions.getTotalRow();
         int newColIndex = this.colIndex + directions.getTotalCol();
 
-        return newRowIndex >= 0 && newRowIndex <= 9 && newColIndex >= 0 && newColIndex <= 8;
+        return newRowIndex >= 0 && newRowIndex <= 8 && newColIndex >= 0 && newColIndex <= 9;
     }
 
     public static PiecePosition create(int rowIndex, int colIndex) {
-        if (rowIndex < 0 || rowIndex > 10 || colIndex < 0 || colIndex > 9) {
+        if (rowIndex < 0 || rowIndex > 9 || colIndex < 0 || colIndex > 10) {
             throw new RecoverableException("Invalid position: (" + rowIndex + "," + colIndex + ")");
         }
 

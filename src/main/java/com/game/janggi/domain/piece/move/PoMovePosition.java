@@ -42,9 +42,11 @@ public class PoMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        return calculateBasicMoveAbleDirections(currentPosition).stream()
-                .map(direction -> PiecePosition.create(currentPosition, direction))
-                .toList();
+        //TODO 포 움직임 구현
+        return List.of();
+//        return calculateBasicMoveAbleDirections(currentPosition).stream()
+//                .map(direction -> PiecePosition.create(currentPosition, direction))
+//                .toList();
     }
 
     @Override

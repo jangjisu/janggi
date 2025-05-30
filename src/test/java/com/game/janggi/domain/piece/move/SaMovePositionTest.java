@@ -36,7 +36,7 @@ class SaMovePositionTest {
     }
 
     @Test
-    @DisplayName("사가 궁성 우측에 있다면 위, 아래, 왼쪽, 오른쪽을 움직일 수 있다 단, 궁성 체크를 할 경우, 오른쪽은 나가지 못하게 된다.")
+    @DisplayName("사가 궁성 우측에 있다면 위, 아래, 왼쪽을 움직일 수 있다.")
     void moveWhenRightMiddle() {
         //given
         PiecePosition piecePosition = new PiecePosition(5, 1);
@@ -47,12 +47,11 @@ class SaMovePositionTest {
         List<Directions> moveAblePosition = saMovePositionTest.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(4)
+        assertThat(moveAblePosition).hasSize(3)
                 .contains(
                         Directions.create(Direction.UP),
                         Directions.create(Direction.DOWN),
-                        Directions.create(Direction.LEFT),
-                        Directions.create(Direction.RIGHT)
+                        Directions.create(Direction.LEFT)
                 );
 
     }

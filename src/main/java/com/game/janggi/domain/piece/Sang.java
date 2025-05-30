@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.move.MovePosition;
 import com.game.janggi.domain.piece.move.SangMovePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
@@ -12,7 +13,7 @@ public class Sang extends Piece {
         super(teamType);
     }
 
-    private final SangMovePosition movePosition = new SangMovePosition();
+    private final MovePosition movePosition = new SangMovePosition();
 
     public static Sang create(TeamType teamType) {
         return new Sang(teamType);
