@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -52,7 +51,7 @@ public class Directions {
             return List.of();
         }
         return IntStream.range(1, directions.size())
-                .mapToObj(i -> new Directions(new ArrayList<>(directions.subList(0, i))))
+                .mapToObj(i -> new Directions(List.copyOf(directions.subList(0, i))))
                 .toList();
     }
 
