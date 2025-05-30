@@ -1,6 +1,7 @@
 package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
+import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -14,19 +15,28 @@ public class JolMovePosition extends MovePosition {
             Directions.create(Direction.RIGHT)
     );
 
+    private final List<Directions> diagonalMoveAbleDirections = List.of(
+            Directions.create(Direction.DOWN),
+            Directions.create(Direction.LEFT),
+            Directions.create(Direction.RIGHT),
+            Directions.create(Direction.DOWN_LEFT),
+            Directions.create(Direction.DOWN_RIGHT)
+    );
+
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
-        return calculateBasicMoveAblePositions(currentPosition).stream()
+        return calculateBasicMoveAbleDirections(currentPosition).stream()
+                .map(direction -> PiecePosition.create(currentPosition, direction))
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
-    protected List<PiecePosition> calculateBasicMoveAblePositions(PiecePosition currentPosition) {
-        return moveAbleDirections.stream()
+    @Override
+    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
+        return GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
-                .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
     }
 }

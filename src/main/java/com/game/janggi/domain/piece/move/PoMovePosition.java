@@ -42,9 +42,15 @@ public class PoMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        return calculateBasicMoveAbleDirections(currentPosition).stream()
+                .map(direction -> PiecePosition.create(currentPosition, direction))
+                .toList();
+    }
+
+    @Override
+    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return moveAbleDirections.stream()
                 .filter(currentPosition::canMove)
-                .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
     }
 }

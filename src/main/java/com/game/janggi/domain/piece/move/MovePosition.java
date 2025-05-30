@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MovePosition {
+    protected abstract List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition);
+
     public abstract List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
 
     private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
@@ -38,9 +40,13 @@ public abstract class MovePosition {
         return isPieceOfDifferentTeam(pieces.get(willMovePosition), currentTurnTeamType);
     }
 
-    protected boolean isHaveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
+    protected boolean haveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
         return directionsList.stream()
                 .anyMatch(directions -> isTherePiece(pieces, PiecePosition.create(currentPosition, directions)));
+    }
+
+    protected boolean notHaveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
+        return !haveObstacle(pieces, directionsList, currentPosition);
     }
 
 

@@ -20,7 +20,7 @@ class DirectionsTest {
         List<Directions> middlePositions = directions.getMiddleDirections();
 
         //then
-        assertThat(middlePositions).hasSize(0);
+        assertThat(middlePositions).isEmpty();
 
     }
 

@@ -1,7 +1,6 @@
 package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.position.PiecePosition;
-import com.game.janggi.domain.team.TeamType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +18,19 @@ class KingMovePositionTest {
         //when
         KingMovePosition kingMovePosition = new KingMovePosition();
 
-        List<PiecePosition> moveAblePosition = kingMovePosition.calculateBasicMoveAblePositions(piecePosition, TeamType.HAN);
+        List<Directions> moveAblePosition = kingMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(8)
                 .contains(
-                        new PiecePosition(3, 0),
-                        new PiecePosition(4, 0),
-                        new PiecePosition(5, 0),
-                        new PiecePosition(3, 1),
-                        new PiecePosition(5, 1),
-                        new PiecePosition(3, 2),
-                        new PiecePosition(4, 2),
-                        new PiecePosition(5, 2)
+                        Directions.create(Direction.UP),
+                        Directions.create(Direction.DOWN),
+                        Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT),
+                        Directions.create(Direction.UP_LEFT),
+                        Directions.create(Direction.UP_RIGHT),
+                        Directions.create(Direction.DOWN_LEFT),
+                        Directions.create(Direction.DOWN_RIGHT)
                 );
 
     }

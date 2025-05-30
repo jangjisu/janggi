@@ -20,12 +20,13 @@ class BungMovePositionTest {
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> moveAblePosition = bungMovePosition.calculateBasicMoveablePositions(piecePosition);
+        List<Directions> moveAblePosition = bungMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(3)
-                .contains(new PiecePosition(1, 4), new PiecePosition(0, 3), new PiecePosition(2, 3));
-
+                .contains(Directions.create(Direction.UP),
+                        Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT));
     }
 
     @Test
@@ -37,11 +38,12 @@ class BungMovePositionTest {
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> moveAblePosition = bungMovePosition.calculateBasicMoveablePositions(piecePosition);
+        List<Directions> moveAblePosition = bungMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(9, 4), new PiecePosition(8, 3));
+                .contains(Directions.create(Direction.UP),
+                        Directions.create(Direction.LEFT));
 
     }
 
@@ -54,10 +56,11 @@ class BungMovePositionTest {
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
 
-        List<PiecePosition> moveAblePosition = bungMovePosition.calculateBasicMoveablePositions(piecePosition);
+        List<Directions> moveAblePosition = bungMovePosition.calculateBasicMoveAbleDirections(piecePosition);
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(0, 4), new PiecePosition(1, 3));
+                .contains(Directions.create(Direction.UP),
+                        Directions.create(Direction.RIGHT));
 
     }
 
@@ -71,11 +74,12 @@ class BungMovePositionTest {
         BungMovePosition bungMovePosition = new BungMovePosition();
 
 
-        List<PiecePosition> moveAblePosition = bungMovePosition.calculateBasicMoveablePositions(piecePosition);
+        List<Directions> moveAblePosition = bungMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(new PiecePosition(0, 8), new PiecePosition(2, 8));
+                .contains(Directions.create(Direction.LEFT),
+                        Directions.create(Direction.RIGHT));
 
     }
 }
