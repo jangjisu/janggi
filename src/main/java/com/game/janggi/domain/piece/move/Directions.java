@@ -1,11 +1,16 @@
 package com.game.janggi.domain.piece.move;
 
+import com.game.janggi.domain.piece.position.PiecePosition;
+import com.game.janggi.exception.NeedStopException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
@@ -15,6 +20,18 @@ public class Directions {
 
     public static Directions create(Direction... directionList) {
         return new Directions(List.of(directionList));
+    }
+
+    public static List<Directions> sortByLengthAsc(List<Directions> directions) {
+        return directions.stream()
+                .sorted(Comparator.comparingInt(Directions::getDirectionSize))
+                .toList();
+    }
+
+    public Directions append(Direction next) {
+        return new Directions(
+                Stream.concat(directions.stream(), Stream.of(next)).toList()
+        );
     }
 
     public int getTotalRow() {
@@ -33,9 +50,32 @@ public class Directions {
         if (directions.size() < 2) {
             return List.of();
         }
-        return java.util.stream.IntStream.range(1, directions.size())
-                .mapToObj(i -> new Directions(new java.util.ArrayList<>(directions.subList(0, i))))
+        return IntStream.range(1, directions.size())
+                .mapToObj(i -> new Directions(List.copyOf(directions.subList(0, i))))
                 .toList();
+    }
+
+    public int getDirectionSize() {
+        return directions.size();
+    }
+
+    public static boolean canMakeNextDirections(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
+        Directions plusOneDirections = getPlusOneDirections(directions, directionType);
+        return currentPosition.canMove(plusOneDirections);
+    }
+
+    public static Directions getPlusOneDirections(List<Directions> directions, Direction directionType) {
+        return getMaxSizeDirections(directions).append(directionType);
+    }
+
+    private static Directions getMaxSizeDirections(List<Directions> directions) {
+        if (directions.isEmpty()) {
+            return Directions.create();
+        }
+
+        return sortByLengthAsc(directions).stream()
+                .max(Comparator.comparingInt(Directions::getDirectionSize))
+                .orElseThrow(() -> new NeedStopException("getMaxSizeDirections failed"));
     }
 
 }
