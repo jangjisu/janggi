@@ -28,6 +28,15 @@ public class Directions {
                 .toList();
     }
 
+    public static Directions concat(Directions standardDirection, Directions directions) {
+        List<Direction> combined = Stream.concat(
+                standardDirection.directions.stream(),
+                directions.directions.stream()
+        ).toList();
+
+        return Directions.create(combined.toArray(new Direction[0]));
+    }
+
     public Directions append(Direction next) {
         return new Directions(
                 Stream.concat(directions.stream(), Stream.of(next)).toList()
@@ -60,11 +69,23 @@ public class Directions {
     }
 
     public static boolean canMakeNextDirections(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
+        if (directions.isEmpty()) {
+            return currentPosition.canMove(Directions.create(directionType));
+        }
+
         Directions plusOneDirections = getPlusOneDirections(directions, directionType);
         return currentPosition.canMove(plusOneDirections);
     }
 
+    public static boolean canNotMakeNextDirections(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
+        return !canMakeNextDirections(directions, currentPosition, directionType);
+    }
+
     public static Directions getPlusOneDirections(List<Directions> directions, Direction directionType) {
+        if (directions.isEmpty()) {
+            return Directions.create(directionType);
+        }
+
         return getMaxSizeDirections(directions).append(directionType);
     }
 

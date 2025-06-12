@@ -33,4 +33,12 @@ public abstract class Piece {
     public boolean isDifferentTeam(TeamType teamType) {
         return !isSameTeam(teamType);
     }
+
+    public static boolean isPieceCanNotJump(Piece nextPiece) {
+        return nextPiece instanceof Po;
+    }
+
+    public static boolean isPieceCanJump(Piece nextPiece) {
+        return !isPieceCanNotJump(nextPiece);
+    }
 }
