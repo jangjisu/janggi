@@ -49,5 +49,12 @@ public abstract class MovePosition {
         return !haveObstacle(pieces, directionsList, currentPosition);
     }
 
+    // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
+    protected List<Directions> getMoveAbleDirectionsForFirst(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> directions) {
+        return Directions.sortByLengthAsc(directions).stream()
+                .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
+                .toList();
+    }
+
 
 }

@@ -44,4 +44,19 @@ class DirectionsTest {
 
     }
 
+    @Test
+    @DisplayName("제공받은 두개의 Directions를 합쳐서 새로운 Directions를 반환한다.")
+    void concat () {
+        //given
+        Directions upDirections = Directions.create(Direction.UP, Direction.UP);
+        Directions downDirections = Directions.create(Direction.DOWN, Direction.DOWN);
+
+        //when
+        Directions concatDirections = Directions.concat(upDirections, downDirections);
+
+        //then
+        assertThat(concatDirections).isEqualTo(
+                Directions.create(Direction.UP, Direction.UP, Direction.DOWN, Direction.DOWN));
+    }
+
 }
