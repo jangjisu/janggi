@@ -2,6 +2,7 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
+import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -66,7 +67,8 @@ public class PoMovePosition extends MovePosition {
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType currentTeamType = pieces.get(currentPosition).getTeamType();
-        return Stream.of(
+
+        List<PiecePosition> normalMovePositions = Stream.of(
                         collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT, currentTeamType),
                         collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT, currentTeamType),
                         collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP, currentTeamType),
@@ -75,6 +77,27 @@ public class PoMovePosition extends MovePosition {
                 .flatMap(Collection::stream)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
+
+        List<PiecePosition> diagonalMovePositions = getDigonalPiecePosition(pieces, currentPosition, currentTeamType);
+        return Stream.concat(normalMovePositions.stream(), diagonalMovePositions.stream()).toList();
+
+    }
+
+    private List<PiecePosition> getDigonalPiecePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
+        if (GongPiecePosition.getPoCanDigonalGongPositions().contains(currentPosition)) {
+            Piece centerPiece = pieces.get(GongPiecePosition.getGongCenterPosition(currentPosition));
+            if (MoveRules.canNotBeJumpedOver(centerPiece)) {
+                return List.of();
+            }
+
+            PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
+            Piece oppositePiece = pieces.get(oppositeGongPosition);
+            if (MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType))) {
+                return List.of(oppositeGongPosition);
+            }
+        }
+
+        return List.of();
     }
 
     private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
