@@ -33,9 +33,7 @@ public class MaMovePosition extends MovePosition {
 
     @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
+        return filteredWithinBoard(moveAbleDirections, currentPosition);
     }
 
 }

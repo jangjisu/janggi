@@ -40,8 +40,10 @@ public class SaMovePosition extends MovePosition {
 
     @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return (GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections).stream()
-                .filter(currentPosition::canMove)
+        return filteredWithinBoard(
+                GongPiecePosition.canMoveDiagonal(currentPosition)
+                        ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition)
+                .stream()
                 .filter(directions -> checkGongPosition(currentPosition, directions))
                 .toList();
     }
