@@ -3,12 +3,10 @@ package com.game.janggi.domain.piece.move;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.position.PiecePosition;
-import com.game.janggi.domain.team.TeamType;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PoMovePosition extends MovePosition {
