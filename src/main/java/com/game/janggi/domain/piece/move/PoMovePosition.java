@@ -1,6 +1,7 @@
 package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
+import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -37,59 +38,60 @@ public class PoMovePosition extends MovePosition {
 
     private final List<Directions> moveAbleLeftDirections = List.of(
             Directions.create(Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT),
-            Directions.create(Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT,Direction.LEFT)
+            Directions.create(Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT)
     );
 
     private final List<Directions> moveAbleRightDirections = List.of(
             Directions.create(Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT),
-            Directions.create(Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT,Direction.RIGHT)
+            Directions.create(Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT)
     );
+
+    private final List<Directions> allMoveAbleDirections =
+            Stream.of(moveAbleDownDirections, moveAbleLeftDirections, moveAbleRightDirections, moveAbleUpDirections)
+                    .flatMap(Collection::stream)
+                    .toList();
 
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        List<Directions> rightDirectionMovePosition = getMoveAbleDirections(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT);
-        List<Directions> leftDirectionMovePosition = getMoveAbleDirections(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT);
-        List<Directions> upDirectionMovePosition = getMoveAbleDirections(pieces, currentPosition, moveAbleUpDirections, Direction.UP);
-        List<Directions> downDirectionMovePosition = getMoveAbleDirections(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN);
-
-
-        List<PiecePosition> list = Stream.of(rightDirectionMovePosition, leftDirectionMovePosition, upDirectionMovePosition, downDirectionMovePosition)
+        List<PiecePosition> list = Stream.of(
+                        collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN)
+                )
                 .flatMap(Collection::stream)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
-
-        System.out.println("Po Move Positions: " + list);
+        System.out.println("PoMovePosition.getMoveablePosition: " + list);
         return list;
     }
 
-    private List<Directions> getMoveAbleDirections(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType) {
-        List<Directions> basicList = moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
+    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType) {
+        List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 
-        List<Directions> filteredList = getMoveAbleDirectionsForFirst(pieces, currentPosition, basicList);
+        List<Directions> beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
 
-        if (Directions.canNotMakeNextDirections(filteredList, currentPosition, directionType)) {
+        if (Directions.isNextNotAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
             return List.of();
         }
 
-        PiecePosition nextPiecePosition = getNextPiecePosition(currentPosition, filteredList, directionType);
+        PiecePosition nextPiecePosition = PiecePosition.create(currentPosition, Directions.appendNextStep(beforeNextPieceDirections, directionType));
         Piece nextPiece = pieces.get(nextPiecePosition);
 
-        if (Piece.isPieceCanNotJump(nextPiece)) {
+        if (MoveRules.canNotBeJumpedOver(nextPiece)) {
             return List.of();
         }
 
@@ -97,35 +99,19 @@ public class PoMovePosition extends MovePosition {
                 .filter(nextPiecePosition::canMove)
                 .toList();
 
-        Directions standardDirection = Directions.getPlusOneDirections(filteredList, directionType);
+        List<Directions> nextFilteredList = filterUntilBlockedByPiece(pieces, nextPiecePosition, poMoveAbleDirections);
+        Directions standardDirection = Directions.appendNextStep(beforeNextPieceDirections, directionType);
 
-        List<Directions> nextFilteredList = getMoveAbleDirectionsForFirst(pieces, nextPiecePosition, poMoveAbleDirections);
-
-        if (Directions.canMakeNextDirections(nextFilteredList, nextPiecePosition, directionType)) {
-            Directions plusOneDirection = Directions.getPlusOneDirections(nextFilteredList, directionType);
-
-            Piece willMovePositionPiece = pieces.get(PiecePosition.create(nextPiecePosition, plusOneDirection));
-            TeamType selectedPieceTeamType = getSelectedPieceTeamType(pieces, currentPosition);
-            if (isPieceOfDifferentTeam(willMovePositionPiece, selectedPieceTeamType) && Piece.isPieceCanJump(willMovePositionPiece)) {
-                return Stream.concat(nextFilteredList.stream(), Stream.of(plusOneDirection))
-                        .map(directions -> Directions.concat(standardDirection, directions))
-                        .collect(Collectors.toList());
-            }
-        }
-
-        return nextFilteredList.stream()
+        return Stream.concat(
+                        nextFilteredList.stream(),
+                        Stream.of(getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.PHO))
+                )
                 .map(directions -> Directions.concat(standardDirection, directions))
-                .collect(Collectors.toList());
-    }
-
-    private PiecePosition getNextPiecePosition(PiecePosition currentPosition, List<Directions> directions, Direction directionType) {
-        return PiecePosition.create(currentPosition, Directions.getPlusOneDirections(directions, directionType));
+        .toList();
     }
 
     @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return Stream.of(moveAbleDownDirections, moveAbleLeftDirections, moveAbleRightDirections, moveAbleUpDirections)
-                .flatMap(Collection::stream)
-                .toList();
+        return filteredWithinBoard(allMoveAbleDirections, currentPosition);
     }
 }
