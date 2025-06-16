@@ -5,6 +5,9 @@ import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.Po;
 
 public class MoveRules {
+    private MoveRules() {
+    }
+
     public static boolean canBeJumpedOver(Piece nextPiece) {
         return !canNotBeJumpedOver(nextPiece);
     }
@@ -14,7 +17,7 @@ public class MoveRules {
     }
 
     public static boolean canMoveToNextPiece(PieceType currentPieceType, Piece nextPiece, boolean isDifferentTeam) {
-        if (currentPieceType == PieceType.PHO) {
+        if (PieceType.PHO == currentPieceType) {
             return isDifferentTeam && canBeJumpedOver(nextPiece);
         }
 

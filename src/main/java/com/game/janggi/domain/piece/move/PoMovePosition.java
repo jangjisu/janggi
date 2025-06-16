@@ -3,6 +3,7 @@ package com.game.janggi.domain.piece.move;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.position.PiecePosition;
+import com.game.janggi.domain.team.TeamType;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,20 +65,19 @@ public class PoMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        List<PiecePosition> list = Stream.of(
-                        collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN)
+        TeamType currentTeamType = pieces.get(currentPosition).getTeamType();
+        return Stream.of(
+                        collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN, currentTeamType)
                 )
                 .flatMap(Collection::stream)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
-        System.out.println("PoMovePosition.getMoveablePosition: " + list);
-        return list;
     }
 
-    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType) {
+    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
         List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 
         List<Directions> beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
@@ -102,10 +102,11 @@ public class PoMovePosition extends MovePosition {
 
         return Stream.concat(
                         nextFilteredList.stream(),
-                        Stream.of(getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.PHO))
+                        Stream.of(getNextStepIfMovable(pieces, nextFilteredList, nextPiecePosition, directionType, PieceType.PHO, currentTeamType))
                 )
+                .filter(Directions::isNotEmpty)
                 .map(directions -> Directions.concat(standardDirection, directions))
-        .toList();
+                .toList();
     }
 
     @Override

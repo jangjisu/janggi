@@ -3,6 +3,7 @@ package com.game.janggi.domain.piece.move;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.position.PiecePosition;
+import com.game.janggi.domain.team.TeamType;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,17 +65,17 @@ public class ChaMovePosition extends MovePosition {
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        List<PiecePosition> list = Stream.of(
-                        collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP),
-                        collectMovableInDirection(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN)
+        TeamType currentTeamType = pieces.get(currentPosition).getTeamType();
+
+        return Stream.of(
+                        collectMovableInDirection(pieces, currentPosition, moveAbleRightDirections, Direction.RIGHT, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleLeftDirections, Direction.LEFT, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleUpDirections, Direction.UP, currentTeamType),
+                        collectMovableInDirection(pieces, currentPosition, moveAbleDownDirections, Direction.DOWN, currentTeamType)
                 )
                 .flatMap(Collection::stream)
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
-        System.out.println("ChaMovePosition.getMoveablePosition: " + list);
-        return list;
     }
 
     @Override
@@ -86,16 +87,16 @@ public class ChaMovePosition extends MovePosition {
     // 1. UP, DOWN, LEFT, RIGHT 중 하나의 이동 방향을 parameter로 받아서 생성 가능한 포지션을 필터한다.
     // 2. 생성 가능한 포지션 중에서 이동해 기물이 있는 곳 까지 구한다 (getMoveAbleDirectionsForFirst)
     // 3. getMoveAbleDirectionsForFirst 을 통해 구한 포지션 다음 위치에 기물이 있는지 확인해 상대편 기물이라면 그 위치까지 이동 가능범위에 추가한다.
-    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType) {
+    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
         List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 
         List<Directions> beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
-
-
         return Stream.concat(
                         beforeNextPieceDirections.stream(),
-                        Stream.of(getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.CHA))
-                ).toList();
+                        Stream.of(getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.CHA, currentTeamType))
+                )
+                .filter(Directions::isNotEmpty)
+                .toList();
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode
 @ToString
 public class Directions {
-    private final List<Direction> directions;
+    private final List<Direction> directionList;
 
     public static Directions create(Direction... directionList) {
         return new Directions(List.of(directionList));
@@ -30,8 +30,8 @@ public class Directions {
 
     public static Directions concat(Directions standardDirection, Directions directions) {
         List<Direction> combined = Stream.concat(
-                standardDirection.directions.stream(),
-                directions.directions.stream()
+                standardDirection.directionList.stream(),
+                directions.directionList.stream()
         ).toList();
 
         return Directions.create(combined.toArray(new Direction[0]));
@@ -41,35 +41,39 @@ public class Directions {
         return new Directions(List.of());
     }
 
+    public boolean isNotEmpty() {
+        return !directionList.isEmpty();
+    }
+
     public Directions append(Direction next) {
         return new Directions(
-                Stream.concat(directions.stream(), Stream.of(next)).toList()
+                Stream.concat(directionList.stream(), Stream.of(next)).toList()
         );
     }
 
     public int getTotalRow() {
-        return directions.stream()
+        return directionList.stream()
                 .mapToInt(Direction::getRow)
                 .sum();
     }
 
     public int getTotalCol() {
-        return directions.stream()
+        return directionList.stream()
                 .mapToInt(Direction::getCol)
                 .sum();
     }
 
     public List<Directions> getMiddleDirections() {
-        if (directions.size() < 2) {
+        if (directionList.size() < 2) {
             return List.of();
         }
-        return IntStream.range(1, directions.size())
-                .mapToObj(i -> new Directions(List.copyOf(directions.subList(0, i))))
+        return IntStream.range(1, directionList.size())
+                .mapToObj(i -> new Directions(List.copyOf(directionList.subList(0, i))))
                 .toList();
     }
 
     public int getDirectionSize() {
-        return directions.size();
+        return directionList.size();
     }
 
     public static boolean isNextAvailable(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {

@@ -63,13 +63,12 @@ public abstract class MovePosition {
                 .toList();
     }
 
-    protected Directions getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Directions> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType) {
+    protected Directions getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Directions> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
         if (Directions.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
             Directions nextPieceDirections = Directions.appendNextStep(beforeNextPieceDirections, directionType);
 
             Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceDirections));
-            TeamType selectedPieceTeamType = getSelectedPieceTeamType(pieces, currentPosition);
-            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, selectedPieceTeamType))) {
+            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
                 return nextPieceDirections;
             }
         }
