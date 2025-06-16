@@ -32,9 +32,7 @@ public class SangMovePosition extends MovePosition {
     }
 
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
+        return filteredWithinBoard(moveAbleDirections, currentPosition);
     }
 
 }

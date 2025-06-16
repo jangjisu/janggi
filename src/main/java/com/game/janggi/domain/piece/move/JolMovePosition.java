@@ -35,8 +35,8 @@ public class JolMovePosition extends MovePosition {
 
     @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return GongPiecePosition.canMoveDiagonal(currentPosition) ? diagonalMoveAbleDirections : moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
+        return filteredWithinBoard(
+                GongPiecePosition.canMoveDiagonal(currentPosition)
+                        ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition);
     }
 }

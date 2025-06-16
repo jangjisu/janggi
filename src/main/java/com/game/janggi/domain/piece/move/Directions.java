@@ -37,6 +37,10 @@ public class Directions {
         return Directions.create(combined.toArray(new Direction[0]));
     }
 
+    public static Directions empty() {
+        return new Directions(List.of());
+    }
+
     public Directions append(Direction next) {
         return new Directions(
                 Stream.concat(directions.stream(), Stream.of(next)).toList()
@@ -68,20 +72,20 @@ public class Directions {
         return directions.size();
     }
 
-    public static boolean canMakeNextDirections(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
+    public static boolean isNextAvailable(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
         if (directions.isEmpty()) {
             return currentPosition.canMove(Directions.create(directionType));
         }
 
-        Directions plusOneDirections = getPlusOneDirections(directions, directionType);
+        Directions plusOneDirections = appendNextStep(directions, directionType);
         return currentPosition.canMove(plusOneDirections);
     }
 
-    public static boolean canNotMakeNextDirections(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
-        return !canMakeNextDirections(directions, currentPosition, directionType);
+    public static boolean isNextNotAvailable(List<Directions> directions, PiecePosition currentPosition, Direction directionType) {
+        return !isNextAvailable(directions, currentPosition, directionType);
     }
 
-    public static Directions getPlusOneDirections(List<Directions> directions, Direction directionType) {
+    public static Directions appendNextStep(List<Directions> directions, Direction directionType) {
         if (directions.isEmpty()) {
             return Directions.create(directionType);
         }

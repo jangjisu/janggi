@@ -1,6 +1,7 @@
 package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
+import com.game.janggi.domain.piece.PieceType;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -50,10 +51,30 @@ public abstract class MovePosition {
     }
 
     // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
-    protected List<Directions> getMoveAbleDirectionsForFirst(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> directions) {
+    protected List<Directions> filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> directions) {
         return Directions.sortByLengthAsc(directions).stream()
                 .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
                 .toList();
+    }
+
+    protected List<Directions> filteredWithinBoard(List<Directions> moveAbleDirections, PiecePosition currentPosition) {
+        return moveAbleDirections.stream()
+                .filter(currentPosition::canMove)
+                .toList();
+    }
+
+    protected Directions getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Directions> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType) {
+        if (Directions.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
+            Directions nextPieceDirections = Directions.appendNextStep(beforeNextPieceDirections, directionType);
+
+            Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceDirections));
+            TeamType selectedPieceTeamType = getSelectedPieceTeamType(pieces, currentPosition);
+            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, selectedPieceTeamType))) {
+                return nextPieceDirections;
+            }
+        }
+
+        return Directions.empty();
     }
 
 
