@@ -78,23 +78,22 @@ public class PoMovePosition extends MovePosition {
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .toList();
 
-        List<PiecePosition> diagonalMovePositions = getDigonalPiecePosition(pieces, currentPosition, currentTeamType);
+        List<PiecePosition> diagonalMovePositions = getDiagonalPiecePosition(pieces, currentPosition, currentTeamType);
         return Stream.concat(normalMovePositions.stream(), diagonalMovePositions.stream()).toList();
 
     }
 
-    private List<PiecePosition> getDigonalPiecePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
-        if (GongPiecePosition.getPoCanDigonalGongPositions().contains(currentPosition)) {
+    private List<PiecePosition> getDiagonalPiecePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
+        if (GongPiecePosition.getPoCanDiagonalGongPositions().contains(currentPosition)) {
             Piece centerPiece = pieces.get(GongPiecePosition.getGongCenterPosition(currentPosition));
-            if (MoveRules.canNotBeJumpedOver(centerPiece)) {
+            if (centerPiece == null || MoveRules.canNotBeJumpedOver(centerPiece)) {
                 return List.of();
             }
 
             PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
             Piece oppositePiece = pieces.get(oppositeGongPosition);
-            if (MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType))) {
-                return List.of(oppositeGongPosition);
-            }
+
+            return MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType)) ? List.of(oppositeGongPosition) : List.of();
         }
 
         return List.of();

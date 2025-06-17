@@ -33,20 +33,23 @@ public enum GongPiecePosition {
     private final String description;
     private final boolean canMoveDiagonal;
 
+    private static final PiecePosition HAN_CENTER = HAN_05.position;
+    private static final PiecePosition CHO_CENTER = CHO_05.position;
+
     public static List<PiecePosition> getGongPositions() {
         return Arrays.stream(values())
                 .map(it -> it.position)
                 .toList();
     }
 
-    public static List<PiecePosition> getPoCanDigonalGongPositions() {
+    public static List<PiecePosition> getPoCanDiagonalGongPositions() {
         return Arrays.stream(values())
                 .filter(it -> it.oppositePosition != null)
                 .map(it -> it.position)
                 .toList();
     }
 
-    public static List<PiecePosition> getHanDigonalGongPositions() {
+    public static List<PiecePosition> getHanDiagonalGongPositions() {
         return Arrays.stream(values())
                 .filter(it -> it.description.contains("한"))
                 .map(it -> it.position)
@@ -54,11 +57,11 @@ public enum GongPiecePosition {
     }
 
     public static PiecePosition getGongCenterPosition(PiecePosition piecePosition) {
-        if (GongPiecePosition.getHanDigonalGongPositions().contains(piecePosition)) {
-            return PiecePosition.create(4, 1);
+        if (GongPiecePosition.getHanDiagonalGongPositions().contains(piecePosition)) {
+            return HAN_CENTER;
         }
 
-        return PiecePosition.create(4, 8);
+        return CHO_CENTER;
     }
 
     public static PiecePosition getOppositeGongPosition(PiecePosition piecePosition) {
