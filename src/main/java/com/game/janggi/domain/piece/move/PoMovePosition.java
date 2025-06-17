@@ -21,8 +21,7 @@ public class PoMovePosition extends MovePosition {
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
+            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
     );
 
     private final List<Directions> moveAbleDownDirections = List.of(
@@ -33,6 +32,7 @@ public class PoMovePosition extends MovePosition {
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
+            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN)
     );
 
@@ -83,22 +83,41 @@ public class PoMovePosition extends MovePosition {
 
     }
 
+    // 포가 대각선으로 이동할 수 경우 체크한다.
+    // 1. 포의 위치가 대각선으로 이동할 수 있는 위치인지 확인한다.
+    // 2. 궁성 중앙
     private List<PiecePosition> getDiagonalPiecePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
         if (GongPiecePosition.getPoCanDiagonalGongPositions().contains(currentPosition)) {
-            Piece centerPiece = pieces.get(GongPiecePosition.getGongCenterPosition(currentPosition));
-            if (centerPiece == null || MoveRules.canNotBeJumpedOver(centerPiece)) {
+
+            if (isGongCenterEmptyOrNotJumpable(pieces, currentPosition)) {
                 return List.of();
             }
 
-            PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
-            Piece oppositePiece = pieces.get(oppositeGongPosition);
-
-            return MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType)) ? List.of(oppositeGongPosition) : List.of();
+            return isOppositePositionisEmptyOrCanMove(pieces, currentPosition, currentTeamType) ? List.of(GongPiecePosition.getOppositeGongPosition(currentPosition)) : List.of();
         }
 
         return List.of();
     }
 
+    private boolean isGongCenterEmptyOrNotJumpable(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        Piece centerPiece = pieces.get(GongPiecePosition.getGongCenterPosition(currentPosition));
+        return centerPiece == null || MoveRules.canNotBeJumpedOver(centerPiece);
+    }
+
+    private boolean isOppositePositionisEmptyOrCanMove(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
+        PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
+        Piece oppositePiece = pieces.get(oppositeGongPosition);
+
+        return oppositePiece == null || MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType));
+    }
+
+    // 한 방향으로 이동 가능한 포지션을 구한다.
+    // 1. 생성 가능한 포지션을 필터한다 (boardBoundDirections).
+    // 2. 생성 가능한 포지션 중에서 이동해 기물이 있는 곳 까지 구한다 (beforeNextPieceDirections)
+    // 3. 보드가 끝나서 필터된 것인지 확인한다. (isNextNotAvailable)
+    // 4. 다음 기물이 뛰어넘을 수 있는 기물인지 확인한다 (canBeJumpedOver)
+    // 5. 다음 기물로부터 1/2 번을 수행한다 (nextFilteredList)
+    // 6. 다음에 다음 기물이 이동가능한지 확인해 추가한다 (getNextStepIfMovable)
     private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
         List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 

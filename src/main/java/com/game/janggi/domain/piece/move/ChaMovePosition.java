@@ -20,8 +20,7 @@ public class ChaMovePosition extends MovePosition {
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
             Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
+            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
     );
 
     private final List<Directions> moveAbleDownDirections = List.of(
@@ -32,6 +31,7 @@ public class ChaMovePosition extends MovePosition {
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
+            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
             Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN)
     );
 
@@ -84,9 +84,9 @@ public class ChaMovePosition extends MovePosition {
     }
 
     // 한 방향으로 이동 가능한 포지션을 구한다.
-    // 1. UP, DOWN, LEFT, RIGHT 중 하나의 이동 방향을 parameter로 받아서 생성 가능한 포지션을 필터한다.
-    // 2. 생성 가능한 포지션 중에서 이동해 기물이 있는 곳 까지 구한다 (getMoveAbleDirectionsForFirst)
-    // 3. getMoveAbleDirectionsForFirst 을 통해 구한 포지션 다음 위치에 기물이 있는지 확인해 상대편 기물이라면 그 위치까지 이동 가능범위에 추가한다.
+    // 1. 생성 가능한 포지션을 필터한다 (boardBoundDirections).
+    // 2. 생성 가능한 포지션 중에서 이동해 기물이 있는 곳 까지 구한다 (beforeNextPieceDirections)
+    // 3. beforeNextPieceDirections 을 통해 구한 포지션 다음 위치에 기물이 있는지 확인(getNextStepIfMovable)해 상대편 기물이라면 그 위치까지 이동 가능범위에 추가한다.
     private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
         List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 
