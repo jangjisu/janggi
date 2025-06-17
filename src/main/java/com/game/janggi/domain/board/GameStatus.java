@@ -16,7 +16,7 @@ public enum GameStatus {
         this.comment = comment;
     }
 
-    public static GameStatus getWinner(TeamType winTeamType) {
+    public GameStatus changeGameEnd(TeamType winTeamType) {
         if (winTeamType == TeamType.HAN) {
             return HAN_WIN;
         }

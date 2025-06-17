@@ -6,56 +6,28 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ChaMovePosition extends MovePosition {
-    private final List<Directions> moveAbleUpDirections = List.of(
-            Directions.create(Direction.UP),
-            Directions.create(Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
-    );
+    private final List<Directions> moveAbleUpDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.UP)))
+            .toList();
 
-    private final List<Directions> moveAbleDownDirections = List.of(
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN)
-    );
+    private final List<Directions> moveAbleDownDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.DOWN)))
+            .toList();
 
-    private final List<Directions> moveAbleLeftDirections = List.of(
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT)
-    );
+    private final List<Directions> moveAbleLeftDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.LEFT)))
+            .toList();
 
-    private final List<Directions> moveAbleRightDirections = List.of(
-            Directions.create(Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT)
-    );
+    private final List<Directions> moveAbleRightDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.RIGHT)))
+            .toList();
 
     private final List<Directions> allMoveAbleDirections =
             Stream.of(moveAbleDownDirections, moveAbleLeftDirections, moveAbleRightDirections, moveAbleUpDirections)

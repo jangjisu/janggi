@@ -7,56 +7,28 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class PoMovePosition extends MovePosition {
-    private final List<Directions> moveAbleUpDirections = List.of(
-            Directions.create(Direction.UP),
-            Directions.create(Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-            Directions.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP)
-    );
+    private final List<Directions> moveAbleUpDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.UP)))
+            .toList();
 
-    private final List<Directions> moveAbleDownDirections = List.of(
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-            Directions.create(Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN)
-    );
+    private final List<Directions> moveAbleDownDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.DOWN)))
+            .toList();
 
-    private final List<Directions> moveAbleLeftDirections = List.of(
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
-            Directions.create(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT)
-    );
+    private final List<Directions> moveAbleLeftDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.LEFT)))
+            .toList();
 
-    private final List<Directions> moveAbleRightDirections = List.of(
-            Directions.create(Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
-            Directions.create(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT)
-    );
+    private final List<Directions> moveAbleRightDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.RIGHT)))
+            .toList();
 
     private final List<Directions> allMoveAbleDirections =
             Stream.of(moveAbleDownDirections, moveAbleLeftDirections, moveAbleRightDirections, moveAbleUpDirections)
@@ -85,7 +57,8 @@ public class PoMovePosition extends MovePosition {
 
     // 포가 대각선으로 이동할 수 경우 체크한다.
     // 1. 포의 위치가 대각선으로 이동할 수 있는 위치인지 확인한다.
-    // 2. 궁성 중앙
+    // 2. 궁성 중앙에 기물이 있고, 포가 뛰어넘을 수 있는 기물인지 확인한다.
+    // 3. 대각선 위치로 이동할 수 있는지 확인한다.
     private List<PiecePosition> getDiagonalPiecePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
         if (GongPiecePosition.getPoCanDiagonalGongPositions().contains(currentPosition)) {
 
@@ -93,7 +66,9 @@ public class PoMovePosition extends MovePosition {
                 return List.of();
             }
 
-            return isOppositePositionisEmptyOrCanMove(pieces, currentPosition, currentTeamType) ? List.of(GongPiecePosition.getOppositeGongPosition(currentPosition)) : List.of();
+            PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
+
+            return isOppositePositionCanMove(pieces, oppositeGongPosition, currentTeamType) ? List.of(oppositeGongPosition) : List.of();
         }
 
         return List.of();
@@ -104,10 +79,8 @@ public class PoMovePosition extends MovePosition {
         return centerPiece == null || MoveRules.canNotBeJumpedOver(centerPiece);
     }
 
-    private boolean isOppositePositionisEmptyOrCanMove(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, TeamType currentTeamType) {
-        PiecePosition oppositeGongPosition = GongPiecePosition.getOppositeGongPosition(currentPosition);
+    private boolean isOppositePositionCanMove(Map<PiecePosition, Piece> pieces, PiecePosition oppositeGongPosition, TeamType currentTeamType) {
         Piece oppositePiece = pieces.get(oppositeGongPosition);
-
         return oppositePiece == null || MoveRules.canMoveToNextPiece(PieceType.PHO, oppositePiece, isPieceOfDifferentTeam(oppositePiece, currentTeamType));
     }
 

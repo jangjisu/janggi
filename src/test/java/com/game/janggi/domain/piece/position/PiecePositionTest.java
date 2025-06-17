@@ -28,7 +28,7 @@ class PiecePositionTest {
     }
 
     @Test
-    @DisplayName("장기말은 row 0~9, col 0~8 포지션 밖에는 존재할 수 없다")
+    @DisplayName("장기말은 row 0~8, col 0~9 포지션 밖에는 존재할 수 없다")
     void positionCannotOnOutIndex() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(11, 3))
