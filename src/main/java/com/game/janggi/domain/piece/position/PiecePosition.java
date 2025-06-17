@@ -26,9 +26,4 @@ public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
 
         return create(newRowIndex, newColIndex);
     }
-
-    public boolean isAtPosition(int rowIndex, int colIndex) {
-        return this.rowIndex == rowIndex && this.colIndex == colIndex;
-    }
-
 }
