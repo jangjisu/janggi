@@ -1,6 +1,7 @@
 package com.game.janggi.io;
 
 import com.game.janggi.domain.board.GameBoard;
+import com.game.janggi.domain.board.GameStatus;
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
@@ -65,5 +66,11 @@ public class OutputHandler {
 
     public void showErrorEndComments() {
         System.out.println("예기치 못한 문제로 게임을 종료합니다.");
+    }
+
+    public void showEndComments(GameStatus gameStatus) {
+        System.out.println(">>>>>>>>>>>>>");
+        System.out.println(gameStatus.getComment());
+        System.out.println(">>>>>>>>>>>>>");
     }
 }
