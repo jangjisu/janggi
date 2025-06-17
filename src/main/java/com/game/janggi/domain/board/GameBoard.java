@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -117,16 +118,17 @@ public class GameBoard {
     }
 
     private void executeMovement(PiecePosition selectedPiecePosition, PiecePosition willMovePosition) {
-        checkGameOver(willMovePosition);
-
         pieces.remove(selectedPiecePosition);
         pieces.put(willMovePosition, selectedPiece);
     }
 
-    private void checkGameOver(PiecePosition willMovePosition) {
-        Piece willRemovePiece = pieces.get(willMovePosition);
-        if (willRemovePiece instanceof King) {
-            this.gameStatus = GameStatus.getWinner(willRemovePiece.getTeamType().getOppositeTeam());
+    public void changeGameStatus() {
+        List<Piece> kingPieces = pieces.values().stream()
+                .filter(King.class::isInstance)
+                .toList();
+
+        if (kingPieces.size() == 1) {
+            this.gameStatus = gameStatus.changeGameEnd(kingPieces.get(0).getTeamType());
         }
     }
 
