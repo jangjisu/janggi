@@ -33,7 +33,7 @@ class JolMovePositionTest {
     @DisplayName("졸이 오른쪽에 붙어 있다면 뒤와 왼쪽으로만 이동할 수 있다.")
     void moveWhenRight() {
         //given
-        PiecePosition piecePosition = new PiecePosition(9, 3);
+        PiecePosition piecePosition = new PiecePosition(8, 3);
 
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
