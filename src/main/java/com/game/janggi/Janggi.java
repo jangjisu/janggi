@@ -24,9 +24,7 @@ public class Janggi {
     }
 
     private void doGame() {
-        int count = 0;
-//        while (gameBoard.isGameIsInProgress()) {
-        while (count < 10) {
+        while (gameBoard.isGameIsInProgress()) {
             outputHandler.showBoard(gameBoard);
 
             outputHandler.showTurnComments(gameBoard.getCurrentTurn());
@@ -40,8 +38,10 @@ public class Janggi {
             movePiece(selectedPiecePosition);
 
             gameBoard.changeTurn();
-            count++;
         }
+
+        outputHandler.showBoard(gameBoard);
+        outputHandler.showEndComments(gameBoard.getGameStatus());
 
     }
 
