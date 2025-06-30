@@ -33,7 +33,7 @@ class BungMovePositionTest {
     @DisplayName("병이 오른쪽에 붙어 있다면 앞과 왼쪽으로만 이동할 수 있다.")
     void moveWhenRight() {
         //given
-        PiecePosition piecePosition = new PiecePosition(9, 3);
+        PiecePosition piecePosition = new PiecePosition(8, 3);
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();
@@ -68,7 +68,7 @@ class BungMovePositionTest {
     @DisplayName("병이 아래쪽에 붙어 있다면 오른쪽과 왼쪽으로만 이동할 수 있다.")
     void moveWhenTop() {
         //given
-        PiecePosition piecePosition = new PiecePosition(1, 8);
+        PiecePosition piecePosition = new PiecePosition(1, 9);
 
         //when
         BungMovePosition bungMovePosition = new BungMovePosition();

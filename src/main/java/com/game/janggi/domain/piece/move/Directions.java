@@ -22,6 +22,10 @@ public class Directions {
         return new Directions(List.of(directionList));
     }
 
+    public static Directions create(List<Direction> directions) {
+        return new Directions(directions);
+    }
+
     public static List<Directions> sortByLengthAsc(List<Directions> directions) {
         return directions.stream()
                 .sorted(Comparator.comparingInt(Directions::getDirectionSize))

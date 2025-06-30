@@ -38,6 +38,8 @@ public class Janggi {
             movePiece(selectedPiecePosition);
 
             gameBoard.changeTurn();
+
+            gameBoard.changeGameStatus();
         }
 
         outputHandler.showBoard(gameBoard);
