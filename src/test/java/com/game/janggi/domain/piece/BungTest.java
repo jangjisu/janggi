@@ -1,7 +1,6 @@
 package com.game.janggi.domain.piece;
 
 import com.game.janggi.domain.team.TeamType;
-import com.game.janggi.exception.NeedStopException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

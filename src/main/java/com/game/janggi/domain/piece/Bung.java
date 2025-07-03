@@ -2,7 +2,6 @@ package com.game.janggi.domain.piece;
 
 import com.game.janggi.domain.piece.move.MovePosition;
 import com.game.janggi.domain.team.TeamType;
-import com.game.janggi.exception.NeedStopException;
 
 import java.util.Objects;
 
