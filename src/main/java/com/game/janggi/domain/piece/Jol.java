@@ -4,6 +4,8 @@ import com.game.janggi.domain.piece.move.MovePosition;
 import com.game.janggi.domain.team.TeamType;
 import com.game.janggi.exception.NeedStopException;
 
+import java.util.Objects;
+
 import static com.game.janggi.domain.team.TeamType.HAN;
 
 public class Jol extends Piece {
@@ -12,8 +14,10 @@ public class Jol extends Piece {
     }
 
     public static Jol create(TeamType teamType) {
+        Objects.requireNonNull(teamType, "TeamType must not be null");
+
         if (teamType == HAN) {
-            throw new NeedStopException("졸은 초나라의 기물입니다");
+            throw new IllegalArgumentException("Jol is Cho Piece");
         }
         return new Jol(teamType, MovePosition.createJolMove());
     }

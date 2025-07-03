@@ -4,6 +4,8 @@ import com.game.janggi.domain.piece.move.MovePosition;
 import com.game.janggi.domain.team.TeamType;
 import com.game.janggi.exception.NeedStopException;
 
+import java.util.Objects;
+
 import static com.game.janggi.domain.team.TeamType.CHO;
 
 public class Bung extends Piece {
@@ -12,8 +14,10 @@ public class Bung extends Piece {
     }
 
     public static Bung create(TeamType teamType) {
+        Objects.requireNonNull(teamType, "TeamType must not be null");
+
         if (teamType == CHO) {
-            throw new NeedStopException("병은 한나라의 기물입니다");
+            throw new IllegalArgumentException("Bung is Han Piece");
         }
         return new Bung(teamType, MovePosition.createBungMove());
     }

@@ -25,7 +25,16 @@ class JolTest {
     void createJolFail() {
         // when // then
         assertThatThrownBy(() -> Jol.create(TeamType.HAN))
-                .isInstanceOf(NeedStopException.class)
-                .hasMessageContaining("졸은 초나라의 기물입니다");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Jol is Cho Piece");
+    }
+
+    @DisplayName("졸은 팀 없이 생성될 수 없다.")
+    @Test
+    void createJolNoTeamFail() {
+        // when // then
+        assertThatThrownBy(() -> Jol.create(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("TeamType must not be null");
     }
 }

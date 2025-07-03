@@ -25,7 +25,16 @@ class BungTest {
     void createBungFail() {
         // when // then
         assertThatThrownBy(() -> Bung.create(TeamType.CHO))
-                .isInstanceOf(NeedStopException.class)
-                .hasMessageContaining("병은 한나라의 기물입니다");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Bung is Han Piece");
+    }
+
+    @DisplayName("병은 팀 없이 생성될 수 없다.")
+    @Test
+    void createBungNoTeamFail() {
+        // when // then
+        assertThatThrownBy(() -> Bung.create(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("TeamType must not be null");
     }
 }
