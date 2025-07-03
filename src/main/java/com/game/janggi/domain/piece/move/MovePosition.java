@@ -77,4 +77,32 @@ public abstract class MovePosition {
     public static BungMovePosition createBungMove() {
         return new BungMovePosition();
     }
+
+    public static JolMovePosition createJolMove() {
+        return new JolMovePosition();
+    }
+
+    public static KingMovePosition createKingMove() {
+        return new KingMovePosition();
+    }
+
+    public static SaMovePosition createSaMove() {
+        return new SaMovePosition();
+    }
+
+    public static SangMovePosition createSangMove() {
+        return new SangMovePosition();
+    }
+
+    public static MaMovePosition createMaMove() {
+        return new MaMovePosition();
+    }
+
+    public static PoMovePosition createPoMove() {
+        return new PoMovePosition();
+    }
+
+    public static ChaMovePosition createChaMove() {
+        return new ChaMovePosition();
+    }
 }

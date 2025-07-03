@@ -1,31 +1,25 @@
 package com.game.janggi.domain.piece;
 
-import com.game.janggi.domain.piece.move.BungMovePosition;
 import com.game.janggi.domain.piece.move.MovePosition;
-import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
+import com.game.janggi.exception.NeedStopException;
 
-import java.util.List;
-import java.util.Map;
+import static com.game.janggi.domain.team.TeamType.CHO;
 
 public class Bung extends Piece {
-    protected Bung(TeamType teamType) {
-        super(teamType);
+    private Bung(TeamType teamType, MovePosition movePosition) {
+        super(teamType, movePosition);
     }
 
-    private final MovePosition movePosition = new BungMovePosition();
-
     public static Bung create(TeamType teamType) {
-        return new Bung(teamType);
+        if (teamType == CHO) {
+            throw new NeedStopException("병은 한나라의 기물입니다");
+        }
+        return new Bung(teamType, MovePosition.createBungMove());
     }
 
     @Override
     public String printPieceName() {
         return "병";
-    }
-
-    @Override
-    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }

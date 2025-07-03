@@ -1,31 +1,19 @@
 package com.game.janggi.domain.piece;
 
 import com.game.janggi.domain.piece.move.MovePosition;
-import com.game.janggi.domain.piece.move.PoMovePosition;
-import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
-import java.util.List;
-import java.util.Map;
-
 public class Po extends Piece {
-    protected Po(TeamType teamType) {
-        super(teamType);
+    private Po(TeamType teamType, MovePosition movePosition) {
+        super(teamType, movePosition);
     }
 
-    private final MovePosition movePosition = new PoMovePosition();
-
     public static Po create(TeamType teamType) {
-        return new Po(teamType);
+        return new Po(teamType, MovePosition.createPoMove());
     }
 
     @Override
     public String printPieceName() {
         return "포";
-    }
-
-    @Override
-    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }
