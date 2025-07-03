@@ -65,7 +65,7 @@ class BungMovePositionTest {
 
         //then
         assertThat(canMovePositions).hasSize(3)
-                .contains(
+                .containsExactlyInAnyOrder(
                     PiecePosition.create(1,4),
                     PiecePosition.create(2,3),
                     PiecePosition.create(0,3)
@@ -83,7 +83,7 @@ class BungMovePositionTest {
 
         //then
         assertThat(canMovePositions).hasSize(2)
-                .contains(
+                .containsExactlyInAnyOrder(
                     PiecePosition.create(8,4),
                     PiecePosition.create(7,3)
                 );
@@ -99,7 +99,7 @@ class BungMovePositionTest {
         List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, piecePosition);
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(
+                .containsExactlyInAnyOrder(
                     PiecePosition.create(0,1),
                     PiecePosition.create(1,0)
                 );
@@ -116,7 +116,7 @@ class BungMovePositionTest {
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(
+                .containsExactlyInAnyOrder(
                         PiecePosition.create(0,9),
                         PiecePosition.create(2,9)
                 );
@@ -133,7 +133,7 @@ class BungMovePositionTest {
 
         //then
         assertThat(moveAblePosition).hasSize(3)
-                .contains(
+                .containsExactlyInAnyOrder(
                         PiecePosition.create(1,5),
                         PiecePosition.create(3,5),
                         PiecePosition.create(2,6)
@@ -151,7 +151,7 @@ class BungMovePositionTest {
 
         //then
         assertThat(moveAblePosition).hasSize(2)
-                .contains(
+                .containsExactlyInAnyOrder(
                         PiecePosition.create(4,5),
                         PiecePosition.create(6,5)
                 );
