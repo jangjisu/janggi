@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MovePosition {
-    protected abstract List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition);
-
     public abstract List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
 
     private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
@@ -76,5 +74,7 @@ public abstract class MovePosition {
         return Directions.empty();
     }
 
-
+    public static BungMovePosition createBungMove() {
+        return new BungMovePosition();
+    }
 }

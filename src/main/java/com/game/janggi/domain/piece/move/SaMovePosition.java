@@ -38,7 +38,6 @@ public class SaMovePosition extends MovePosition {
                 .toList();
     }
 
-    @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return filteredWithinBoard(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
