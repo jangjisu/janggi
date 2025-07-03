@@ -31,7 +31,6 @@ public class MaMovePosition extends MovePosition {
                 .toList();
     }
 
-    @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return filteredWithinBoard(moveAbleDirections, currentPosition);
     }

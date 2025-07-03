@@ -1,31 +1,22 @@
 package com.game.janggi.domain.piece;
 
-import com.game.janggi.domain.piece.move.KingMovePosition;
 import com.game.janggi.domain.piece.move.MovePosition;
-import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class King extends Piece {
-    protected King(TeamType teamType) {
-        super(teamType);
+    private King(TeamType teamType, MovePosition movePosition) {
+        super(teamType, movePosition);
     }
 
-    private final MovePosition movePosition = new KingMovePosition();
-
     public static King create(TeamType teamType) {
-        return new King(teamType);
+        Objects.requireNonNull(teamType, "TeamType must not be null");
+        return new King(teamType, MovePosition.createKingMove());
     }
 
     @Override
     public String printPieceName() {
         return "왕";
-    }
-
-    @Override
-    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
-        return movePosition.getMoveablePosition(pieceMap, currentPosition);
     }
 }

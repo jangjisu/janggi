@@ -33,8 +33,7 @@ public class BungMovePosition extends MovePosition {
                 .toList();
     }
 
-    @Override
-    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
+    private List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return filteredWithinBoard(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
                         ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition);

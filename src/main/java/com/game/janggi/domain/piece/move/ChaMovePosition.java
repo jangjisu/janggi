@@ -50,7 +50,6 @@ public class ChaMovePosition extends MovePosition {
                 .toList();
     }
 
-    @Override
     protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return filteredWithinBoard(allMoveAbleDirections, currentPosition);
     }

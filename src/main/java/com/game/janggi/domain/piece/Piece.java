@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece;
 
+import com.game.janggi.domain.piece.move.MovePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 import lombok.AccessLevel;
@@ -13,10 +14,13 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Piece {
     protected final TeamType teamType;
+    protected final MovePosition movePosition;
 
     public abstract String printPieceName();
 
-    protected abstract List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition);
+    protected List<PiecePosition> getMoveAblePositions(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition) {
+        return movePosition.getMoveablePosition(pieceMap, currentPosition);
+    }
 
     public boolean canMoveTo(Map<PiecePosition, Piece> pieceMap, PiecePosition currentPosition, PiecePosition targetPosition) {
         return getMoveAblePositions(pieceMap, currentPosition).contains(targetPosition);

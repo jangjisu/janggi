@@ -47,7 +47,7 @@ public class GameBoard {
         return getPieces().size();
     }
 
-    public Pieces getPieces() {
+    private Pieces getPieces() {
         return Pieces.create(
                 pieces.values().stream()
                         .filter(Objects::nonNull)
