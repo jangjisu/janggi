@@ -4,10 +4,7 @@ import com.game.janggi.domain.piece.Bung;
 import com.game.janggi.domain.piece.Jol;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +46,11 @@ class BungMovePositionTest {
         pieces.put(new PiecePosition(7, 8), Bung.create(HAN));
         pieces.put(new PiecePosition(6, 7), Bung.create(HAN));
         pieces.put(new PiecePosition(8, 7), Bung.create(HAN));
+    }
+
+    @AfterAll
+    void tearDown() {
+        pieces.clear();
     }
 
 
