@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.Map;
 
 public class SaMovePosition extends MovePosition {
-    private final List<Directions> diagonalMoveAbleDirections = List.of(
-            Directions.create(Direction.UP),
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.RIGHT),
-            Directions.create(Direction.UP_LEFT),
-            Directions.create(Direction.UP_RIGHT),
-            Directions.create(Direction.DOWN_LEFT),
-            Directions.create(Direction.DOWN_RIGHT)
+    private final List<Movement> diagonalMoveAbleDirections = List.of(
+            Movement.create(Direction.UP),
+            Movement.create(Direction.DOWN),
+            Movement.create(Direction.LEFT),
+            Movement.create(Direction.RIGHT),
+            Movement.create(Direction.UP_LEFT),
+            Movement.create(Direction.UP_RIGHT),
+            Movement.create(Direction.DOWN_LEFT),
+            Movement.create(Direction.DOWN_RIGHT)
     );
 
-    private final List<Directions> moveAbleDirections = List.of(
-            Directions.create(Direction.UP),
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.RIGHT)
+    private final List<Movement> moveAbleDirections = List.of(
+            Movement.create(Direction.UP),
+            Movement.create(Direction.DOWN),
+            Movement.create(Direction.LEFT),
+            Movement.create(Direction.RIGHT)
     );
 
 
@@ -32,22 +32,22 @@ public class SaMovePosition extends MovePosition {
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
 
-        return calculateBasicMoveAbleDirections(currentPosition).stream()
+        return calculateBasicMoveAbleDirections(currentPosition).getValues().stream()
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
-    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return filteredWithinBoard(
+    protected Movements calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
+        return Movements.create(filteredWithinBoard2(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
                         ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition)
-                .stream()
+                .getValues().stream()
                 .filter(directions -> checkGongPosition(currentPosition, directions))
-                .toList();
+                .toList());
     }
 
-    private boolean checkGongPosition(PiecePosition currentPosition, Directions directions) {
-        return GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, directions));
+    private boolean checkGongPosition(PiecePosition currentPosition, Movement movement) {
+        return GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, movement));
     }
 }

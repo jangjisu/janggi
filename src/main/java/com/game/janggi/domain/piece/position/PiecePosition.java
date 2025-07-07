@@ -1,13 +1,13 @@
 package com.game.janggi.domain.piece.position;
 
-import com.game.janggi.domain.piece.move.Directions;
+import com.game.janggi.domain.piece.move.Movement;
 import com.game.janggi.exception.RecoverableException;
 
 public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
     @Override
-    public boolean canMove(Directions directions) {
-        int newRowIndex = this.rowIndex + directions.getTotalRow();
-        int newColIndex = this.colIndex + directions.getTotalCol();
+    public boolean canMove(Movement movement) {
+        int newRowIndex = this.rowIndex + movement.getTotalRow();
+        int newColIndex = this.colIndex + movement.getTotalCol();
 
         return newRowIndex >= 0 && newRowIndex <= 8 && newColIndex >= 0 && newColIndex <= 9;
     }
@@ -20,9 +20,9 @@ public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
         return new PiecePosition(rowIndex, colIndex);
     }
 
-    public static PiecePosition create(PiecePosition currentPosition, Directions directions) {
-        int newRowIndex = currentPosition.rowIndex + directions.getTotalRow();
-        int newColIndex = currentPosition.colIndex + directions.getTotalCol();
+    public static PiecePosition create(PiecePosition currentPosition, Movement movement) {
+        int newRowIndex = currentPosition.rowIndex + movement.getTotalRow();
+        int newColIndex = currentPosition.colIndex + movement.getTotalCol();
 
         return create(newRowIndex, newColIndex);
     }

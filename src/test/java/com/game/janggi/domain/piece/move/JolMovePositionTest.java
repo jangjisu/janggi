@@ -4,8 +4,6 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -20,13 +18,13 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
+        Movements moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(3)
-                .contains(Directions.create(Direction.DOWN),
-                        Directions.create(Direction.LEFT),
-                        Directions.create(Direction.RIGHT));
+        assertThat(moveAblePosition.getValues()).hasSize(3)
+                .contains(Movement.create(Direction.DOWN),
+                        Movement.create(Direction.LEFT),
+                        Movement.create(Direction.RIGHT));
     }
 
     @Test
@@ -38,12 +36,12 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
+        Movements moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(2)
-                .contains(Directions.create(Direction.DOWN),
-                        Directions.create(Direction.LEFT));
+        assertThat(moveAblePosition.getValues()).hasSize(2)
+                .contains(Movement.create(Direction.DOWN),
+                        Movement.create(Direction.LEFT));
     }
 
     @Test
@@ -55,11 +53,11 @@ class JolMovePositionTest {
         //when
         JolMovePosition jolMovePosition = new JolMovePosition();
 
-        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
+        Movements moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
         //then
-        assertThat(moveAblePosition).hasSize(2)
-                .contains(Directions.create(Direction.DOWN),
-                        Directions.create(Direction.RIGHT));
+        assertThat(moveAblePosition.getValues()).hasSize(2)
+                .contains(Movement.create(Direction.DOWN),
+                        Movement.create(Direction.RIGHT));
 
 
     }
@@ -74,12 +72,12 @@ class JolMovePositionTest {
         JolMovePosition jolMovePosition = new JolMovePosition();
 
 
-        List<Directions> moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
+        Movements moveAblePosition = jolMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(2)
-                .contains(Directions.create(Direction.RIGHT),
-                        Directions.create(Direction.LEFT));
+        assertThat(moveAblePosition.getValues()).hasSize(2)
+                .contains(Movement.create(Direction.RIGHT),
+                        Movement.create(Direction.LEFT));
 
     }
 }
