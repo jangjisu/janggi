@@ -4,6 +4,7 @@ import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import lombok.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class Movements {
 
     private Movements sortByLengthAsc() {
         return Movements.create(values.stream()
-                .sorted((m1, m2) -> Integer.compare(m1.getSize(), m2.getSize()))
+                .sorted(Comparator.comparingInt(Movement::getSize))
                 .toList());
     }
 
