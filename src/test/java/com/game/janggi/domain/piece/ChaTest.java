@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ChaTest {
     @DisplayName("차를 생성할 수 있다")
@@ -16,5 +17,14 @@ class ChaTest {
         // then
         assertThat(cha).isNotNull();
         assertThat(cha.printPieceName()).isEqualTo("차");
+    }
+
+    @DisplayName("차는 팀 없이 생성될 수 없다.")
+    @Test
+    void createChaNoTeamFail() {
+        // when // then
+        assertThatThrownBy(() -> Cha.create(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("TeamType must not be null");
     }
 }
