@@ -4,8 +4,6 @@ import com.game.janggi.domain.piece.position.PiecePosition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class KingMovePositionTest {
@@ -18,19 +16,19 @@ class KingMovePositionTest {
         //when
         KingMovePosition kingMovePosition = new KingMovePosition();
 
-        List<Directions> moveAblePosition = kingMovePosition.calculateBasicMoveAbleDirections(piecePosition);
+        Movements moveAblePosition = kingMovePosition.calculateBasicMoveAbleDirections(piecePosition);
 
         //then
-        assertThat(moveAblePosition).hasSize(8)
+        assertThat(moveAblePosition.getValues()).hasSize(8)
                 .contains(
-                        Directions.create(Direction.UP),
-                        Directions.create(Direction.DOWN),
-                        Directions.create(Direction.LEFT),
-                        Directions.create(Direction.RIGHT),
-                        Directions.create(Direction.UP_LEFT),
-                        Directions.create(Direction.UP_RIGHT),
-                        Directions.create(Direction.DOWN_LEFT),
-                        Directions.create(Direction.DOWN_RIGHT)
+                        Movement.create(Direction.UP),
+                        Movement.create(Direction.DOWN),
+                        Movement.create(Direction.LEFT),
+                        Movement.create(Direction.RIGHT),
+                        Movement.create(Direction.UP_LEFT),
+                        Movement.create(Direction.UP_RIGHT),
+                        Movement.create(Direction.DOWN_LEFT),
+                        Movement.create(Direction.DOWN_RIGHT)
                 );
 
     }

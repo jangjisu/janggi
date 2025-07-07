@@ -9,32 +9,32 @@ import java.util.List;
 import java.util.Map;
 
 public class JolMovePosition extends MovePosition {
-    private final List<Directions> moveAbleDirections = List.of(
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.RIGHT)
+    private final List<Movement> moveAbleDirections = List.of(
+            Movement.create(Direction.DOWN),
+            Movement.create(Direction.LEFT),
+            Movement.create(Direction.RIGHT)
     );
 
-    private final List<Directions> diagonalMoveAbleDirections = List.of(
-            Directions.create(Direction.DOWN),
-            Directions.create(Direction.LEFT),
-            Directions.create(Direction.RIGHT),
-            Directions.create(Direction.DOWN_LEFT),
-            Directions.create(Direction.DOWN_RIGHT)
+    private final List<Movement> diagonalMoveAbleDirections = List.of(
+            Movement.create(Direction.DOWN),
+            Movement.create(Direction.LEFT),
+            Movement.create(Direction.RIGHT),
+            Movement.create(Direction.DOWN_LEFT),
+            Movement.create(Direction.DOWN_RIGHT)
     );
 
 
     @Override
     public List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
         TeamType teamType = getSelectedPieceTeamType(pieces, currentPosition);
-        return calculateBasicMoveAbleDirections(currentPosition).stream()
+        return calculateBasicMoveAbleDirections(currentPosition).getValues().stream()
                 .map(direction -> PiecePosition.create(currentPosition, direction))
                 .filter(piecePosition -> isEmptyOrEnemyPiece(pieces, piecePosition, teamType))
                 .toList();
     }
 
-    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return filteredWithinBoard(
+    protected Movements calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
+        return filteredWithinBoard2(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
                         ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition);
     }

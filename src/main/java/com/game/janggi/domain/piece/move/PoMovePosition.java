@@ -14,23 +14,23 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class PoMovePosition extends MovePosition {
-    private final List<Directions> moveAbleUpDirections = IntStream.rangeClosed(1, 9)
-            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.UP)))
+    private final List<Movement> moveAbleUpDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.UP)))
             .toList();
 
-    private final List<Directions> moveAbleDownDirections = IntStream.rangeClosed(1, 9)
-            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.DOWN)))
+    private final List<Movement> moveAbleDownDirections = IntStream.rangeClosed(1, 9)
+            .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.DOWN)))
             .toList();
 
-    private final List<Directions> moveAbleLeftDirections = IntStream.rangeClosed(1, 8)
-            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.LEFT)))
+    private final List<Movement> moveAbleLeftDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.LEFT)))
             .toList();
 
-    private final List<Directions> moveAbleRightDirections = IntStream.rangeClosed(1, 8)
-            .mapToObj(steps -> Directions.create(Collections.nCopies(steps, Direction.RIGHT)))
+    private final List<Movement> moveAbleRightDirections = IntStream.rangeClosed(1, 8)
+            .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.RIGHT)))
             .toList();
 
-    private final List<Directions> allMoveAbleDirections =
+    private final List<Movement> allMoveAbleDirections =
             Stream.of(moveAbleDownDirections, moveAbleLeftDirections, moveAbleRightDirections, moveAbleUpDirections)
                     .flatMap(Collection::stream)
                     .toList();
@@ -91,39 +91,39 @@ public class PoMovePosition extends MovePosition {
     // 4. 다음 기물이 뛰어넘을 수 있는 기물인지 확인한다 (canBeJumpedOver)
     // 5. 다음 기물로부터 1/2 번을 수행한다 (nextFilteredList)
     // 6. 다음에 다음 기물이 이동가능한지 확인해 추가한다 (getNextStepIfMovable)
-    private List<Directions> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
-        List<Directions> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
+    private List<Movement> collectMovableInDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Movement> moveAbleDirections, Direction directionType, TeamType currentTeamType) {
+        List<Movement> boardBoundDirections = filteredWithinBoard(moveAbleDirections, currentPosition);
 
-        List<Directions> beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
+        List<Movement> beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
 
-        if (Directions.isNextNotAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
+        if (Movement.isNextNotAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
             return List.of();
         }
 
-        PiecePosition nextPiecePosition = PiecePosition.create(currentPosition, Directions.appendNextStep(beforeNextPieceDirections, directionType));
+        PiecePosition nextPiecePosition = PiecePosition.create(currentPosition, Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType));
         Piece nextPiece = pieces.get(nextPiecePosition);
 
         if (MoveRules.canNotBeJumpedOver(nextPiece)) {
             return List.of();
         }
 
-        List<Directions> poMoveAbleDirections = moveAbleDirections.stream()
+        List<Movement> poMoveAbleDirections = moveAbleDirections.stream()
                 .filter(nextPiecePosition::canMove)
                 .toList();
 
-        List<Directions> nextFilteredList = filterUntilBlockedByPiece(pieces, nextPiecePosition, poMoveAbleDirections);
-        Directions standardDirection = Directions.appendNextStep(beforeNextPieceDirections, directionType);
+        List<Movement> nextFilteredList = filterUntilBlockedByPiece(pieces, nextPiecePosition, poMoveAbleDirections);
+        Movement standardDirection = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
 
         return Stream.concat(
                         nextFilteredList.stream(),
                         Stream.of(getNextStepIfMovable(pieces, nextFilteredList, nextPiecePosition, directionType, PieceType.PHO, currentTeamType))
                 )
-                .filter(Directions::isNotEmpty)
-                .map(directions -> Directions.concat(standardDirection, directions))
+                .filter(Movement::exists)
+                .map(directions -> Movement.concat(standardDirection, directions))
                 .toList();
     }
 
-    protected List<Directions> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
+    protected List<Movement> calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
         return filteredWithinBoard(allMoveAbleDirections, currentPosition);
     }
 }

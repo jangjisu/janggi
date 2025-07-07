@@ -9,71 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MovePosition {
-    public abstract List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
-
-    private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
-        return pieces.containsKey(willMovePosition);
-    }
-
-    private boolean isPieceOfSameTeam(Piece piece, TeamType currentTurnTeamType) {
-        return piece.isSameTeam(currentTurnTeamType);
-    }
-
-    protected TeamType getSelectedPieceTeamType(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
-        return pieces.get(currentPosition).getTeamType();
-    }
-
-    protected boolean isPieceOfDifferentTeam(Piece piece, TeamType currentTurnTeamType) {
-        return !isPieceOfSameTeam(piece, currentTurnTeamType);
-    }
-
-    protected boolean isThereEmpty(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
-        return !isTherePiece(pieces, willMovePosition);
-    }
-
-    protected boolean isEmptyOrEnemyPiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition, TeamType currentTurnTeamType) {
-        if (isThereEmpty(pieces, willMovePosition)) {
-            return true;
-        }
-
-        return isPieceOfDifferentTeam(pieces.get(willMovePosition), currentTurnTeamType);
-    }
-
-    protected boolean haveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
-        return directionsList.stream()
-                .anyMatch(directions -> isTherePiece(pieces, PiecePosition.create(currentPosition, directions)));
-    }
-
-    protected boolean notHaveObstacle(Map<PiecePosition, Piece> pieces, List<Directions> directionsList, PiecePosition currentPosition) {
-        return !haveObstacle(pieces, directionsList, currentPosition);
-    }
-
-    // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
-    protected List<Directions> filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Directions> directions) {
-        return Directions.sortByLengthAsc(directions).stream()
-                .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
-                .toList();
-    }
-
-    protected List<Directions> filteredWithinBoard(List<Directions> moveAbleDirections, PiecePosition currentPosition) {
-        return moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
-    }
-
-    protected Directions getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Directions> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
-        if (Directions.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
-            Directions nextPieceDirections = Directions.appendNextStep(beforeNextPieceDirections, directionType);
-
-            Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceDirections));
-            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
-                return nextPieceDirections;
-            }
-        }
-
-        return Directions.empty();
-    }
-
     public static BungMovePosition createBungMove() {
         return new BungMovePosition();
     }
@@ -104,5 +39,76 @@ public abstract class MovePosition {
 
     public static ChaMovePosition createChaMove() {
         return new ChaMovePosition();
+    }
+
+    public abstract List<PiecePosition> getMoveablePosition(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition);
+
+    private boolean isTherePiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
+        return pieces.containsKey(willMovePosition);
+    }
+
+    private boolean isPieceOfSameTeam(Piece piece, TeamType currentTurnTeamType) {
+        return piece.isSameTeam(currentTurnTeamType);
+    }
+
+    protected TeamType getSelectedPieceTeamType(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition) {
+        return pieces.get(currentPosition).getTeamType();
+    }
+
+    protected boolean isPieceOfDifferentTeam(Piece piece, TeamType currentTurnTeamType) {
+        return !isPieceOfSameTeam(piece, currentTurnTeamType);
+    }
+
+    protected boolean isThereEmpty(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition) {
+        return !isTherePiece(pieces, willMovePosition);
+    }
+
+    protected boolean isEmptyOrEnemyPiece(Map<PiecePosition, Piece> pieces, PiecePosition willMovePosition, TeamType currentTurnTeamType) {
+        if (isThereEmpty(pieces, willMovePosition)) {
+            return true;
+        }
+
+        return isPieceOfDifferentTeam(pieces.get(willMovePosition), currentTurnTeamType);
+    }
+
+    protected boolean haveObstacle(Map<PiecePosition, Piece> pieces, List<Movement> movementList, PiecePosition currentPosition) {
+        return movementList.stream()
+                .anyMatch(directions -> isTherePiece(pieces, PiecePosition.create(currentPosition, directions)));
+    }
+
+    protected boolean notHaveObstacle(Map<PiecePosition, Piece> pieces, List<Movement> movementList, PiecePosition currentPosition) {
+        return !haveObstacle(pieces, movementList, currentPosition);
+    }
+
+    // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
+    protected List<Movement> filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Movement> directions) {
+        return Movement.sortByLengthAsc(directions).stream()
+                .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
+                .toList();
+    }
+
+    protected List<Movement> filteredWithinBoard(List<Movement> moveAbleDirections, PiecePosition currentPosition) {
+        return moveAbleDirections.stream()
+                .filter(currentPosition::canMove)
+                .toList();
+    }
+
+    protected Movements filteredWithinBoard2(List<Movement> moveAbleDirections, PiecePosition currentPosition) {
+        return Movements.create(moveAbleDirections.stream()
+                .filter(currentPosition::canMove)
+                .toList());
+    }
+
+    protected Movement getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Movement> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
+        if (Movement.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
+            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
+
+            Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
+            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
+                return nextPieceMovement;
+            }
+        }
+
+        return Movement.empty();
     }
 }
