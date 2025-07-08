@@ -175,6 +175,7 @@ class MovementTest {
                 Movement.empty());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     @DisplayName("빈 움직임들을 concat 시도하면 빈 움직임이 나온다.")
     void concatNull() {
