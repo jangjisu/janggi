@@ -143,4 +143,143 @@ class ChaMovePositionTest {
         assertThat(moveAblePosition).isEmpty();
     }
 
+    @DisplayName("차는 궁성안에서는 대각선으로 이동할 수 있다.")
+    @Test
+    void can_move_digonal_on_Gong() {
+        // given
+        PiecePosition position = PiecePosition.create(4, 1);
+        pieces.put(position, Cha.create(CHO));
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(21)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(3, 0),
+                        PiecePosition.create(3, 1),
+                        PiecePosition.create(3, 2),
+                        PiecePosition.create(5, 0),
+                        PiecePosition.create(5, 1),
+                        PiecePosition.create(5, 2),
+                        PiecePosition.create(4, 0),
+                        PiecePosition.create(4, 2),
+                        PiecePosition.create(4, 3),
+                        PiecePosition.create(4, 4),
+                        PiecePosition.create(4, 5),
+                        PiecePosition.create(4, 6),
+                        PiecePosition.create(4, 7),
+                        PiecePosition.create(4, 8),
+                        PiecePosition.create(4, 9),
+                        PiecePosition.create(0, 1),
+                        PiecePosition.create(1, 1),
+                        PiecePosition.create(2, 1),
+                        PiecePosition.create(6, 1),
+                        PiecePosition.create(7, 1),
+                        PiecePosition.create(8, 1)
+                );
+    }
+
+    @DisplayName("차는 궁성안에서는 대각선으로 이동할 수 있다.")
+    @Test
+    void can_move_digonal_on_Gong2() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 0);
+        pieces.put(position, Cha.create(CHO));
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(19)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(0, 0),
+                        PiecePosition.create(1, 0),
+                        PiecePosition.create(2, 0),
+                        PiecePosition.create(4, 0),
+                        PiecePosition.create(5, 0),
+                        PiecePosition.create(6, 0),
+                        PiecePosition.create(7, 0),
+                        PiecePosition.create(8, 0),
+                        PiecePosition.create(3, 1),
+                        PiecePosition.create(3, 2),
+                        PiecePosition.create(3, 3),
+                        PiecePosition.create(3, 4),
+                        PiecePosition.create(3, 5),
+                        PiecePosition.create(3, 6),
+                        PiecePosition.create(3, 7),
+                        PiecePosition.create(3, 8),
+                        PiecePosition.create(3, 9),
+                        PiecePosition.create(4, 1),
+                        PiecePosition.create(5, 2)
+                );
+    }
+
+    @DisplayName("차는 궁성안에서는 대각선으로 이동할 수 있다.")
+    @Test
+    void can_move_digonal_on_Gong_Meet_Opponent() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 0);
+        pieces.put(position, Cha.create(CHO));
+        pieces.put(PiecePosition.create(5,2), Cha.create(HAN));
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(19)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(0, 0),
+                        PiecePosition.create(1, 0),
+                        PiecePosition.create(2, 0),
+                        PiecePosition.create(4, 0),
+                        PiecePosition.create(5, 0),
+                        PiecePosition.create(6, 0),
+                        PiecePosition.create(7, 0),
+                        PiecePosition.create(8, 0),
+                        PiecePosition.create(3, 1),
+                        PiecePosition.create(3, 2),
+                        PiecePosition.create(3, 3),
+                        PiecePosition.create(3, 4),
+                        PiecePosition.create(3, 5),
+                        PiecePosition.create(3, 6),
+                        PiecePosition.create(3, 7),
+                        PiecePosition.create(3, 8),
+                        PiecePosition.create(3, 9),
+                        PiecePosition.create(4, 1),
+                        PiecePosition.create(5, 2)
+                );
+    }
+
+    @DisplayName("차는 궁성안에서는 대각선으로 이동할 수 있다.")
+    @Test
+    void can_move_digonal_on_Gong_Meet_Team() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 0);
+        pieces.put(position, Cha.create(CHO));
+        pieces.put(PiecePosition.create(5,2), Cha.create(CHO));
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(18)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(0, 0),
+                        PiecePosition.create(1, 0),
+                        PiecePosition.create(2, 0),
+                        PiecePosition.create(4, 0),
+                        PiecePosition.create(5, 0),
+                        PiecePosition.create(6, 0),
+                        PiecePosition.create(7, 0),
+                        PiecePosition.create(8, 0),
+                        PiecePosition.create(3, 1),
+                        PiecePosition.create(3, 2),
+                        PiecePosition.create(3, 3),
+                        PiecePosition.create(3, 4),
+                        PiecePosition.create(3, 5),
+                        PiecePosition.create(3, 6),
+                        PiecePosition.create(3, 7),
+                        PiecePosition.create(3, 8),
+                        PiecePosition.create(3, 9),
+                        PiecePosition.create(4, 1)
+                );
+    }
+
 }

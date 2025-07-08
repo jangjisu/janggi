@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece.move;
 
+import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.exception.NeedStopException;
 import lombok.AccessLevel;
@@ -110,6 +111,17 @@ public class Movement {
 
         Movement plusOneMovement = appendSameToMaxDirection(movementList, directionType);
         return currentPosition.canMove(plusOneMovement);
+    }
+
+    public static boolean isNextAvailableAndInGong(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
+        if (movementList.isEmpty()) {
+            return currentPosition.canMove(Movement.create(directionType)) &&
+                   GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, Movement.create(directionType)));
+        }
+
+        Movement plusOneMovement = appendSameToMaxDirection(movementList, directionType);
+        return currentPosition.canMove(plusOneMovement) &&
+               GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, plusOneMovement));
     }
 
     public static boolean isNextNotAvailable(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
