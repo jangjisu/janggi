@@ -9,23 +9,25 @@ import java.util.List;
 import java.util.Map;
 
 public class SaMovePosition extends MovePosition {
-    private final List<Movement> diagonalMoveAbleDirections = List.of(
-            Movement.create(Direction.UP),
-            Movement.create(Direction.DOWN),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT),
-            Movement.create(Direction.UP_LEFT),
-            Movement.create(Direction.UP_RIGHT),
-            Movement.create(Direction.DOWN_LEFT),
-            Movement.create(Direction.DOWN_RIGHT)
-    );
+    private final Movements diagonalMovements = Movements.create(
+            List.of(
+                    Movement.create(Direction.UP),
+                    Movement.create(Direction.DOWN),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT),
+                    Movement.create(Direction.UP_LEFT),
+                    Movement.create(Direction.UP_RIGHT),
+                    Movement.create(Direction.DOWN_LEFT),
+                    Movement.create(Direction.DOWN_RIGHT)
+            ));
 
-    private final List<Movement> moveAbleDirections = List.of(
-            Movement.create(Direction.UP),
-            Movement.create(Direction.DOWN),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT)
-    );
+    private final Movements movements = Movements.create(
+            List.of(
+                    Movement.create(Direction.UP),
+                    Movement.create(Direction.DOWN),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT)
+            ));
 
 
     @Override
@@ -39,9 +41,9 @@ public class SaMovePosition extends MovePosition {
     }
 
     protected Movements calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return Movements.create(filteredWithinBoard2(
+        return Movements.create(filteredWithinBoard(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
-                        ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition)
+                        ? diagonalMovements : movements, currentPosition)
                 .getValues().stream()
                 .filter(directions -> checkGongPosition(currentPosition, directions))
                 .toList());

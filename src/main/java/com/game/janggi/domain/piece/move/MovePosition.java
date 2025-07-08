@@ -81,27 +81,21 @@ public abstract class MovePosition {
     }
 
     // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
-    protected List<Movement> filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, List<Movement> directions) {
-        return Movement.sortByLengthAsc(directions).stream()
+    protected Movements filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, Movements directions) {
+        return Movements.create(directions.getValues().stream()
                 .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
-                .toList();
+                .toList());
     }
 
-    protected List<Movement> filteredWithinBoard(List<Movement> moveAbleDirections, PiecePosition currentPosition) {
-        return moveAbleDirections.stream()
-                .filter(currentPosition::canMove)
-                .toList();
-    }
-
-    protected Movements filteredWithinBoard2(List<Movement> moveAbleDirections, PiecePosition currentPosition) {
-        return Movements.create(moveAbleDirections.stream()
+    protected Movements filteredWithinBoard(Movements movements, PiecePosition currentPosition) {
+        return Movements.create(movements.getValues().stream()
                 .filter(currentPosition::canMove)
                 .toList());
     }
 
-    protected Movement getNextStepIfMovable(Map<PiecePosition, Piece> pieces, List<Movement> beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
-        if (Movement.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
-            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
+    protected Movement getNextStepIfMovable(Map<PiecePosition, Piece> pieces, Movements beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
+        if (Movement.isNextAvailable(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
+            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
 
             Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
             if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
