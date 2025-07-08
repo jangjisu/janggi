@@ -17,11 +17,11 @@ public class Movements {
     private final List<Movement> values;
 
     public static Movements create(List<Movement> movements) {
-        return new Movements(new ArrayList<>(movements));
+        return new Movements(List.copyOf(movements));
     }
 
     public static Movements empty() {
-        return new Movements(new ArrayList<>());
+        return new Movements(List.of());
     }
 
     public boolean isUnified() {
@@ -49,36 +49,28 @@ public class Movements {
                 .toList());
     }
 
-    private Movements sortByLengthAsc() {
+    public Movements sortByLengthAsc() {
         return Movements.create(values.stream()
                 .sorted(Comparator.comparingInt(Movement::getSize))
                 .toList());
     }
 
-    public void append(Movement movement) {
-        if (movement.haveAnyDirection()) {
-            if (nonExist(movement)) {
-                this.values.add(movement);
-            }
-        }
-    }
-
-    private boolean isExist(Movement movement) {
-        for (Movement value : values) {
-            if (value.equals(movement)) {
-                return true;
-            }
+    public Movements append(Movement movement) {
+        if (!movement.haveAnyDirection() || values.contains(movement)) {
+            return this;
         }
 
-        return false;
+        List<Movement> newValues = new ArrayList<>(this.values);
+        newValues.add(movement);
+        return Movements.create(newValues);
     }
 
-    private boolean nonExist(Movement movement) {
-        return !isExist(movement);
-    }
+    public Movements concatAll(Movement movement) {
+        List<Movement> newValues = values.stream()
+                .map(m -> Movement.concat(m, movement))
+                .toList();
 
-    public void concatAll(Movement movement) {
-        values.replaceAll(m -> Movement.concat(m, movement));
+        return Movements.create(newValues);
     }
 
 

@@ -113,12 +113,14 @@ public class PoMovePosition extends MovePosition {
         Movements nextFilteredList = filterUntilBlockedByPiece(pieces, nextPiecePosition, poMoveAbleDirections);
         Movement standardDirection = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
 
-        nextFilteredList.concatAll(standardDirection);
+        Movements concatFilteredList = nextFilteredList.concatAll(standardDirection);
 
         Movement nextStepIfMovable = getNextStepIfMovable(pieces, nextFilteredList, nextPiecePosition, directionType, PieceType.PHO, currentTeamType);
 
-        nextFilteredList.append(nextStepIfMovable);
+        if (nextStepIfMovable != null && nextStepIfMovable.haveAnyDirection()) {
+            return concatFilteredList.append(Movement.concat(nextStepIfMovable, standardDirection));
+        }
 
-        return nextFilteredList;
+        return concatFilteredList;
     }
 }
