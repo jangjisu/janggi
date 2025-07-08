@@ -2,6 +2,7 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
+import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -84,7 +85,7 @@ public abstract class MovePosition {
     protected Movements filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, Movements movements) {
         return Movements.create
                 (movements.sortByLengthAsc().getValues().stream()
-                        .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
+                        .takeWhile(movement -> isThereEmpty(pieces, PiecePosition.create(currentPosition, movement)))
                         .toList());
     }
 
@@ -94,8 +95,28 @@ public abstract class MovePosition {
                 .toList());
     }
 
+    protected Movements filteredWithinGong(Movements movements, PiecePosition currentPosition) {
+        return Movements.create(movements.getValues().stream()
+                .filter((currentPosition::canMove))
+                .filter(movement -> GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, movement)))
+                .toList());
+    }
+
     protected Movement getNextStepIfMovable(Map<PiecePosition, Piece> pieces, Movements beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
         if (Movement.isNextAvailable(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
+            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
+
+            Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
+            if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
+                return nextPieceMovement;
+            }
+        }
+
+        return Movement.empty();
+    }
+
+    protected Movement getNextStepIfMovableAndInGong(Map<PiecePosition, Piece> pieces, Movements beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
+        if (Movement.isNextAvailableAndInGong(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
             Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
 
             Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
