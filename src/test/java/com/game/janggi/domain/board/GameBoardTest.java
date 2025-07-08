@@ -12,7 +12,7 @@ class GameBoardTest {
     @DisplayName("게임 보드를 생성하면 32개의 말이 생성되고, 초의 턴 상태가 되며 선택된 기물상태는 null 이 된다..")
     void initializePieces () {
         //given
-        GameBoard gameBoard = GameBoard.initializePieces(FormationType.SANG_MA_MA_SANG, FormationType.SANG_MA_MA_SANG);
+        GameBoard gameBoard = GameBoard.initializePieces(FormationType.SANG_MA_MA_SANG, FormationType.SANG_MA_SANG_MA);
 
         //when //then
         assertThat(gameBoard.getPiecesSize()).isEqualTo(32);
@@ -24,7 +24,7 @@ class GameBoardTest {
     @Test
     void changeTurn() {
         // given
-        GameBoard gameBoard = GameBoard.initializePieces(FormationType.SANG_MA_MA_SANG, FormationType.SANG_MA_MA_SANG);
+        GameBoard gameBoard = GameBoard.initializePieces(FormationType.MA_SANG_MA_SANG, FormationType.MA_SANG_SANG_MA);
 
         // when
         gameBoard.changeTurn();
