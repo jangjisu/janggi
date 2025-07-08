@@ -9,19 +9,21 @@ import java.util.List;
 import java.util.Map;
 
 public class BungMovePosition extends MovePosition {
-    private final List<Movement> moveAbleDirections = List.of(
-            Movement.create(Direction.UP),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT)
-    );
+    private final Movements movements = Movements.create(
+            List.of(
+                    Movement.create(Direction.UP),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT)
+            ));
 
-    private final List<Movement> diagonalMoveAbleDirections = List.of(
-            Movement.create(Direction.UP),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT),
-            Movement.create(Direction.UP_LEFT),
-            Movement.create(Direction.UP_RIGHT)
-    );
+    private final Movements diagonalMovements = Movements.create(
+            List.of(
+                    Movement.create(Direction.UP),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT),
+                    Movement.create(Direction.UP_LEFT),
+                    Movement.create(Direction.UP_RIGHT)
+            ));
 
 
     @Override
@@ -34,8 +36,8 @@ public class BungMovePosition extends MovePosition {
     }
 
     private Movements calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return filteredWithinBoard2(
+        return filteredWithinBoard(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
-                        ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition);
+                        ? diagonalMovements : movements, currentPosition);
     }
 }
