@@ -59,7 +59,9 @@ public class ChaMovePosition extends MovePosition {
 
         Movement nextStepIfMovable = getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.CHA, currentTeamType);
 
-        beforeNextPieceDirections.append(nextStepIfMovable);
+        if (nextStepIfMovable != null && nextStepIfMovable.haveAnyDirection()) {
+            return beforeNextPieceDirections.append(nextStepIfMovable);
+        }
 
         return beforeNextPieceDirections;
     }

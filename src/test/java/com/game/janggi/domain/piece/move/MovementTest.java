@@ -26,7 +26,17 @@ class MovementTest {
         Movement movement = Movement.create(Direction.UP);
 
         //when //then
-        assertThat(movement.exists()).isTrue();
+        assertThat(movement.haveAnyDirection()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Directions가 비어있지 않은지 확인한다")
+    void nonExist() {
+        //given
+        Movement movement = Movement.create();
+
+        //when //then
+        assertThat(movement.haveNoDirection()).isTrue();
     }
 
     @DisplayName("제일 첫번째 Direction을 반환한다.")
@@ -124,6 +134,18 @@ class MovementTest {
     }
 
     @Test
+    @DisplayName("null 값은 append 할 수 없다.")
+    void appendNull() {
+        //given
+        Movement movement = Movement.create(Direction.UP);
+
+        //when //then
+        assertThatThrownBy(() -> movement.append(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Next direction cannot be null");
+    }
+
+    @Test
     @DisplayName("제공받은 두개의 Directions를 합쳐서 새로운 Directions를 반환한다.")
     void concat() {
         //given
@@ -136,6 +158,34 @@ class MovementTest {
         //then
         assertThat(concatMovement).isEqualTo(
                 Movement.create(Direction.UP, Direction.UP, Direction.DOWN, Direction.DOWN));
+    }
+
+    @Test
+    @DisplayName("빈 움직임들을 concat 시도하면 빈 움직임이 나온다.")
+    void concatEmpty() {
+        //given
+        Movement upMovement = Movement.empty();
+        Movement downMovement = Movement.empty();
+
+        //when
+        Movement concatMovement = Movement.concat(upMovement, downMovement);
+
+        //then
+        assertThat(concatMovement).isEqualTo(
+                Movement.empty());
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    @DisplayName("빈 움직임들을 concat 시도하면 빈 움직임이 나온다.")
+    void concatNull() {
+        //given
+        Movement downMovement = Movement.empty();
+
+        //when //then
+        assertThatThrownBy(() -> Movement.concat(null, downMovement))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Standard direction and movement cannot be null");
     }
 
     @Test

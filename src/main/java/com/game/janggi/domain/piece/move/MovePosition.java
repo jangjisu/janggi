@@ -81,10 +81,11 @@ public abstract class MovePosition {
     }
 
     // 정렬된 가장 작은 길이의 리스트 부터 시작해서 만든 포지션이 비어있는지 확인한다
-    protected Movements filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, Movements directions) {
-        return Movements.create(directions.getValues().stream()
-                .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
-                .toList());
+    protected Movements filterUntilBlockedByPiece(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, Movements movements) {
+        return Movements.create
+                (movements.sortByLengthAsc().getValues().stream()
+                        .takeWhile(direction -> isThereEmpty(pieces, PiecePosition.create(currentPosition, direction)))
+                        .toList());
     }
 
     protected Movements filteredWithinBoard(Movements movements, PiecePosition currentPosition) {
