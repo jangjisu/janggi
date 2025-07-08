@@ -14,6 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MovementsTest {
     @Test
+    @DisplayName("빈 Movements 생성할 수 있다")
+    void createEmptyMovements() {
+        // given // when
+        Movements empty = Movements.empty();
+        // then
+        assertThat(empty.getValues()).isEmpty();
+    }
+
+    @Test
     @DisplayName("속한 모든 Movement 내부 Direction 방향까지 모두 동일해야 한다.")
     void unifiedMovements() {
         // given
@@ -33,7 +42,25 @@ class MovementsTest {
 
     @Test
     @DisplayName("속한 모든 Movement의 방향이 하나라도 다를경우 통일이 아니다.")
-    void nonUnifiedMovements() {
+    void nonInternalUnifiedMovements() {
+        // given
+        Movement unifiedMovement1 = Movement.create(Direction.UP, Direction.UP);
+        Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.DOWN);
+        Movement unifiedMovement3 = Movement.create(Direction.UP, Direction.UP);
+        Movement unifiedMovement4 = Movement.create(Direction.UP, Direction.UP);
+
+        Movements movements = Movements.create(List.of(unifiedMovement1, unifiedMovement2, unifiedMovement3, unifiedMovement4));
+
+        // when
+        boolean isUnified = movements.isUnified();
+
+        // then
+        assertThat(isUnified).isFalse();
+    }
+
+    @Test
+    @DisplayName("속한 모든 Movement의 방향이 통일 되 있어도 다를경우 통일이 아니다.")
+    void nonSameUnifiedMovements() {
         // given
         Movement unifiedMovement1 = Movement.create(Direction.UP, Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.DOWN, Direction.DOWN);
@@ -91,10 +118,10 @@ class MovementsTest {
 
         Movement addMovement = Movement.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP);
         //when
-        movements.append(addMovement);
+        Movements appended = movements.append(addMovement);
 
         //then
-        assertThat(movements.getValues()).hasSize(5)
+        assertThat(appended.getValues()).hasSize(5)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
@@ -118,10 +145,10 @@ class MovementsTest {
 
         Movement addMovement = Movement.empty();
         //when
-        movements.append(addMovement);
+        Movements appended = movements.append(addMovement);
 
         //then
-        assertThat(movements.getValues()).hasSize(4)
+        assertThat(appended.getValues()).hasSize(4)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
@@ -169,10 +196,10 @@ class MovementsTest {
 
         //when
         Movement movement = Movement.create(Direction.DOWN_RIGHT);
-        movements.concatAll(movement);
+        Movements concatMovement = movements.concatAll(movement);
 
         //then
-        assertThat(movements.getValues()).hasSize(3)
+        assertThat(concatMovement.getValues()).hasSize(3)
                 .containsExactly(
                         Movement.create(Direction.UP, Direction.DOWN_RIGHT),
                         Movement.create(Direction.UP, Direction.UP, Direction.DOWN_RIGHT),
