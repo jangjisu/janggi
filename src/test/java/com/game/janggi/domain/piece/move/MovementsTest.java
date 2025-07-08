@@ -91,10 +91,10 @@ class MovementsTest {
 
         Movement addMovement = Movement.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP);
         //when
-        Movements appended = movements.append(addMovement);
+        movements.append(addMovement);
 
         //then
-        assertThat(appended.getValues()).hasSize(5)
+        assertThat(movements.getValues()).hasSize(5)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
@@ -118,10 +118,10 @@ class MovementsTest {
 
         Movement addMovement = Movement.empty();
         //when
-        Movements appended = movements.append(addMovement);
+        movements.append(addMovement);
 
         //then
-        assertThat(appended.getValues()).hasSize(4)
+        assertThat(movements.getValues()).hasSize(4)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
@@ -144,10 +144,10 @@ class MovementsTest {
 
         Movement addMovement = Movement.create(Direction.UP, Direction.UP, Direction.UP, Direction.UP);
         //when
-        Movements appended = movements.append(addMovement);
+        movements.append(addMovement);
 
         //then
-        assertThat(appended.getValues()).hasSize(4)
+        assertThat(movements.getValues()).hasSize(4)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
@@ -169,10 +169,10 @@ class MovementsTest {
 
         //when
         Movement movement = Movement.create(Direction.DOWN_RIGHT);
-        Movements concated = movements.concatAll(movement);
+        movements.concatAll(movement);
 
         //then
-        assertThat(concated.getValues()).hasSize(3)
+        assertThat(movements.getValues()).hasSize(3)
                 .containsExactly(
                         Movement.create(Direction.UP, Direction.DOWN_RIGHT),
                         Movement.create(Direction.UP, Direction.UP, Direction.DOWN_RIGHT),
@@ -193,10 +193,10 @@ class MovementsTest {
 
         //when
         Movement movement = Movement.empty();
-        Movements concated = movements.concatAll(movement);
+        movements.concatAll(movement);
 
         //then
-        assertThat(concated.getValues()).hasSize(3)
+        assertThat(movements.getValues()).hasSize(3)
                 .containsExactly(
                         Movement.create(Direction.UP),
                         Movement.create(Direction.UP, Direction.UP),
