@@ -15,7 +15,7 @@ class PiecePositionTest {
         PiecePosition piecePosition = PiecePosition.create(2, 3);
 
         //when //then
-        assertThat(piecePosition).isEqualTo(new PiecePosition(2, 3));
+        assertThat(piecePosition).isEqualTo(PiecePosition.create(2, 3));
     }
 
     @Test
@@ -35,5 +35,24 @@ class PiecePositionTest {
                 .isInstanceOf(RecoverableException.class)
                 .hasMessageContaining("Invalid position");
     }
+
+    @Test
+    @DisplayName("장기말은 row 0~8, col 0~9 포지션 밖에는 존재할 수 없다")
+    void positionCannotOnOutIndex2() {
+        //when //then
+        assertThatThrownBy(() -> PiecePosition.create(5, 20))
+                .isInstanceOf(RecoverableException.class)
+                .hasMessageContaining("Invalid position");
+    }
+
+    @Test
+    @DisplayName("장기말은 row 0~8, col 0~9 포지션 밖에는 존재할 수 없다")
+    void positionCannotOnOutIndex3() {
+        //when //then
+        assertThatThrownBy(() -> PiecePosition.create(40, 20))
+                .isInstanceOf(RecoverableException.class)
+                .hasMessageContaining("Invalid position");
+    }
+
 
 }
