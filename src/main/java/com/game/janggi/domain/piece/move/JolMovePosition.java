@@ -9,19 +9,21 @@ import java.util.List;
 import java.util.Map;
 
 public class JolMovePosition extends MovePosition {
-    private final List<Movement> moveAbleDirections = List.of(
-            Movement.create(Direction.DOWN),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT)
-    );
+    private final Movements movements = Movements.create(
+            List.of(
+                    Movement.create(Direction.DOWN),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT)
+            ));
 
-    private final List<Movement> diagonalMoveAbleDirections = List.of(
-            Movement.create(Direction.DOWN),
-            Movement.create(Direction.LEFT),
-            Movement.create(Direction.RIGHT),
-            Movement.create(Direction.DOWN_LEFT),
-            Movement.create(Direction.DOWN_RIGHT)
-    );
+    private final Movements diagonalMovements = Movements.create(
+            List.of(
+                    Movement.create(Direction.DOWN),
+                    Movement.create(Direction.LEFT),
+                    Movement.create(Direction.RIGHT),
+                    Movement.create(Direction.DOWN_LEFT),
+                    Movement.create(Direction.DOWN_RIGHT)
+            ));
 
 
     @Override
@@ -34,8 +36,8 @@ public class JolMovePosition extends MovePosition {
     }
 
     protected Movements calculateBasicMoveAbleDirections(PiecePosition currentPosition) {
-        return filteredWithinBoard2(
+        return filteredWithinBoard(
                 GongPiecePosition.canMoveDiagonal(currentPosition)
-                        ? diagonalMoveAbleDirections : moveAbleDirections, currentPosition);
+                        ? diagonalMovements : movements, currentPosition);
     }
 }

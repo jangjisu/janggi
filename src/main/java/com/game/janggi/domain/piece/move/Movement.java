@@ -30,8 +30,12 @@ public class Movement {
         return new Movement(List.of());
     }
 
-    public boolean exists() {
+    public boolean haveAnyDirection() {
         return !directions.isEmpty();
+    }
+
+    public boolean haveNoDirection() {
+        return directions.isEmpty();
     }
 
     public Direction getFirst() {
@@ -68,12 +72,20 @@ public class Movement {
     }
 
     public Movement append(Direction next) {
+        if (next == null) {
+            throw new IllegalArgumentException("Next direction cannot be null");
+        }
+
         return new Movement(
                 Stream.concat(directions.stream(), Stream.of(next)).toList()
         );
     }
 
     public static Movement concat(Movement standardDirection, Movement movement) {
+        if (standardDirection == null || movement == null) {
+            throw new IllegalArgumentException("Standard direction and movement cannot be null");
+        }
+
         List<Direction> combined = Stream.concat(
                 standardDirection.directions.stream(),
                 movement.directions.stream()
