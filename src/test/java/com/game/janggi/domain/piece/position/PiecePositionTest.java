@@ -1,6 +1,5 @@
 package com.game.janggi.domain.piece.position;
 
-import com.game.janggi.exception.RecoverableException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ class PiecePositionTest {
     void positionCannotOnMinusIndex() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(-2, 3))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
 
@@ -32,7 +31,7 @@ class PiecePositionTest {
     void positionCannotOnOutIndex() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(11, 3))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
 
@@ -41,7 +40,7 @@ class PiecePositionTest {
     void positionCannotOnOutIndex2() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(5, 20))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
 
@@ -50,7 +49,7 @@ class PiecePositionTest {
     void positionCannotOnOutIndex3() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(40, 20))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
 
