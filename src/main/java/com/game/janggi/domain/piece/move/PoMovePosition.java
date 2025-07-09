@@ -117,7 +117,7 @@ public class PoMovePosition extends MovePosition {
 
         Movement nextStepIfMovable = getNextStepIfMovable(pieces, nextFilteredList, nextPiecePosition, directionType, PieceType.PHO, currentTeamType);
 
-        if (nextStepIfMovable != null && nextStepIfMovable.haveAnyDirection()) {
+        if (nextStepIfMovable.haveAnyDirection()) {
             return concatFilteredList.append(Movement.concat(nextStepIfMovable, standardDirection));
         }
 
