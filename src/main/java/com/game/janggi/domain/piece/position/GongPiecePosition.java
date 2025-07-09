@@ -8,25 +8,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public enum GongPiecePosition {
 
-    HAN_01(PiecePosition.create(3, 0), PiecePosition.create(5,2), "한우하귀", true),
+    HAN_01(PiecePosition.create(3, 0), PiecePosition.create(5, 2), "한우하귀", true),
     HAN_02(PiecePosition.create(4, 0), null, "한하중", false),
-    HAN_03(PiecePosition.create(5, 0), PiecePosition.create(3,2), "한좌하귀", true),
+    HAN_03(PiecePosition.create(5, 0), PiecePosition.create(3, 2), "한좌하귀", true),
     HAN_04(PiecePosition.create(3, 1), null, "한우귀", false),
     HAN_05(PiecePosition.create(4, 1), null, "한중앙", true),
     HAN_06(PiecePosition.create(5, 1), null, "한좌귀", false),
-    HAN_07(PiecePosition.create(3, 2), PiecePosition.create(5,0), "한우상귀", true),
+    HAN_07(PiecePosition.create(3, 2), PiecePosition.create(5, 0), "한우상귀", true),
     HAN_08(PiecePosition.create(4, 2), null, "한상중", false),
-    HAN_09(PiecePosition.create(5, 2), PiecePosition.create(3,0), "한좌상귀", true),
+    HAN_09(PiecePosition.create(5, 2), PiecePosition.create(3, 0), "한좌상귀", true),
 
-    CHO_01(PiecePosition.create(3, 9), PiecePosition.create(5,7), "초좌하귀", true),
+    CHO_01(PiecePosition.create(3, 9), PiecePosition.create(5, 7), "초좌하귀", true),
     CHO_02(PiecePosition.create(4, 9), null, "초하중", false),
-    CHO_03(PiecePosition.create(5, 9), PiecePosition.create(3,7), "초우하귀", true),
+    CHO_03(PiecePosition.create(5, 9), PiecePosition.create(3, 7), "초우하귀", true),
     CHO_04(PiecePosition.create(3, 8), null, "초좌귀", false),
     CHO_05(PiecePosition.create(4, 8), null, "초중앙", true),
     CHO_06(PiecePosition.create(5, 8), null, "초우귀", false),
-    CHO_07(PiecePosition.create(3, 7), PiecePosition.create(5,9), "초좌상귀", true),
+    CHO_07(PiecePosition.create(3, 7), PiecePosition.create(5, 9), "초좌상귀", true),
     CHO_08(PiecePosition.create(4, 7), null, "초상중", false),
-    CHO_09(PiecePosition.create(5, 7), PiecePosition.create(3,9), "초우상귀", true);
+    CHO_09(PiecePosition.create(5, 7), PiecePosition.create(3, 9), "초우상귀", true);
 
     private final PiecePosition position;
     private final PiecePosition oppositePosition;
