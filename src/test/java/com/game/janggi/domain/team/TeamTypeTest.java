@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TeamTypeTest {
 
     @Test
-    @DisplayName("선택한 팀의 반대되는 팀을 가져올 수 있다.")
-    void getOppositeTeam () {
+    @DisplayName("초의 반대팀은 한이다.")
+    void getOppositeTeamOnCho() {
         //given
         TeamType teamType = TeamType.CHO;
 
@@ -18,5 +18,18 @@ class TeamTypeTest {
 
         //then
         assertThat(oppositeTeam).isEqualTo(TeamType.HAN);
+    }
+
+    @Test
+    @DisplayName("한의 반대팀은 초이다.")
+    void getOppositeTeamOnHan() {
+        //given
+        TeamType teamType = TeamType.HAN;
+
+        //when
+        TeamType oppositeTeam = teamType.getOppositeTeam();
+
+        //then
+        assertThat(oppositeTeam).isEqualTo(TeamType.CHO);
     }
 }

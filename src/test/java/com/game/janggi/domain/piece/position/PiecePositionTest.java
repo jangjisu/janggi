@@ -1,6 +1,5 @@
 package com.game.janggi.domain.piece.position;
 
-import com.game.janggi.exception.RecoverableException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,7 @@ class PiecePositionTest {
         PiecePosition piecePosition = PiecePosition.create(2, 3);
 
         //when //then
-        assertThat(piecePosition).isEqualTo(new PiecePosition(2, 3));
+        assertThat(piecePosition).isEqualTo(PiecePosition.create(2, 3));
     }
 
     @Test
@@ -23,7 +22,7 @@ class PiecePositionTest {
     void positionCannotOnMinusIndex() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(-2, 3))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
 
@@ -32,8 +31,27 @@ class PiecePositionTest {
     void positionCannotOnOutIndex() {
         //when //then
         assertThatThrownBy(() -> PiecePosition.create(11, 3))
-                .isInstanceOf(RecoverableException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid position");
     }
+
+    @Test
+    @DisplayName("장기말은 row 0~8, col 0~9 포지션 밖에는 존재할 수 없다")
+    void positionCannotOnOutIndex2() {
+        //when //then
+        assertThatThrownBy(() -> PiecePosition.create(5, 20))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid position");
+    }
+
+    @Test
+    @DisplayName("장기말은 row 0~8, col 0~9 포지션 밖에는 존재할 수 없다")
+    void positionCannotOnOutIndex3() {
+        //when //then
+        assertThatThrownBy(() -> PiecePosition.create(40, 20))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid position");
+    }
+
 
 }

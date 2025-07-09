@@ -2,6 +2,7 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.PieceType;
+import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
@@ -13,24 +14,48 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ChaMovePosition extends MovePosition {
+    private static final int MAX_VERTICAL = 9;
+    private static final int MAX_HORIZONTAL = 8;
+    private static final int PALACE_MAX_DIAGONAL = 2;
+
     private final Movements upMovements = Movements.create(
-            IntStream.rangeClosed(1, 9)
+            IntStream.rangeClosed(1, MAX_VERTICAL)
                     .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.UP)))
                     .toList());
 
     private final Movements downMovements = Movements.create(
-            IntStream.rangeClosed(1, 9)
+            IntStream.rangeClosed(1, MAX_VERTICAL)
                     .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.DOWN)))
                     .toList());
 
     private final Movements leftMovements = Movements.create(
-            IntStream.rangeClosed(1, 8)
+            IntStream.rangeClosed(1, MAX_HORIZONTAL)
                     .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.LEFT)))
                     .toList());
 
     private final Movements rightMovements = Movements.create(
-            IntStream.rangeClosed(1, 8)
+            IntStream.rangeClosed(1, MAX_HORIZONTAL)
                     .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.RIGHT)))
+                    .toList());
+
+    private final Movements diagonalDownLeftMovements = Movements.create(
+            IntStream.rangeClosed(1, PALACE_MAX_DIAGONAL)
+                    .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.DOWN_LEFT)))
+                    .toList());
+
+    private final Movements diagonalDownRightMovements = Movements.create(
+            IntStream.rangeClosed(1, PALACE_MAX_DIAGONAL)
+                    .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.DOWN_RIGHT)))
+                    .toList());
+
+    private final Movements diagonalUpLeftMovements = Movements.create(
+            IntStream.rangeClosed(1, PALACE_MAX_DIAGONAL)
+                    .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.UP_LEFT)))
+                    .toList());
+
+    private final Movements diagonalUpRightMovements = Movements.create(
+            IntStream.rangeClosed(1, PALACE_MAX_DIAGONAL)
+                    .mapToObj(steps -> Movement.create(Collections.nCopies(steps, Direction.UP_RIGHT)))
                     .toList());
 
     @Override
@@ -38,6 +63,18 @@ public class ChaMovePosition extends MovePosition {
         TeamType currentTeamType = pieces.get(currentPosition).getTeamType();
 
         return Stream.of(
+                        GongPiecePosition.canMoveDiagonal(currentPosition)
+                                ? collectMovableInDigonalDirection(pieces, currentPosition, diagonalDownLeftMovements, Direction.DOWN_LEFT, currentTeamType).getValues()
+                                : Movements.empty().getValues(),
+                        GongPiecePosition.canMoveDiagonal(currentPosition)
+                                ? collectMovableInDigonalDirection(pieces, currentPosition, diagonalDownRightMovements, Direction.DOWN_RIGHT, currentTeamType).getValues()
+                                : Movements.empty().getValues(),
+                        GongPiecePosition.canMoveDiagonal(currentPosition)
+                                ? collectMovableInDigonalDirection(pieces, currentPosition, diagonalUpLeftMovements, Direction.UP_LEFT, currentTeamType).getValues()
+                                : Movements.empty().getValues(),
+                        GongPiecePosition.canMoveDiagonal(currentPosition)
+                                ? collectMovableInDigonalDirection(pieces, currentPosition, diagonalUpRightMovements, Direction.UP_RIGHT, currentTeamType).getValues()
+                                : Movements.empty().getValues(),
                         collectMovableInDirection(pieces, currentPosition, rightMovements, Direction.RIGHT, currentTeamType).getValues(),
                         collectMovableInDirection(pieces, currentPosition, leftMovements, Direction.LEFT, currentTeamType).getValues(),
                         collectMovableInDirection(pieces, currentPosition, upMovements, Direction.UP, currentTeamType).getValues(),
@@ -59,11 +96,24 @@ public class ChaMovePosition extends MovePosition {
 
         Movement nextStepIfMovable = getNextStepIfMovable(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.CHA, currentTeamType);
 
-        if (nextStepIfMovable != null && nextStepIfMovable.haveAnyDirection()) {
+        if (nextStepIfMovable.haveAnyDirection()) {
             return beforeNextPieceDirections.append(nextStepIfMovable);
         }
 
         return beforeNextPieceDirections;
     }
 
+    private Movements collectMovableInDigonalDirection(Map<PiecePosition, Piece> pieces, PiecePosition currentPosition, Movements moveAbleDirections, Direction directionType, TeamType currentTeamType) {
+        Movements boardBoundDirections = filteredWithinGong(moveAbleDirections, currentPosition);
+
+        Movements beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
+
+        Movement nextStepIfMovable = getNextStepIfMovableAndInGong(pieces, beforeNextPieceDirections, currentPosition, directionType, PieceType.CHA, currentTeamType);
+
+        if (nextStepIfMovable.haveAnyDirection()) {
+            return beforeNextPieceDirections.append(nextStepIfMovable);
+        }
+
+        return beforeNextPieceDirections;
+    }
 }

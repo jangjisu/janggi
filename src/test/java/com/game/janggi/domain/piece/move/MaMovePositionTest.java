@@ -52,7 +52,7 @@ class MaMovePositionTest {
 
     @Test
     @DisplayName("마는 중간 길에 장애물이 있다면 이동할 수 없다.")
-    void moveWhenObstacle() {
+    void moveWhenMeetObstacle() {
         //given
         PiecePosition piecePosition = PiecePosition.create(4, 3);
         pieces.put(piecePosition, Ma.create(TeamType.HAN));

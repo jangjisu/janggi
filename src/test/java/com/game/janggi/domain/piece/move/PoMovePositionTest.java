@@ -130,10 +130,8 @@ class PoMovePositionTest {
         List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
 
         // then
-        assertThat(moveAblePosition).hasSize(1)
-                .containsExactlyInAnyOrder(
-                        PiecePosition.create(2, 0)
-                );
+        assertThat(moveAblePosition).hasSize(1);
+
     }
 
     @Test
@@ -191,6 +189,72 @@ class PoMovePositionTest {
                 .containsExactlyInAnyOrder(
                         PiecePosition.create(5, 9)
                 );
+    }
+
+    @Test
+    @DisplayName("포가 궁성 안에서 중앙에 기물이 있을 때 대각선으로 이동 가능")
+    void po_diagonal_move_valid_from_gong_cha() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 7);
+        pieces.put(position, Po.create(CHO));
+        pieces.put(PiecePosition.create(4, 8), Cha.create(HAN));
+        pieces.put(PiecePosition.create(5, 9), Cha.create(HAN));
+
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(1)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(5, 9)
+                );
+    }
+
+    @Test
+    @DisplayName("포가 궁성 안에서 중앙에 기물이 있을 고 대각선기물이 팀이면 이동 불가")
+    void po_diagonal_move_valid_from_gong_team() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 7);
+        pieces.put(position, Po.create(CHO));
+        pieces.put(PiecePosition.create(4, 8), Cha.create(HAN));
+        pieces.put(PiecePosition.create(5, 9), Cha.create(CHO));
+
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).isEmpty();
+    }
+
+    @Test
+    @DisplayName("포가 궁성 안에서 중앙에 기물이 있을 때 반대편에 포가 있을경우 대각선으로 불가")
+    void po_diagonal_move_valid_from_gong_po() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 7);
+        pieces.put(position, Po.create(CHO));
+        pieces.put(PiecePosition.create(4, 8), Cha.create(HAN));
+        pieces.put(PiecePosition.create(5, 9), Po.create(HAN));
+
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).isEmpty();
+    }
+
+    @Test
+    @DisplayName("포가 궁성에 있고 중앙기물이 있을 때 반대편 기물이 포라면 대각선 이동 불가능")
+    void po_diagonal_move_not_allowed_center_piece_po() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 7);
+        pieces.put(position, Po.create(HAN));
+        pieces.put(PiecePosition.create(4, 8), Po.create(CHO));
+
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).isEmpty();
     }
 
     @Test

@@ -31,6 +31,16 @@ jacocoTestReport {
         html.required = true
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
+
+    classDirectories.setFrom(
+            files([
+                    fileTree(dir: "$buildDir/classes/java/main", excludes: [
+                            '**/com/game/janggi/exception/**',
+                            '**/com/game/janggi/util/**',
+                            '**/com/game/janggi/io/**',
+                    ])
+            ])
+    )
 }
 
 configurations {
