@@ -1,5 +1,6 @@
 package com.game.janggi.domain.piece.position;
 
+import com.game.janggi.domain.board.GameBoard;
 import com.game.janggi.domain.piece.move.Movement;
 
 public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
@@ -20,7 +21,7 @@ public record PiecePosition(int rowIndex, int colIndex) implements MoveAble {
     }
 
     private static boolean checkCanMakeRowCol(int rowIndex, int colIndex) {
-        return rowIndex >= 0 && rowIndex <= 8 && colIndex >= 0 && colIndex <= 9;
+        return rowIndex >= 0 && rowIndex < GameBoard.BOARD_ROW_SIZE && colIndex >= 0 && colIndex < GameBoard.BOARD_COL_SIZE;
     }
 
     private static boolean checkCanNotMakeRowCol(int rowIndex, int colIndex) {

@@ -1,13 +1,14 @@
 package com.game.janggi.io;
 
 import com.game.janggi.domain.board.GameBoard;
-import com.game.janggi.domain.board.GameStatus;
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
 public class OutputHandler {
+    private static final String EMPTY_PIECE_DISPLAY = "□ ";
+
     public void showGameStartComments() {
         System.out.println(">>>>>>>>>>>>>");
         System.out.println("장기 게임 시작");
@@ -23,25 +24,27 @@ public class OutputHandler {
     }
 
     public void showBoard(GameBoard board) {
-        int row = board.getRowSize();
-        int col = board.getColSize();
+        int maxRow = GameBoard.BOARD_ROW_SIZE;
+        int maxCol = GameBoard.BOARD_COL_SIZE;
 
         System.out.printf("   ");
-        for (int i = 0; i < col; i++) {
+        for (int i = 0; i < maxRow; i++) {
             char c = (char) ('A' + i);
             System.out.printf("%-2s ", c);
         }
         System.out.println();
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < maxCol; i++) {
+            for (int j = 0; j < maxRow; j++) {
                 if (j == 0) {
                     System.out.printf("%-2s ", i);
                 }
 
-                Piece piece = board.getPiece(PiecePosition.create(j, i));
-                String name = (piece == null) ? "□ㅤ" : piece.printPieceName();
-                System.out.printf(String.format("%-2s ", name));
+                PiecePosition piecePosition = PiecePosition.create(j, i);
+
+                Piece piece = board.getPieceAt(piecePosition);
+                String printablePiece = (piece != null) ? piece.printPieceName() : EMPTY_PIECE_DISPLAY;
+                System.out.printf(String.format("%-2s ", printablePiece));
             }
             System.out.println();
         }
@@ -68,9 +71,9 @@ public class OutputHandler {
         System.out.println("예기치 못한 문제로 게임을 종료합니다.");
     }
 
-    public void showEndComments(GameStatus gameStatus) {
+    public void showEndComments() {
         System.out.println(">>>>>>>>>>>>>");
-        System.out.println(gameStatus.getComment());
+        System.out.println("게임이 종료되었습니다.");
         System.out.println(">>>>>>>>>>>>>");
     }
 }
