@@ -2,13 +2,11 @@ package com.game.janggi.domain.piece.move;
 
 import com.game.janggi.domain.piece.position.GongPiecePosition;
 import com.game.janggi.domain.piece.position.PiecePosition;
-import com.game.janggi.exception.NeedStopException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -104,51 +102,35 @@ public class Movement {
                 .toList();
     }
 
-    public static boolean isNextAvailable(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
-        if (movementList.isEmpty()) {
+    public static boolean isNextAvailable(Movements movements, PiecePosition currentPosition, Direction directionType) {
+        if (movements.isEmpty()) {
             return currentPosition.canMove(Movement.create(directionType));
         }
 
-        Movement plusOneMovement = appendSameToMaxDirection(movementList, directionType);
+        Movement plusOneMovement = appendSameToMaxDirection(movements, directionType);
         return currentPosition.canMove(plusOneMovement);
     }
 
-    public static boolean isNextAvailableAndInGong(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
-        if (movementList.isEmpty()) {
+    public static boolean isNextAvailableAndInGong(Movements movements, PiecePosition currentPosition, Direction directionType) {
+        if (movements.isEmpty()) {
             return currentPosition.canMove(Movement.create(directionType)) &&
                     GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, Movement.create(directionType)));
         }
 
-        Movement plusOneMovement = appendSameToMaxDirection(movementList, directionType);
+        Movement plusOneMovement = appendSameToMaxDirection(movements, directionType);
         return currentPosition.canMove(plusOneMovement) &&
                 GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, plusOneMovement));
     }
 
-    public static boolean isNextNotAvailable(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
-        return !isNextAvailable(movementList, currentPosition, directionType);
+    public static boolean isNextNotAvailable(Movements movements, PiecePosition currentPosition, Direction directionType) {
+        return !isNextAvailable(movements, currentPosition, directionType);
     }
 
-    public static List<Movement> sortByLengthAsc(List<Movement> movementList) {
-        return movementList.stream()
-                .sorted(Comparator.comparingInt(Movement::getSize))
-                .toList();
-    }
-
-    public static Movement appendSameToMaxDirection(List<Movement> movementList, Direction directionType) {
-        if (movementList.isEmpty()) {
+    public static Movement appendSameToMaxDirection(Movements movements, Direction directionType) {
+        if (movements.isEmpty()) {
             return Movement.create(directionType);
         }
 
-        return getMaxUniformDirections(movementList).append(directionType);
-    }
-
-    private static Movement getMaxUniformDirections(List<Movement> movementList) {
-        if (movementList.isEmpty()) {
-            return Movement.create();
-        }
-
-        return sortByLengthAsc(movementList).stream()
-                .max(Comparator.comparingInt(Movement::getSize))
-                .orElseThrow(() -> new NeedStopException("getMaxSizeDirections failed"));
+        return movements.getMax().append(directionType);
     }
 }
