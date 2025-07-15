@@ -254,6 +254,39 @@ class ChaMovePositionTest {
         // given
         PiecePosition position = PiecePosition.create(3, 0);
         pieces.put(position, Cha.create(CHO));
+        pieces.put(PiecePosition.create(4,1), Cha.create(CHO));
+        // when
+        List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
+
+        // then
+        assertThat(moveAblePosition).hasSize(17)
+                .containsExactlyInAnyOrder(
+                        PiecePosition.create(0, 0),
+                        PiecePosition.create(1, 0),
+                        PiecePosition.create(2, 0),
+                        PiecePosition.create(4, 0),
+                        PiecePosition.create(5, 0),
+                        PiecePosition.create(6, 0),
+                        PiecePosition.create(7, 0),
+                        PiecePosition.create(8, 0),
+                        PiecePosition.create(3, 1),
+                        PiecePosition.create(3, 2),
+                        PiecePosition.create(3, 3),
+                        PiecePosition.create(3, 4),
+                        PiecePosition.create(3, 5),
+                        PiecePosition.create(3, 6),
+                        PiecePosition.create(3, 7),
+                        PiecePosition.create(3, 8),
+                        PiecePosition.create(3, 9)
+                );
+    }
+
+    @DisplayName("차는 궁성안에서는 대각선으로 이동할 수 있다.")
+    @Test
+    void can_move_digonal_on_Gong_up_down() {
+        // given
+        PiecePosition position = PiecePosition.create(3, 0);
+        pieces.put(position, Cha.create(CHO));
         pieces.put(PiecePosition.create(5,2), Cha.create(CHO));
         // when
         List<PiecePosition> moveAblePosition = movePosition.getMoveablePosition(pieces, position);
