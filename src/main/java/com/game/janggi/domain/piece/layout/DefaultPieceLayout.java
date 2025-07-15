@@ -29,90 +29,31 @@ public abstract class DefaultPieceLayout {
     protected abstract Map<PiecePosition, Piece> createFluidPieces();
 
     protected Map<PiecePosition, Piece> createFluidPiecesOnRow(FormationType formationType, int colIndex, TeamType teamType) {
-        switch (formationType) {
-            case MA_SANG_MA_SANG -> {
-                PiecePosition leftMaPosition = PiecePosition.create(1, colIndex);
-                Ma leftMa = Ma.create(teamType);
+        return switch (formationType) {
+            case MA_SANG_MA_SANG ->
+                    create(colIndex, Ma.create(teamType), Sang.create(teamType), Ma.create(teamType), Sang.create(teamType));
+            case SANG_MA_SANG_MA ->
+                    create(colIndex, Sang.create(teamType), Ma.create(teamType), Sang.create(teamType), Ma.create(teamType));
+            case SANG_MA_MA_SANG ->
+                    create(colIndex, Sang.create(teamType), Ma.create(teamType), Ma.create(teamType), Sang.create(teamType));
+            case MA_SANG_SANG_MA ->
+                    create(colIndex, Ma.create(teamType), Sang.create(teamType), Sang.create(teamType), Ma.create(teamType));
+        };
+    }
 
-                PiecePosition leftSangPosition = PiecePosition.create(2, colIndex);
-                Sang leftSang = Sang.create(teamType);
+    private Map<PiecePosition, Piece> create(int colIndex, Piece firstPiece, Piece secondPiece, Piece thirdPiece, Piece fourthPiece) {
+        PiecePosition leftSangPosition = PiecePosition.create(1, colIndex);
 
-                PiecePosition rightMaPosition = PiecePosition.create(6, colIndex);
-                Ma rightMa = Ma.create(teamType);
+        PiecePosition leftMaPosition = PiecePosition.create(2, colIndex);
 
-                PiecePosition rightSangPosition = PiecePosition.create(7, colIndex);
-                Sang rightSang = Sang.create(teamType);
+        PiecePosition rightSangPosition = PiecePosition.create(6, colIndex);
 
-                return Map.of(
-                        leftMaPosition, leftMa,
-                        leftSangPosition, leftSang,
-                        rightMaPosition, rightMa,
-                        rightSangPosition, rightSang
-                );
-            }
-
-            case SANG_MA_SANG_MA -> {
-                PiecePosition leftSangPosition = PiecePosition.create(1, colIndex);
-                Sang leftSang = Sang.create(teamType);
-
-                PiecePosition leftMaPosition = PiecePosition.create(2, colIndex);
-                Ma leftMa = Ma.create(teamType);
-
-                PiecePosition rightSangPosition = PiecePosition.create(6, colIndex);
-                Sang rightSang = Sang.create(teamType);
-
-                PiecePosition rightMaPosition = PiecePosition.create(7, colIndex);
-                Ma rightMa = Ma.create(teamType);
-                return Map.of(
-                        leftSangPosition, leftSang,
-                        leftMaPosition, leftMa,
-                        rightSangPosition, rightSang,
-                        rightMaPosition, rightMa
-                );
-            }
-
-            case SANG_MA_MA_SANG -> {
-                PiecePosition leftSangPosition = PiecePosition.create(1, colIndex);
-                Sang leftSang = Sang.create(teamType);
-
-                PiecePosition leftMaPosition = PiecePosition.create(2, colIndex);
-                Ma leftMa = Ma.create(teamType);
-
-                PiecePosition rightMaPosition = PiecePosition.create(6, colIndex);
-                Ma rightMa = Ma.create(teamType);
-
-                PiecePosition rightSangPosition = PiecePosition.create(7, colIndex);
-                Sang rightSang = Sang.create(teamType);
-
-                return Map.of(
-                        leftSangPosition, leftSang,
-                        leftMaPosition, leftMa,
-                        rightMaPosition, rightMa,
-                        rightSangPosition, rightSang
-                );
-            }
-
-            case MA_SANG_SANG_MA -> {
-                PiecePosition leftMaPosition = PiecePosition.create(1, colIndex);
-                Ma leftMa = Ma.create(teamType);
-
-                PiecePosition leftSangPosition = PiecePosition.create(2, colIndex);
-                Sang leftSang = Sang.create(teamType);
-
-                PiecePosition rightSangPosition = PiecePosition.create(6, colIndex);
-                Sang rightSang = Sang.create(teamType);
-
-                PiecePosition rightMaPosition = PiecePosition.create(7, colIndex);
-                Ma rightMa = Ma.create(teamType);
-
-                return Map.of(
-                        leftMaPosition, leftMa,
-                        leftSangPosition, leftSang,
-                        rightSangPosition, rightSang,
-                        rightMaPosition, rightMa
-                );
-            }
-        }
-        return Map.of();
+        PiecePosition rightMaPosition = PiecePosition.create(7, colIndex);
+        return Map.of(
+                leftSangPosition, firstPiece,
+                leftMaPosition, secondPiece,
+                rightSangPosition, thirdPiece,
+                rightMaPosition, fourthPiece
+        );
     }
 }

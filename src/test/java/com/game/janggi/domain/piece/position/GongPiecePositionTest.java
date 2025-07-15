@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GongPiecePositionTest {
     @Test
-    @DisplayName("모든 궁 위치를 반환한다.")
+    @DisplayName("모든 궁 위치를 가져올 수 있다.")
     void getGongPosition() {
         //given //when
         List<PiecePosition> gongPositions = GongPiecePosition.getGongPositions();
@@ -40,7 +40,7 @@ class GongPiecePositionTest {
     }
 
     @Test
-    @DisplayName("포가 대각선으로 움직일 수 있는 포지션을 반환한다")
+    @DisplayName("포가 대각선으로 움직일 수 있는 포지션을 구할 수 있다")
     void getPoCanDigonalGongPositions() {
         //given //when
         List<PiecePosition> piecePositions = GongPiecePosition.getPoCanDiagonalGongPositions();
@@ -115,12 +115,14 @@ class GongPiecePositionTest {
 
     @Test
     @DisplayName("궁 밖에는 이동할 대각선 위치를 반환할 수 없다.")
-    void getOppositePositionFail () {
-        //given //when //then
-        assertThatThrownBy(() -> GongPiecePosition.getOppositeGongPosition(PiecePosition.create(0, 0)))
+    void getOppositePositionFail() {
+        //given
+        PiecePosition position = PiecePosition.create(0, 0);
+
+        //when //then
+        assertThatThrownBy(() -> GongPiecePosition.getOppositeGongPosition(position))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("해당 위치의 반대 위치가 없습니다.");
-
     }
 
     @Test

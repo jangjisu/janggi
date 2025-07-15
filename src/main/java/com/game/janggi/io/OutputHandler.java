@@ -1,13 +1,16 @@
 package com.game.janggi.io;
 
 import com.game.janggi.domain.board.GameBoard;
-import com.game.janggi.domain.board.GameStatus;
 import com.game.janggi.domain.formation.FormationType;
 import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
+import java.util.Optional;
+
 public class OutputHandler {
+    private static final String EMPTY_PIECE_DISPLAY = "□ ";
+
     public void showGameStartComments() {
         System.out.println(">>>>>>>>>>>>>");
         System.out.println("장기 게임 시작");
@@ -23,25 +26,27 @@ public class OutputHandler {
     }
 
     public void showBoard(GameBoard board) {
-        int row = board.getRowSize();
-        int col = board.getColSize();
+        int maxRow = GameBoard.BOARD_ROW_SIZE;
+        int maxCol = GameBoard.BOARD_COL_SIZE;
 
         System.out.printf("   ");
-        for (int i = 0; i < col; i++) {
-            char c = (char) ('A' + i);
+        for (int row = 0; row < maxRow; row++) {
+            char c = (char) ('A' + row);
             System.out.printf("%-2s ", c);
         }
         System.out.println();
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (j == 0) {
-                    System.out.printf("%-2s ", i);
+        for (int col = 0; col < maxCol; col++) {
+            for (int row = 0; row < maxRow; row++) {
+                if (row == 0) {
+                    System.out.printf("%-2s ", col);
                 }
 
-                Piece piece = board.getPiece(PiecePosition.create(j, i));
-                String name = (piece == null) ? "□ㅤ" : piece.printPieceName();
-                System.out.printf(String.format("%-2s ", name));
+                PiecePosition piecePosition = PiecePosition.create(row, col);
+
+                Optional<Piece> pieceCandidate = board.getPieceAt(piecePosition);
+                String printablePiece = pieceCandidate.isPresent() ? pieceCandidate.get().printPieceName() : EMPTY_PIECE_DISPLAY;
+                System.out.printf(String.format("%-2s ", printablePiece));
             }
             System.out.println();
         }
@@ -68,9 +73,9 @@ public class OutputHandler {
         System.out.println("예기치 못한 문제로 게임을 종료합니다.");
     }
 
-    public void showEndComments(GameStatus gameStatus) {
+    public void showEndComments() {
         System.out.println(">>>>>>>>>>>>>");
-        System.out.println(gameStatus.getComment());
+        System.out.println("게임이 종료되었습니다.");
         System.out.println(">>>>>>>>>>>>>");
     }
 }

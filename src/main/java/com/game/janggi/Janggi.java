@@ -43,7 +43,7 @@ public class Janggi {
         }
 
         outputHandler.showBoard(gameBoard);
-        outputHandler.showEndComments(gameBoard.getGameStatus());
+        outputHandler.showEndComments();
 
     }
 

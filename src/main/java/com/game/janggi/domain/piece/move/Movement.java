@@ -82,14 +82,14 @@ public class Movement {
         );
     }
 
-    public static Movement concat(Movement standardDirection, Movement movement) {
-        if (standardDirection == null || movement == null) {
-            throw new IllegalArgumentException("Standard direction and movement cannot be null");
+    public static Movement concat(Movement movement1, Movement movement2) {
+        if (movement1 == null || movement2 == null) {
+            throw new IllegalArgumentException("movement1 and movement2 cannot be null");
         }
 
         List<Direction> combined = Stream.concat(
-                standardDirection.directions.stream(),
-                movement.directions.stream()
+                movement1.directions.stream(),
+                movement2.directions.stream()
         ).toList();
 
         return Movement.create(combined.toArray(new Direction[0]));
@@ -116,12 +116,12 @@ public class Movement {
     public static boolean isNextAvailableAndInGong(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
         if (movementList.isEmpty()) {
             return currentPosition.canMove(Movement.create(directionType)) &&
-                   GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, Movement.create(directionType)));
+                    GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, Movement.create(directionType)));
         }
 
         Movement plusOneMovement = appendSameToMaxDirection(movementList, directionType);
         return currentPosition.canMove(plusOneMovement) &&
-               GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, plusOneMovement));
+                GongPiecePosition.isInGongPosition(PiecePosition.create(currentPosition, plusOneMovement));
     }
 
     public static boolean isNextNotAvailable(List<Movement> movementList, PiecePosition currentPosition, Direction directionType) {
