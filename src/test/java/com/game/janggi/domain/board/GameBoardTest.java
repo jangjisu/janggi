@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -49,10 +51,11 @@ class GameBoardTest {
         PiecePosition piecePosition = PiecePosition.create(0, 0);
 
         // when
-        Piece piece = gameBoard.getPieceAt(piecePosition);
+        Optional<Piece> pieceCandidate = gameBoard.getPieceAt(piecePosition);
 
         // then
-        assertThat(piece).isInstanceOf(Cha.class);
+        assertThat(pieceCandidate).hasValueSatisfying(piece ->
+                assertThat(piece).isInstanceOf(Cha.class));
     }
 
     @DisplayName("움직일 수 없는 기물을 선택하면 예외가 발생한다.")
@@ -111,10 +114,10 @@ class GameBoardTest {
         PiecePosition piecePosition = PiecePosition.create(0, 1);
 
         // when
-        Piece piece = gameBoard.getPieceAt(piecePosition);
+        Optional<Piece> pieceCandidate = gameBoard.getPieceAt(piecePosition);
 
         // then
-        assertThat(piece).isNull();
+        assertThat(pieceCandidate).isEmpty();
     }
 
     @DisplayName("이동에 성공하면 기물의 위치가 변경된다.")
@@ -130,7 +133,7 @@ class GameBoardTest {
         gameBoard.validateAndMovePiece(currentPosition, willMovePosition);
 
         // then
-        assertThat(gameBoard.getPieceAt(currentPosition)).isNull();
+        assertThat(gameBoard.getPieceAt(currentPosition)).isEmpty();
         assertThat(gameBoard.getPieceAt(willMovePosition)).isNotNull();
     }
 

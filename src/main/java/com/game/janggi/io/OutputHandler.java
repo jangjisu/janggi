@@ -6,6 +6,8 @@ import com.game.janggi.domain.piece.Piece;
 import com.game.janggi.domain.piece.position.PiecePosition;
 import com.game.janggi.domain.team.TeamType;
 
+import java.util.Optional;
+
 public class OutputHandler {
     private static final String EMPTY_PIECE_DISPLAY = "□ ";
 
@@ -28,22 +30,22 @@ public class OutputHandler {
         int maxCol = GameBoard.BOARD_COL_SIZE;
 
         System.out.printf("   ");
-        for (int i = 0; i < maxRow; i++) {
-            char c = (char) ('A' + i);
+        for (int row = 0; row < maxRow; row++) {
+            char c = (char) ('A' + row);
             System.out.printf("%-2s ", c);
         }
         System.out.println();
 
-        for (int i = 0; i < maxCol; i++) {
-            for (int j = 0; j < maxRow; j++) {
-                if (j == 0) {
-                    System.out.printf("%-2s ", i);
+        for (int col = 0; col < maxCol; col++) {
+            for (int row = 0; row < maxRow; row++) {
+                if (row == 0) {
+                    System.out.printf("%-2s ", col);
                 }
 
-                PiecePosition piecePosition = PiecePosition.create(j, i);
+                PiecePosition piecePosition = PiecePosition.create(row, col);
 
-                Piece piece = board.getPieceAt(piecePosition);
-                String printablePiece = (piece != null) ? piece.printPieceName() : EMPTY_PIECE_DISPLAY;
+                Optional<Piece> pieceCandidate = board.getPieceAt(piecePosition);
+                String printablePiece = pieceCandidate.isPresent() ? pieceCandidate.get().printPieceName() : EMPTY_PIECE_DISPLAY;
                 System.out.printf(String.format("%-2s ", printablePiece));
             }
             System.out.println();

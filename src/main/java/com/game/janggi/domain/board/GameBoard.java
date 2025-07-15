@@ -12,10 +12,7 @@ import com.game.janggi.exception.RecoverableException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class GameBoard {
@@ -63,17 +60,18 @@ public class GameBoard {
         this.selectedPiece = null;
     }
 
-    public Piece getPieceAt(PiecePosition piecePosition) {
-        return pieces.get(piecePosition);
+    public Optional<Piece> getPieceAt(PiecePosition piecePosition) {
+        return Optional.ofNullable(pieces.get(piecePosition));
     }
 
     public void validatePieceSelection(PiecePosition piecePosition) {
-        Piece piece = getPieceAt(piecePosition);
+        Optional<Piece> pieceCandidate = getPieceAt(piecePosition);
 
-        if (piece == null) {
+        if (pieceCandidate.isEmpty()) {
             throw new RecoverableException("선택한 위치에 말이 없습니다.");
         }
 
+        Piece piece = pieceCandidate.get();
         if (piece.isDifferentTeam(currentTurn)) {
             throw new RecoverableException("상대 진영의 말을 선택할 수 없습니다.");
         }
@@ -83,6 +81,7 @@ public class GameBoard {
         }
 
         this.selectedPiece = piece;
+
     }
 
     public boolean isGameIsInProgress() {
