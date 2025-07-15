@@ -87,6 +87,19 @@ class MovementTest {
         assertThat(isUnified).isTrue();
     }
 
+    @DisplayName("빈 Movement는 통일되었다고 판단한다")
+    @Test
+    void isUnifiedWhenEmpty() {
+        // given
+        Movement emptyMovement = Movement.empty();
+
+        // when
+        boolean isUnified = emptyMovement.isUnified();
+
+        // then
+        assertThat(isUnified).isTrue();
+    }
+
     @DisplayName("Movement 내부 Direction이 하나라도다를경우 통일되지 않은 Movement로 판단한다.")
     @Test
     void isNonUnified() {
@@ -185,7 +198,30 @@ class MovementTest {
         //when //then
         assertThatThrownBy(() -> Movement.concat(null, downMovement))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Standard direction and movement cannot be null");
+                .hasMessageContaining("movement1 and movement2 cannot be null");
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    @DisplayName("빈 움직임들을 concat 시도하면 빈 움직임이 나온다.")
+    void concatNullNull() {
+        //given //when //then
+        assertThatThrownBy(() -> Movement.concat(null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("movement1 and movement2 cannot be null");
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    @DisplayName("빈 움직임들을 concat 시도하면 빈 움직임이 나온다.")
+    void concatNullEmpty() {
+        //given
+        Movement downMovement = Movement.empty();
+
+        //when //then
+        assertThatThrownBy(() -> Movement.concat(downMovement, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("movement1 and movement2 cannot be null");
     }
 
     @Test
