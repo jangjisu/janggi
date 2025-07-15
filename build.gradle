@@ -38,6 +38,8 @@ jacocoTestReport {
                             '**/com/game/janggi/exception/**',
                             '**/com/game/janggi/util/**',
                             '**/com/game/janggi/io/**',
+                            '**/com/game/janggi/JanggiApplication.class',
+                            '**/com/game/janggi/Janggi.class',
                     ])
             ])
     )
