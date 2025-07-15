@@ -74,4 +74,13 @@ public class Movements {
     }
 
 
+    public Movement getMax() {
+        return values.stream()
+                .max(Comparator.comparingInt(Movement::getSize))
+                .orElse(Movement.empty());
+    }
+
+    public boolean isEmpty() {
+        return values.isEmpty();
+    }
 }

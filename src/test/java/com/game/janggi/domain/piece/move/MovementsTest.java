@@ -107,7 +107,7 @@ class MovementsTest {
 
     @Test
     @DisplayName("새로운 Movement를 추가한다.")
-    void append () {
+    void append() {
         //given
         Movement unifiedMovement1 = Movement.create(Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
@@ -134,7 +134,7 @@ class MovementsTest {
 
     @Test
     @DisplayName("빈 Movement는 추가되지 않는다.")
-    void appendEmpty () {
+    void appendEmpty() {
         //given
         Movement unifiedMovement1 = Movement.create(Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
@@ -160,7 +160,7 @@ class MovementsTest {
 
     @Test
     @DisplayName("같은 Movement는 추가되지 않는다.")
-    void appendEqual () {
+    void appendEqual() {
         //given
         Movement unifiedMovement1 = Movement.create(Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
@@ -186,7 +186,7 @@ class MovementsTest {
 
     @Test
     @DisplayName("전체 Movement에 parameter 로 받는 movement를 concat 한다.")
-    void concat () {
+    void concat() {
         //given
         Movement unifiedMovement1 = Movement.create(Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
@@ -210,7 +210,7 @@ class MovementsTest {
 
     @Test
     @DisplayName("전체 Movement에 parameter 로 받는 movement가 빈값일 경우 concat 한 값은 동일하다.")
-    void concatEmpty () {
+    void concatEmpty() {
         //given
         Movement unifiedMovement1 = Movement.create(Direction.UP);
         Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
@@ -229,6 +229,55 @@ class MovementsTest {
                         Movement.create(Direction.UP, Direction.UP),
                         Movement.create(Direction.UP, Direction.UP, Direction.UP)
                 );
+    }
 
+    @DisplayName("Movements에 속한 Movement 중 가장 길이가 긴 Movement를 반환한다.")
+    @Test
+    void getMax() {
+        //given
+        Movement unifiedMovement1 = Movement.create(Direction.UP);
+        Movement unifiedMovement2 = Movement.create(Direction.UP, Direction.UP);
+        Movement unifiedMovement3 = Movement.create(Direction.UP, Direction.UP, Direction.UP);
+
+        Movements movements = Movements.create(List.of(unifiedMovement1, unifiedMovement2, unifiedMovement3));
+
+        // when
+        Movement maxMovement = movements.getMax();
+
+        // then
+        assertThat(maxMovement).isEqualTo(unifiedMovement3);
+    }
+
+    @DisplayName("Movements에 속한 Movement 중 가장 길이가 긴 Movement를 반환한다.")
+    @Test
+    void getMaxOnEmpty() {
+        //given
+        Movements movements = Movements.empty();
+
+        // when
+        Movement maxMovement = movements.getMax();
+
+        // then
+        assertThat(maxMovement).isEqualTo(Movement.empty());
+    }
+
+    @DisplayName("Movements가 비었는지 확인한다.")
+    @Test
+    void isEmpty() {
+        // given
+        Movements movements = Movements.empty();
+
+        // when // then
+        assertThat(movements.isEmpty()).isTrue();
+    }
+
+    @DisplayName("Movements가 비어있지 않은지 확인한다.")
+    @Test
+    void isNotEmpty() {
+        // given
+        Movements movements = Movements.create(List.of(Movement.create(Direction.UP)));
+
+        // when // then
+        assertThat(movements.isEmpty()).isFalse();
     }
 }
