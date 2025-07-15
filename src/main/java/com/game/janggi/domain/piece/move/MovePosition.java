@@ -103,8 +103,8 @@ public abstract class MovePosition {
     }
 
     protected Movement getNextStepIfMovable(Map<PiecePosition, Piece> pieces, Movements beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
-        if (Movement.isNextAvailable(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
-            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
+        if (Movement.isNextAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
+            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
 
             Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
             if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {
@@ -116,8 +116,8 @@ public abstract class MovePosition {
     }
 
     protected Movement getNextStepIfMovableAndInGong(Map<PiecePosition, Piece> pieces, Movements beforeNextPieceDirections, PiecePosition currentPosition, Direction directionType, PieceType currentPieceType, TeamType currentTeamType) {
-        if (Movement.isNextAvailableAndInGong(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
-            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
+        if (Movement.isNextAvailableAndInGong(beforeNextPieceDirections, currentPosition, directionType)) {
+            Movement nextPieceMovement = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
 
             Piece willMovePositionPiece = pieces.get(PiecePosition.create(currentPosition, nextPieceMovement));
             if (MoveRules.canMoveToNextPiece(currentPieceType, willMovePositionPiece, isPieceOfDifferentTeam(willMovePositionPiece, currentTeamType))) {

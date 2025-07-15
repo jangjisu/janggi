@@ -95,11 +95,11 @@ public class PoMovePosition extends MovePosition {
 
         Movements beforeNextPieceDirections = filterUntilBlockedByPiece(pieces, currentPosition, boardBoundDirections);
 
-        if (Movement.isNextNotAvailable(beforeNextPieceDirections.getValues(), currentPosition, directionType)) {
+        if (Movement.isNextNotAvailable(beforeNextPieceDirections, currentPosition, directionType)) {
             return Movements.empty();
         }
 
-        PiecePosition nextPiecePosition = PiecePosition.create(currentPosition, Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType));
+        PiecePosition nextPiecePosition = PiecePosition.create(currentPosition, Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType));
         Piece nextPiece = pieces.get(nextPiecePosition);
 
         if (MoveRules.canNotBeJumpedOver(nextPiece)) {
@@ -111,7 +111,7 @@ public class PoMovePosition extends MovePosition {
                 .toList());
 
         Movements nextFilteredList = filterUntilBlockedByPiece(pieces, nextPiecePosition, poMoveAbleDirections);
-        Movement standardDirection = Movement.appendSameToMaxDirection(beforeNextPieceDirections.getValues(), directionType);
+        Movement standardDirection = Movement.appendSameToMaxDirection(beforeNextPieceDirections, directionType);
 
         Movements concatFilteredList = nextFilteredList.concatAll(standardDirection);
 
